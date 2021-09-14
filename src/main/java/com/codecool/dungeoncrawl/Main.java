@@ -8,12 +8,16 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import javax.swing.*;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
@@ -36,10 +40,17 @@ public class Main extends Application {
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
 
+        Button button = new Button("button");
+        Scene s = new Scene(button, 200,200);
+        primaryStage.setScene(s);
+
+        primaryStage.show();
+
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
+        ui.add(button,0,1);
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
@@ -85,5 +96,18 @@ public class Main extends Application {
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
+    }
+
+    public void button(Stage s){
+        s.setTitle("creating buttons");
+        Button button = new Button("button");
+        TilePane tilePane = new TilePane();
+        tilePane.getChildren().add(button);
+
+        Scene scene = new Scene(tilePane, 200,200);
+
+        s.setScene(scene);
+
+        s.show();
     }
 }
