@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import javafx.application.Application;
@@ -45,7 +46,7 @@ public class Main extends Application {
         primaryStage.setScene(s);
 
         primaryStage.show();
-
+        button.setVisible(false);
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
@@ -64,21 +65,41 @@ public class Main extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                map.getPlayer().move(0, -1);
-                refresh();
-                break;
+                if(map.getPlayer().cellCheck(0, -1).getType() != CellType.WALL){
+                    map.getPlayer().move(0, -1);
+                    refresh();
+                    break;
+                }else {
+                    refresh();
+                    break;
+                }
             case DOWN:
-                map.getPlayer().move(0, 1);
-                refresh();
-                break;
+                if(map.getPlayer().cellCheck(0, 1).getType() != CellType.WALL){
+                    map.getPlayer().move(0, 1);
+                    refresh();
+                    break;
+                }else {
+                    refresh();
+                    break;
+                }
             case LEFT:
-                map.getPlayer().move(-1, 0);
-                refresh();
-                break;
+                if(map.getPlayer().cellCheck(-1, 0).getType() != CellType.WALL){
+                    map.getPlayer().move(-1, 0);
+                    refresh();
+                    break;
+                }else {
+                    refresh();
+                    break;
+                }
             case RIGHT:
-                map.getPlayer().move(1,0);
-                refresh();
-                break;
+                if(map.getPlayer().cellCheck(1,0).getType() != CellType.WALL){
+                    map.getPlayer().move(1,0);
+                    refresh();
+                    break;
+                }else {
+                    refresh();
+                    break;
+                }
         }
     }
 
