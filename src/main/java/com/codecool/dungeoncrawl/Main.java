@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import javafx.application.Application;
@@ -14,11 +15,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import javax.swing.*;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
@@ -117,8 +115,9 @@ public class Main extends Application {
     }
 
     public void pickUp(){
-        map.getPlayer().pickUpItem(map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getItem());
-        pickUpButton.setVisible(true);
+        CellType itemToPick = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getType();
+        map.getPlayer().pickUpItem(itemToPick, map);
+        pickUpButton.setVisible(false);
         refresh();
 
     }
