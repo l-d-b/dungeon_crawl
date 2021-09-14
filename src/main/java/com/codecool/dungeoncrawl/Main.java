@@ -26,6 +26,7 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Button pickUpButton;
+    Label inventory = new Label();
     public static void main(String[] args) {
         launch(args);
     }
@@ -55,6 +56,11 @@ public class Main extends Application {
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
         ui.add(pickUpButton,0,1);
+
+        ui.add(new Label("Inventory:"),0,7);
+        ui.add(inventory, 0, 8);
+        //System.out.println(map.getPlayer().getInventory());
+
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
@@ -119,6 +125,11 @@ public class Main extends Application {
         map.getPlayer().pickUpItem(itemToPick, map);
         pickUpButton.setVisible(false);
         refresh();
+        updateInventory();
 
+    }
+
+    public void updateInventory(){
+        inventory.setText(String.valueOf(map.getPlayer().getInventory()));
     }
 }
