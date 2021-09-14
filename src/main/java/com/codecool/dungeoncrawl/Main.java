@@ -65,7 +65,8 @@ public class Main extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                if(map.getPlayer().cellCheck(0, -1).getType() != CellType.WALL){
+                if(map.getPlayer().cellCheck(0, -1).getType() != CellType.WALL &&
+                        map.getPlayer().cellCheck(0, -1).getType() != CellType.SKELETON){
                     map.getPlayer().move(0, -1);
                     refresh();
                     break;
@@ -74,7 +75,8 @@ public class Main extends Application {
                     break;
                 }
             case DOWN:
-                if(map.getPlayer().cellCheck(0, 1).getType() != CellType.WALL){
+                if(map.getPlayer().cellCheck(0, 1).getType() != CellType.WALL &&
+                        map.getPlayer().cellCheck(0, 1).getType() != CellType.SKELETON){
                     map.getPlayer().move(0, 1);
                     refresh();
                     break;
@@ -83,7 +85,8 @@ public class Main extends Application {
                     break;
                 }
             case LEFT:
-                if(map.getPlayer().cellCheck(-1, 0).getType() != CellType.WALL){
+                if(map.getPlayer().cellCheck(-1, 0).getType() != CellType.WALL &&
+                        map.getPlayer().cellCheck(-1, 0).getType() != CellType.SKELETON){
                     map.getPlayer().move(-1, 0);
                     refresh();
                     break;
@@ -92,7 +95,8 @@ public class Main extends Application {
                     break;
                 }
             case RIGHT:
-                if(map.getPlayer().cellCheck(1,0).getType() != CellType.WALL){
+                if(map.getPlayer().cellCheck(1,0).getType() != CellType.WALL &&
+                        map.getPlayer().cellCheck(1,0).getType() != CellType.SKELETON){
                     map.getPlayer().move(1,0);
                     refresh();
                     break;
