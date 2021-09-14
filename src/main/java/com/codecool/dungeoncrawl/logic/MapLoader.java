@@ -33,11 +33,11 @@ public class MapLoader {
                             break;
                         case 's':
                             cell.setType(CellType.FLOOR);
-                            new Skeleton(cell);
+                            new Skeleton(cell, 10);
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell));
+                            map.setPlayer(new Player(cell, 10));
                             break;
                         case 'ß':
                             cell.setType(CellType.SWORD);

@@ -1,15 +1,20 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
+
+import java.util.ArrayList;
 
 public abstract class Actor implements Drawable {
     private Cell cell;
-    private int health = 10;
+    private int health;
 
-    public Actor(Cell cell) {
+    public Actor(Cell cell, int health) {
+        this.health = health;
         this.cell = cell;
         this.cell.setActor(this);
+
     }
 
     public void move(int dx, int dy) {
@@ -18,6 +23,7 @@ public abstract class Actor implements Drawable {
         nextCell.setActor(this);
         cell = nextCell;
     }
+
 
     public int getHealth() {
         return health;
