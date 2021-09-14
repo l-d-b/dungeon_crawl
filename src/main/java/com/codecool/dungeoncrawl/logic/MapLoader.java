@@ -42,6 +42,9 @@ public class MapLoader {
                         case 'ß':
                             cell.setType(CellType.SWORD);
                             break;
+                        case '$':
+                            cell.setType(CellType.SHIELD);
+                            break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }
