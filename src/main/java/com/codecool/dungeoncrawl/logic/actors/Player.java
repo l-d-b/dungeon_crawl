@@ -17,6 +17,10 @@ public class Player extends Actor {
         return "player";
     }
 
+    public ArrayList<Item> getInventory() {
+        return inventory;
+    }
+
     public void pickUpItem(Item item){
         this.inventory.add(item);
         if(item instanceof Sword){
