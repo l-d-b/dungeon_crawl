@@ -130,6 +130,11 @@ public class Main extends Application {
     }
 
     public void updateInventory(){
-        inventory.setText(String.valueOf(map.getPlayer().getInventory()));
+        StringBuilder stringBuilder = new StringBuilder();
+        for(CellType item: map.getPlayer().getInventory()){
+            stringBuilder.append(item).append("\n");
+            System.out.println(stringBuilder);
+            inventory.setText(String.valueOf(stringBuilder));
+        }
     }
 }
