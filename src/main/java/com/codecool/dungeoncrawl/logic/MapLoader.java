@@ -34,7 +34,7 @@ public class MapLoader {
                         case 's':
 
                             cell.setType(CellType.SKELETON);
-                            new Skeleton(cell);
+                            new Skeleton(cell, 10);
                             cell.setType(CellType.FLOOR);
                             new Skeleton(cell, 10);
 
