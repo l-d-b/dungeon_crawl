@@ -27,6 +27,8 @@ public class Main extends Application {
     Label healthLabel = new Label();
     Button pickUpButton;
 
+    Label inventory = new Label();
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -51,11 +53,18 @@ public class Main extends Application {
 
         primaryStage.show();
 
+        //primaryStage.show();
+
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
         ui.add(pickUpButton,0,1);
+
+        ui.add(new Label("Inventory:"),0,7);
+        ui.add(inventory, 0, 8);
+        //System.out.println(map.getPlayer().getInventory());
+
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
@@ -68,55 +77,108 @@ public class Main extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                map.getPlayer().move(0, -1);
-                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
-                    pickUpButton.setVisible(true);
 
-                } else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isClosedDoor()) {
-                    System.out.println("Closed door!");
+                if(map.getPlayer().cellCheck(0, -1).getType() != CellType.WALL ||
+                        map.getPlayer().cellCheck(0, -1).getType() != CellType.SKELETON){
 
-                } else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isOpenDoor()) {
-                    System.out.println("Open door!");
+                    if(map.getPlayer().cellCheck(0, -1).getType() == CellType.SWORD ||
+                            map.getPlayer().cellCheck(0, -1).getType() == CellType.SHIELD ||
+                            map.getPlayer().cellCheck(0, -1).getType() == CellType.KEY) {
+
+                        pickUpButton.setVisible(true);
+                        map.getPlayer().move(0, -1);
+                        refresh();
+                        break;
+                    }
+                    else{
+                        map.getPlayer().move(0, -1);
+                    }
+                    refresh();
+                    break;
                 }
-                refresh();
-                break;
-
+                else{
+                    refresh();
+                    break;
+                }
             case DOWN:
 
-                map.getPlayer().move(0, 1);
-                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
-                    pickUpButton.setVisible(true);
-                } else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isClosedDoor()) {
-                    System.out.println("Closed door!");
-                } else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isOpenDoor()) {
-                    System.out.println("Open door!");
+                if(map.getPlayer().cellCheck(0, 1).getType() != CellType.WALL ||
+                        map.getPlayer().cellCheck(0, 1).getType() != CellType.SKELETON){
+
+                    if(map.getPlayer().cellCheck(0, 1).getType() == CellType.SWORD ||
+                            map.getPlayer().cellCheck(0, 1).getType() == CellType.SHIELD ||
+                            map.getPlayer().cellCheck(0, 1).getType() == CellType.KEY) {
+
+                        pickUpButton.setVisible(true);
+                        map.getPlayer().move(0, 1);
+                        refresh();
+                        break;
+                    }
+                    else{
+                        map.getPlayer().move(0, 1);
+                        refresh();
+                        break;
+                    }
+
                 }
-                refresh();
-                break;
+                else {
+                    refresh();
+                    break;
+
+                }
             case LEFT:
-                map.getPlayer().move(-1, 0);
-                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
-                    pickUpButton.setVisible(true);
-                } else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isClosedDoor()) {
-                    System.out.println("Closed door!");
+
+                if(map.getPlayer().cellCheck(-1, 0).getType() != CellType.WALL &&
+                        map.getPlayer().cellCheck(-1, 0).getType() != CellType.SKELETON){
+
+
+
+                    if(map.getPlayer().cellCheck(-1, 0).getType() == CellType.SWORD ||
+                            map.getPlayer().cellCheck(-1, 0).getType() == CellType.SHIELD ||
+                            map.getPlayer().cellCheck(-1, 0).getType() == CellType.KEY) {
+
+                        pickUpButton.setVisible(true);
+                        map.getPlayer().move(-1, 0);
+                        refresh();
+                        break;
+                    }
+                    else{
+                        map.getPlayer().move(-1, 0);
+                        refresh();
+                        break;
+                    }
                 }
-                else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isOpenDoor()) {
-                    System.out.println("Open door!");
+                else {
+                    refresh();
+                    break;
+
                 }
-                refresh();
-                break;
             case RIGHT:
-                map.getPlayer().move(1,0);
-                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
-                    pickUpButton.setVisible(true);
-                } else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isClosedDoor()) {
-                    System.out.println("Closed door!");
+
+                if(map.getPlayer().cellCheck(1,0).getType() != CellType.WALL &&
+                        map.getPlayer().cellCheck(1,0).getType() != CellType.SKELETON){
+
+
+
+                    if(map.getPlayer().cellCheck(1,0).getType() == CellType.SWORD ||
+                            map.getPlayer().cellCheck(1,0).getType() == CellType.SHIELD ||
+                            map.getPlayer().cellCheck(1,0).getType() == CellType.KEY) {
+
+                        pickUpButton.setVisible(true);
+                        map.getPlayer().move(1,0);
+                        refresh();
+                        break;
+                    }
+                    else{
+                        map.getPlayer().move(1,0);
+                        refresh();
+                        break;
+                    }
                 }
-                else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isOpenDoor()) {
-                    System.out.println("Open door!");
+                else {
+                    refresh();
+                    break;
                 }
-                refresh();
-                break;
         }
     }
 
@@ -141,6 +203,16 @@ public class Main extends Application {
         map.getPlayer().pickUpItem(itemToPick, map);
         pickUpButton.setVisible(false);
         refresh();
+        updateInventory();
 
+    }
+
+    public void updateInventory(){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(CellType item: map.getPlayer().getInventory()){
+            stringBuilder.append(item).append("\n");
+            System.out.println(stringBuilder);
+            inventory.setText(String.valueOf(stringBuilder));
+        }
     }
 }

@@ -60,7 +60,7 @@ public class Cell implements Drawable {
     }
 
     public boolean isItem() {
-        return this.type.equals(CellType.SWORD);
+        return this.type.equals(CellType.SWORD) || this.type.equals(CellType.SHIELD);
     }
 
     public boolean isClosedDoor() {

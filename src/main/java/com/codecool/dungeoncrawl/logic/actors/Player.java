@@ -22,11 +22,13 @@ public class Player extends Actor {
         return inventory;
     }
 
+
     public void goThroughDoor() {
 
     }
 
     public void pickUpItem(CellType item, GameMap map){
+        System.out.println(inventory);
         this.inventory.add(item);
         if(item.getClass().getSimpleName().equals("SWORD")) {
             int health = getHealth();
@@ -34,6 +36,7 @@ public class Player extends Actor {
             setHealth(health);
         }
         map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).setType(CellType.FLOOR);
+        System.out.println(inventory);
 
     }
 }
