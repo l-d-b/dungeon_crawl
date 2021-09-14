@@ -48,12 +48,9 @@ public class Main extends Application {
             pickUp();
         });
 
-
         primaryStage.show();
-        button.setVisible(false);
 
         //primaryStage.show();
-
 
         BorderPane borderPane = new BorderPane();
 
@@ -72,75 +69,102 @@ public class Main extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-
-                if(map.getPlayer().cellCheck(0, -1).getType() != CellType.WALL &&
+                if(map.getPlayer().cellCheck(0, -1).getType() != CellType.WALL ||
                         map.getPlayer().cellCheck(0, -1).getType() != CellType.SKELETON){
-                    map.getPlayer().move(0, -1);
+
+                    if(map.getPlayer().cellCheck(0, -1).getType() == CellType.SWORD ||
+                            map.getPlayer().cellCheck(0, -1).getType() == CellType.SHIELD ||
+                            map.getPlayer().cellCheck(0, -1).getType() == CellType.KEY) {
+
+                        pickUpButton.setVisible(true);
+                        map.getPlayer().move(0, -1);
+                        refresh();
+                        break;
+                    }
+                    else{
+                        map.getPlayer().move(0, -1);
+                    }
                     refresh();
                     break;
-                }else {
+                }
+                else{
                     refresh();
                     break;
                 }
             case DOWN:
-                if(map.getPlayer().cellCheck(0, 1).getType() != CellType.WALL &&
+                if(map.getPlayer().cellCheck(0, 1).getType() != CellType.WALL ||
                         map.getPlayer().cellCheck(0, 1).getType() != CellType.SKELETON){
-                    map.getPlayer().move(0, 1);
-                    refresh();
-                    break;
-                }else {
+
+                    if(map.getPlayer().cellCheck(0, 1).getType() == CellType.SWORD ||
+                            map.getPlayer().cellCheck(0, 1).getType() == CellType.SHIELD ||
+                            map.getPlayer().cellCheck(0, 1).getType() == CellType.KEY) {
+
+                        pickUpButton.setVisible(true);
+                        map.getPlayer().move(0, 1);
+                        refresh();
+                        break;
+                    }
+                    else{
+                        map.getPlayer().move(0, 1);
+                        refresh();
+                        break;
+                    }
+
+                }
+                else {
                     refresh();
                     break;
                 }
             case LEFT:
                 if(map.getPlayer().cellCheck(-1, 0).getType() != CellType.WALL &&
                         map.getPlayer().cellCheck(-1, 0).getType() != CellType.SKELETON){
-                    map.getPlayer().move(-1, 0);
-                    refresh();
-                    break;
-                }else {
+
+
+
+                    if(map.getPlayer().cellCheck(-1, 0).getType() == CellType.SWORD ||
+                            map.getPlayer().cellCheck(-1, 0).getType() == CellType.SHIELD ||
+                            map.getPlayer().cellCheck(-1, 0).getType() == CellType.KEY) {
+
+                        pickUpButton.setVisible(true);
+                        map.getPlayer().move(-1, 0);
+                        refresh();
+                        break;
+                    }
+                    else{
+                        map.getPlayer().move(-1, 0);
+                        refresh();
+                        break;
+                    }
+                }
+                else {
                     refresh();
                     break;
                 }
             case RIGHT:
                 if(map.getPlayer().cellCheck(1,0).getType() != CellType.WALL &&
                         map.getPlayer().cellCheck(1,0).getType() != CellType.SKELETON){
-                    map.getPlayer().move(1,0);
+
+
+
+                    if(map.getPlayer().cellCheck(1,0).getType() == CellType.SWORD ||
+                            map.getPlayer().cellCheck(1,0).getType() == CellType.SHIELD ||
+                            map.getPlayer().cellCheck(1,0).getType() == CellType.KEY) {
+
+                        pickUpButton.setVisible(true);
+                        map.getPlayer().move(1,0);
+                        refresh();
+                        break;
+                    }
+                    else{
+                        map.getPlayer().move(1,0);
+                        refresh();
+                        break;
+                    }
+                }
+                else {
                     refresh();
                     break;
-                }else {
-                    refresh();
-                    break;
                 }
-
-                map.getPlayer().move(0, -1);
-                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
-                    pickUpButton.setVisible(true);
-                }
-                refresh();
-                break;
-
-            case DOWN:
-                map.getPlayer().move(0, 1);
-                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
-                    pickUpButton.setVisible(true);
-                }
-                refresh();
-                break;
-            case LEFT:
-                map.getPlayer().move(-1, 0);
-                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
-                    pickUpButton.setVisible(true);
-                }
-                refresh();
-                break;
-            case RIGHT:
-                map.getPlayer().move(1,0);
-                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
-                    pickUpButton.setVisible(true);
-                }
-                refresh();
-                break;
         }
     }
 
