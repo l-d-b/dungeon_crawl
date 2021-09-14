@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public class Player extends Actor {
 
-    private ArrayList<Item> inventory = new ArrayList<>();
+   private ArrayList<Item> inventory = new ArrayList<>();
 
-    public Player(Cell cell) {
-        super(cell);
+    public Player(Cell cell, int health) {
+        super(cell, health);
     }
 
     public String getTileName() {
@@ -21,12 +21,13 @@ public class Player extends Actor {
         return inventory;
     }
 
+
     public void pickUpItem(Item item){
         this.inventory.add(item);
         if(item instanceof Sword){
             power += ((Sword) item).addPower();
         } else if(item instanceof redPotion){
-            health += ((redPotion) item).addHealth();
+            getHealth() += ((redPotion) item).addHealth();
         }
         item.getCell().cell.setType(CellType.FLOOR);
     }
