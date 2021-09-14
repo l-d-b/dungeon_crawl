@@ -26,6 +26,7 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Button pickUpButton;
+    Label inventory = new Label();
     public static void main(String[] args) {
         launch(args);
     }
@@ -58,6 +59,11 @@ public class Main extends Application {
         borderPane.setRight(ui);
         ui.add(pickUpButton,0,1);
 
+        ui.add(new Label("Inventory:"),0,7);
+        ui.add(inventory, 0, 8);
+        //System.out.println(map.getPlayer().getInventory());
+
+
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         refresh();
@@ -69,6 +75,7 @@ public class Main extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
+
                 if(map.getPlayer().cellCheck(0, -1).getType() != CellType.WALL ||
                         map.getPlayer().cellCheck(0, -1).getType() != CellType.SKELETON){
 
@@ -189,6 +196,16 @@ public class Main extends Application {
         map.getPlayer().pickUpItem(itemToPick, map);
         pickUpButton.setVisible(false);
         refresh();
+        updateInventory();
 
+    }
+
+    public void updateInventory(){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(CellType item: map.getPlayer().getInventory()){
+            stringBuilder.append(item).append("\n");
+            System.out.println(stringBuilder);
+            inventory.setText(String.valueOf(stringBuilder));
+        }
     }
 }
