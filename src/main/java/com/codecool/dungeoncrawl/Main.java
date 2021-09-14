@@ -26,7 +26,7 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Button pickUpButton;
-    private Cell playerCell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY());
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -44,13 +44,12 @@ public class Main extends Application {
         Scene s = new Scene(pickUpButton, 200,200);
         primaryStage.setScene(s);
         pickUpButton.setVisible(false);
-        map.getPlayer();
-        System.out.println(map.getPlayer());
+        //map.getPlayer();
         pickUpButton.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             pickUp();
         });
 
-        //primaryStage.show();
+        primaryStage.show();
 
         BorderPane borderPane = new BorderPane();
 
@@ -67,42 +66,54 @@ public class Main extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
-
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
-                if (playerCell.isItem()) {
+                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
                     pickUpButton.setVisible(true);
-                } else if (playerCell.isClosedDoor()) {
+
+                } else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isClosedDoor()) {
                     System.out.println("Closed door!");
+
+                } else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isOpenDoor()) {
+                    System.out.println("Open door!");
                 }
                 refresh();
                 break;
 
             case DOWN:
+
                 map.getPlayer().move(0, 1);
-                if (playerCell.isItem()) {
+                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
                     pickUpButton.setVisible(true);
-                } else if (playerCell.isClosedDoor()) {
+                } else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isClosedDoor()) {
                     System.out.println("Closed door!");
+                } else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isOpenDoor()) {
+                    System.out.println("Open door!");
                 }
                 refresh();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
-                if (playerCell.isItem()) {
+                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
                     pickUpButton.setVisible(true);
-                } else if (playerCell.isClosedDoor()) {
+                } else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isClosedDoor()) {
                     System.out.println("Closed door!");
+                }
+                else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isOpenDoor()) {
+                    System.out.println("Open door!");
                 }
                 refresh();
                 break;
             case RIGHT:
                 map.getPlayer().move(1,0);
-                if (playerCell.isItem()) {
+                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
                     pickUpButton.setVisible(true);
-                } else if (playerCell.isClosedDoor()) {
+                } else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isClosedDoor()) {
                     System.out.println("Closed door!");
+                }
+                else if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isOpenDoor()) {
+                    System.out.println("Open door!");
                 }
                 refresh();
                 break;
