@@ -26,6 +26,7 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Button pickUpButton;
+    private Cell playerCell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY());
     public static void main(String[] args) {
         launch(args);
     }
@@ -44,6 +45,7 @@ public class Main extends Application {
         primaryStage.setScene(s);
         pickUpButton.setVisible(false);
         map.getPlayer();
+        System.out.println(map.getPlayer());
         pickUpButton.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             pickUp();
         });
@@ -65,33 +67,42 @@ public class Main extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
+
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
-                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
+                if (playerCell.isItem()) {
                     pickUpButton.setVisible(true);
+                } else if (playerCell.isClosedDoor()) {
+                    System.out.println("Closed door!");
                 }
                 refresh();
                 break;
 
             case DOWN:
                 map.getPlayer().move(0, 1);
-                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
+                if (playerCell.isItem()) {
                     pickUpButton.setVisible(true);
+                } else if (playerCell.isClosedDoor()) {
+                    System.out.println("Closed door!");
                 }
                 refresh();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
-                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
+                if (playerCell.isItem()) {
                     pickUpButton.setVisible(true);
+                } else if (playerCell.isClosedDoor()) {
+                    System.out.println("Closed door!");
                 }
                 refresh();
                 break;
             case RIGHT:
                 map.getPlayer().move(1,0);
-                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
+                if (playerCell.isItem()) {
                     pickUpButton.setVisible(true);
+                } else if (playerCell.isClosedDoor()) {
+                    System.out.println("Closed door!");
                 }
                 refresh();
                 break;

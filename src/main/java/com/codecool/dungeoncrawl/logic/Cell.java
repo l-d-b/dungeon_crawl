@@ -62,4 +62,12 @@ public class Cell implements Drawable {
     public boolean isItem() {
         return this.type.equals(CellType.SWORD);
     }
+
+    public boolean isClosedDoor() {
+        return this.type.equals(CellType.CLOSED_DOOR);
+    }
+
+    public boolean isOpenDoor() {
+        return this.type.equals(CellType.OPENED_DOOR);
+    }
 }
