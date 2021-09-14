@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
 public class Cell implements Drawable {
+    public Cell cell;
     private CellType type;
     private Actor actor;
     private Item item;
@@ -56,5 +57,9 @@ public class Cell implements Drawable {
 
     public int getY() {
         return y;
+    }
+
+    public boolean isItem() {
+        return this.type.equals(CellType.SWORD);
     }
 }

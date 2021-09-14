@@ -12,13 +12,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import javax.swing.*;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
@@ -27,7 +25,7 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
-
+    Button pickUpButton;
     public static void main(String[] args) {
         launch(args);
     }
@@ -41,23 +39,32 @@ public class Main extends Application {
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
 
-        Button button = new Button("button");
-        Scene s = new Scene(button, 200,200);
+        pickUpButton = new Button("Pick up");
+        Scene s = new Scene(pickUpButton, 200,200);
         primaryStage.setScene(s);
+        pickUpButton.setVisible(false);
+        map.getPlayer();
+        pickUpButton.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            pickUp();
+        });
+
 
         primaryStage.show();
         button.setVisible(false);
+
+        //primaryStage.show();
+
+
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
-        ui.add(button,0,1);
+        ui.add(pickUpButton,0,1);
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         refresh();
         scene.setOnKeyPressed(this::onKeyPressed);
-
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
@@ -105,6 +112,35 @@ public class Main extends Application {
                     refresh();
                     break;
                 }
+
+                map.getPlayer().move(0, -1);
+                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
+                    pickUpButton.setVisible(true);
+                }
+                refresh();
+                break;
+
+            case DOWN:
+                map.getPlayer().move(0, 1);
+                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
+                    pickUpButton.setVisible(true);
+                }
+                refresh();
+                break;
+            case LEFT:
+                map.getPlayer().move(-1, 0);
+                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
+                    pickUpButton.setVisible(true);
+                }
+                refresh();
+                break;
+            case RIGHT:
+                map.getPlayer().move(1,0);
+                if (map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).isItem()) {
+                    pickUpButton.setVisible(true);
+                }
+                refresh();
+                break;
         }
     }
 
@@ -124,16 +160,11 @@ public class Main extends Application {
         healthLabel.setText("" + map.getPlayer().getHealth());
     }
 
-    public void button(Stage s){
-        s.setTitle("creating buttons");
-        Button button = new Button("button");
-        TilePane tilePane = new TilePane();
-        tilePane.getChildren().add(button);
+    public void pickUp(){
+        CellType itemToPick = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getType();
+        map.getPlayer().pickUpItem(itemToPick, map);
+        pickUpButton.setVisible(false);
+        refresh();
 
-        Scene scene = new Scene(tilePane, 200,200);
-
-        s.setScene(scene);
-
-        s.show();
     }
 }
