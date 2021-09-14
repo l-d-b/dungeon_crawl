@@ -4,12 +4,11 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
 public class Cell implements Drawable {
+    public Cell cell;
     private CellType type;
     private Actor actor;
     private Item item;
     private GameMap gameMap;
-    private Item item;
-
     private int x, y;
 
     Cell(GameMap gameMap, int x, int y, CellType type) {
@@ -60,7 +59,7 @@ public class Cell implements Drawable {
         return y;
     }
 
-    public Item getItem() {
-        return item;
+    public boolean isItem() {
+        return this.type.equals(CellType.SWORD);
     }
 }
