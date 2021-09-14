@@ -99,17 +99,4 @@ public class Main extends Application {
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
     }
-
-    public void button(Stage s){
-        s.setTitle("creating buttons");
-        Button button = new Button("button");
-        TilePane tilePane = new TilePane();
-        tilePane.getChildren().add(button);
-
-        Scene scene = new Scene(tilePane, 200,200);
-
-        s.setScene(scene);
-
-        s.show();
-    }
 }
