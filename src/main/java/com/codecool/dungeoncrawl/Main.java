@@ -40,17 +40,19 @@ public class Main extends Application {
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
 
-        Button button = new Button("button");
-        Scene s = new Scene(button, 200,200);
+        Button pickUpButton = new Button("Pick up");
+        Scene s = new Scene(pickUpButton, 200,200);
         primaryStage.setScene(s);
+        pickUpButton.setVisible(false);
+        map.getPlayer();
 
-        primaryStage.show();
+        //primaryStage.show();
 
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
-        ui.add(button,0,1);
+        ui.add(pickUpButton,0,1);
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
