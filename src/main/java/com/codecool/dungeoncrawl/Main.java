@@ -11,6 +11,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -48,6 +49,13 @@ public class Main extends Application {
         pickUpButton.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             pickUp();
         });
+
+        pickUpButton.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent-> {
+           if(keyEvent.getCode() == KeyCode.ENTER){
+               pickUp();
+           }
+        });
+
 
         primaryStage.show();
 
@@ -172,6 +180,10 @@ public class Main extends Application {
                     refresh();
                     break;
                 }
+            case E:
+                pickUp();
+                refresh();
+                break;
         }
     }
 
