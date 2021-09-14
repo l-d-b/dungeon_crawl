@@ -48,6 +48,12 @@ public class MapLoader {
                         case '*':
                             cell.setType(CellType.KEY);
                             break;
+                        case '|':
+                            cell.setType(CellType.OPENED_DOOR);
+                            break;
+                        case '_':
+                            cell.setType(CellType.CLOSED_DOOR);
+                            break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }
