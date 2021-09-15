@@ -52,7 +52,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         GridPane ui = new GridPane();
-        ui.setPrefWidth(200);
+        ui.setMinWidth(300);
         ui.setVgap(1);
         ui.setHgap(0);
         ui.setPadding(new Insets(50));
@@ -66,15 +66,10 @@ public class Main extends Application {
         ui.add(currentHealthLabel, 0, 1);
         ui.setHalignment(healthLabel, HPos.CENTER);
 
-        //healthbar = new Rectangle(100,100,200,20);
-        healthbar.setX(100);
-        healthbar.setY(100);
-        healthbar.setWidth(200);
-        healthbar.setHeight(20);
+        healthbar = new Rectangle(100,100,200,20);
+
         ui.add(healthbar,0,11);
         healthbar.setFill(Color.RED);
-
-        System.out.println(healthbar);
 
         pickUpButton = new Button("Pick up");
         pickUpButton.setVisible(false);
@@ -91,7 +86,7 @@ public class Main extends Application {
 
         BorderPane borderPane = new BorderPane();
 
-        borderPane.setCenter(canvas);
+        borderPane.setLeft(canvas);
         borderPane.setRight(ui);
 
         ui.add(pickUpButton,0,13);
