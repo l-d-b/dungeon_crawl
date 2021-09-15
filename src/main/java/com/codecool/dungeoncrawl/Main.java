@@ -31,6 +31,7 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    Label currentHealth = new Label();
     Button pickUpButton;
 
     Label inventory = new Label();
@@ -43,30 +44,22 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
-        ui.setPadding(new Insets(100));
-
-        ui.add(new Label("Health: "), 0, 0);
-        ui.add(healthLabel, 1, 0);
-
-        Group root = new Group();
-        Scene healthScene = new Scene(root, 200, 400, Color.GREY);
-        ui.add(root,0,1);
+        ui.setVgap(1);
+        ui.setHgap(0);
+        ui.setPadding(new Insets(50));
+        String playerHealth = String.valueOf(map.getPlayer().getHealth());
+        System.out.println(currentHealth);
+        healthLabel.setText("Health: ");
+        currentHealth.setText(playerHealth);
+        ui.add(healthLabel, 0, 0);
+        ui.add(currentHealth, 0, 1);
 
         Rectangle healthbar = new Rectangle(100,100,200,20);
-        ui.add(healthbar,0,10);
+        ui.add(healthbar,0,11);
         healthbar.setFill(Color.RED);
-
-        root.getChildren().add(healthbar);
-
-        primaryStage.setScene(healthScene);
-        primaryStage.show();
-
+        ui.addRow(12,new Label(" "));
         pickUpButton = new Button("Pick up");
-        Scene s = new Scene(pickUpButton, 200,200);
-
-        primaryStage.setScene(s);
         pickUpButton.setVisible(false);
-        //map.getPlayer();
         pickUpButton.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             pickUp();
         });
@@ -76,22 +69,17 @@ public class Main extends Application {
                pickUp();
            }
         });
-
-
         primaryStage.show();
-
-        //primaryStage.show();
 
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
-        ui.add(pickUpButton,0,1);
+        ui.add(pickUpButton,0,12);
 
-        ui.add(new Label("Inventory:"),0,7);
-        ui.add(inventory, 0, 8);
+        ui.add(new Label("Inventory:"),0,14);
+        ui.add(inventory, 0, 16);
         //System.out.println(map.getPlayer().getInventory());
-
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
@@ -282,7 +270,7 @@ public class Main extends Application {
                 }
             }
         }
-        healthLabel.setText("" + map.getPlayer().getHealth());
+        currentHealth.setText("" + map.getPlayer().getHealth());
     }
 
     public void pickUp(){
