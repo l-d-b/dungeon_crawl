@@ -70,10 +70,10 @@ public class Main extends Application {
 
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
-        ui.add(pickUpButton,0,1);
+        ui.add(pickUpButton,0,2);
 
-        ui.add(new Label("Inventory:"),0,7);
-        ui.add(inventory, 0, 8);
+        ui.add(new Label("Inventory:"),0,3);
+        ui.add(inventory, 0, 4);
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);

@@ -10,6 +10,8 @@ public enum CellType {
 
     CLOSED_DOOR("closedDoor"),
     OPENED_DOOR("openedDoor"),
+    PLAYER_SWORD("player-sword"),
+    PLAYER_SWORD_SHEILD("player-sword-shield"),
 
     SKELETON("skeleton"),
     GHOST("ghost"),
