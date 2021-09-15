@@ -2,9 +2,10 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.monsters.Monster;
 
 public abstract class Actor implements Drawable {
-    private Cell cell;
+    protected Cell cell;
     private int health;
     private int attack;
     private String name;
@@ -25,8 +26,29 @@ public abstract class Actor implements Drawable {
         cell = nextCell;
     }
 
-    public void fight(String name){
-
+    public void fight(Monster monster){
+        System.out.println(monster.getAttack());
+       int monsterHealth = monster.getHealth();
+       int monsterAttack = monster.getAttack();
+       int playerAttack = this.attack;
+       int playerHealth = this.health;
+       int round = 1;
+       while((monsterHealth >= 1) && ( playerHealth >= 1)){
+            switch (round){
+                case 1:
+                    int actuelMonsterHealth = monsterHealth - playerAttack;
+                    monsterHealth = actuelMonsterHealth;
+                    monster.setHealth(actuelMonsterHealth);
+                    round++;
+                    break;
+                case 2:
+                    int actuelPlayerHealth = playerHealth - monsterAttack;
+                    playerHealth = actuelPlayerHealth;
+                    this.setHealth(actuelPlayerHealth);
+                    round--;
+                    break;
+            }
+       }
     }
 
     public Cell cellCheck(int dx, int dy) {

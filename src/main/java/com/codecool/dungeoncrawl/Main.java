@@ -6,6 +6,7 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.monsters.Monster;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -21,6 +22,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.sql.SQLOutput;
+
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
@@ -28,8 +31,11 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    Label uzenet = new Label();
     Button pickUpButton;
-    Actor actor = new Actor();
+    Player player;
+    Monster monster;
+    Cell cell;
 
     Label inventory = new Label();
 
@@ -115,11 +121,23 @@ public class Main extends Application {
                         refresh();
                         break;
                     }
+
                     else{
                         map.getPlayer().move(0, -1);
+                        refresh();
+                        break;
                     }
-                    refresh();
-                    break;
+
+                }
+                else if(map.getPlayer().cellCheck(0,-1).getType() == CellType.SKELETON){
+//                    System.out.println(map.getPlayer().cellCheck(0,-1).getMonster());
+                    map.getPlayer().fight(map.getPlayer().cellCheck(0,-1).getMonster());
+                    if (map.getPlayer().getHealth()<=0){
+                        System.out.println("kakiiiiii");
+                    }
+                    else if(map.getPlayer().cellCheck(0,-1).getMonster().getHealth()<=0){
+                        map.getPlayer().cellCheck(0,-1).setType(CellType.FLOOR);
+                    }
                 }
                 else{
                     refresh();
@@ -154,7 +172,7 @@ public class Main extends Application {
                         break;
                     }
                     else if(map.getPlayer().cellCheck(0, 1).getType() == CellType.SKELETON){
-                        actor.fight();
+                        //player.fight(monster);
                     }
                     else{
                         map.getPlayer().move(0, 1);
@@ -198,6 +216,9 @@ public class Main extends Application {
                         refresh();
                         break;
                     }
+                    else if(map.getPlayer().cellCheck(-1, 0).getType() == CellType.SKELETON){
+                        //player.fight(monster);
+                    }
                     else{
                         map.getPlayer().move(-1, 0);
                         refresh();
@@ -236,6 +257,9 @@ public class Main extends Application {
                         map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
                         refresh();
                         break;
+                    }
+                    else if(map.getPlayer().cellCheck(1,0).getType() == CellType.SKELETON){
+                        //player.fight(monster);
                     }
                     else{
                         map.getPlayer().move(1,0);
