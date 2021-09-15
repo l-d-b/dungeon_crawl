@@ -4,7 +4,6 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
 import javafx.application.Application;
@@ -24,13 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
-import javafx.scene.Group;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-
-import java.awt.*;
-
-import java.sql.SQLOutput;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
@@ -38,10 +31,13 @@ public class Main extends Application {
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
+    int currentHealth = map.getPlayer().getHealth();
+    int healthbarWidth = currentHealth*20;
     Label healthLabel = new Label();
     Label uzenet = new Label();
-    Label currentHealth = new Label();
+    Label currentHealthLabel = new Label();
     Label inventoryLabel = new Label();
+    Rectangle healthbar = new Rectangle();
     Button pickUpButton;
     Player player;
     Monster monster;
@@ -61,19 +57,25 @@ public class Main extends Application {
         ui.setHgap(0);
         ui.setPadding(new Insets(50));
         String playerHealth = String.valueOf(map.getPlayer().getHealth());
-        System.out.println(currentHealth);
+        System.out.println(currentHealthLabel);
         healthLabel.setText("Health: ");
         healthLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
         healthLabel.setTextFill(Color.BROWN);
-        currentHealth.setText(playerHealth);
+        currentHealthLabel.setText(playerHealth);
         ui.add(healthLabel, 0, 0);
-        ui.add(currentHealth, 0, 1);
+        ui.add(currentHealthLabel, 0, 1);
         ui.setHalignment(healthLabel, HPos.CENTER);
 
-        Rectangle healthbar = new Rectangle(100,100,200,20);
+        //healthbar = new Rectangle(100,100,200,20);
+        healthbar.setX(100);
+        healthbar.setY(100);
+        healthbar.setWidth(200);
+        healthbar.setHeight(20);
         ui.add(healthbar,0,11);
         healthbar.setFill(Color.RED);
-        ui.addRow(12,new Label(" "));
+
+        System.out.println(healthbar);
+
         pickUpButton = new Button("Pick up");
         pickUpButton.setVisible(false);
         pickUpButton.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
@@ -312,7 +314,11 @@ public class Main extends Application {
                 }
             }
         }
-        currentHealth.setText("" + map.getPlayer().getHealth());
+        currentHealthLabel.setText("" + map.getPlayer().getHealth());
+        currentHealth = map.getPlayer().getHealth();
+        healthbar.setWidth(currentHealth * 20);
+
+
     }
 
     public void pickUp(){
