@@ -9,8 +9,12 @@ import java.util.ArrayList;
 public abstract class Actor implements Drawable {
     private Cell cell;
     private int health;
+    private int attack;
+    private String name;
 
-    public Actor(Cell cell, int health) {
+    public Actor(Cell cell, int health, int attack, String name) {
+        this.name = name;
+        this.attack = attack;
         this.health = health;
         this.cell = cell;
         this.cell.setActor(this);
@@ -29,6 +33,30 @@ public abstract class Actor implements Drawable {
     public Cell cellCheck(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
         return nextCell;
+    }
+
+    public void setCell(Cell cell) {
+        this.cell = cell;
+    }
+
+    public int getAttack() {
+        return attack;
+    }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setGyozo(String name){
+        this.name = name;
     }
 
 

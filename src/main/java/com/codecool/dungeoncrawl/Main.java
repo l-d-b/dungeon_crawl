@@ -283,4 +283,8 @@ public class Main extends Application {
             inventory.setText(String.valueOf(stringBuilder));
         }
     }
+
+    public void checkingIsWall(){
+
+    }
 }
