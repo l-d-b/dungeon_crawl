@@ -8,6 +8,7 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
 import javafx.application.Application;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -20,7 +21,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.scene.text.Font;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -38,6 +41,7 @@ public class Main extends Application {
     Label healthLabel = new Label();
     Label uzenet = new Label();
     Label currentHealth = new Label();
+    Label inventoryLabel = new Label();
     Button pickUpButton;
     Player player;
     Monster monster;
@@ -59,9 +63,12 @@ public class Main extends Application {
         String playerHealth = String.valueOf(map.getPlayer().getHealth());
         System.out.println(currentHealth);
         healthLabel.setText("Health: ");
+        healthLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
+        healthLabel.setTextFill(Color.BROWN);
         currentHealth.setText(playerHealth);
         ui.add(healthLabel, 0, 0);
         ui.add(currentHealth, 0, 1);
+        ui.setHalignment(healthLabel, HPos.CENTER);
 
         Rectangle healthbar = new Rectangle(100,100,200,20);
         ui.add(healthbar,0,11);
@@ -74,7 +81,7 @@ public class Main extends Application {
         });
 
         pickUpButton.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent-> {
-           if(keyEvent.getCode() == KeyCode.ENTER){
+            if(keyEvent.getCode() == KeyCode.ENTER){
                pickUp();
            }
         });
@@ -84,10 +91,18 @@ public class Main extends Application {
 
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
-        ui.add(pickUpButton,0,12);
 
-        ui.add(new Label("Inventory:"),0,14);
+        ui.add(pickUpButton,0,13);
+        ui.setHalignment(pickUpButton, HPos.CENTER);
+
+        inventoryLabel.setText("Inventory:");
+        ui.add(inventoryLabel,0,14);
         ui.add(inventory, 0, 16);
+        inventoryLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
+        inventoryLabel.setTextFill(Color.BROWN);
+        ui.setHalignment(inventoryLabel, HPos.CENTER);
+        ui.setHalignment(inventory, HPos.CENTER);
+        inventory.setFont(Font.font ("Verdana", 16));
         //System.out.println(map.getPlayer().getInventory());
 
         Scene scene = new Scene(borderPane);
