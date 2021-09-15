@@ -4,6 +4,8 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -27,6 +29,7 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Button pickUpButton;
+    Actor actor = new Actor();
 
     Label inventory = new Label();
 
@@ -150,6 +153,9 @@ public class Main extends Application {
                         refresh();
                         break;
                     }
+                    else if(map.getPlayer().cellCheck(0, 1).getType() == CellType.SKELETON){
+                        actor.fight();
+                    }
                     else{
                         map.getPlayer().move(0, 1);
                         refresh();
@@ -207,8 +213,6 @@ public class Main extends Application {
 
                 if(map.getPlayer().cellCheck(1,0).getType() != CellType.WALL &&
                         map.getPlayer().cellCheck(1,0).getType() != CellType.SKELETON){
-
-
 
                     if(map.getPlayer().cellCheck(1,0).getType() == CellType.SWORD ||
                             map.getPlayer().cellCheck(1,0).getType() == CellType.SHIELD ||

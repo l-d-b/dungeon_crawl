@@ -1,10 +1,7 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
-
-import java.util.ArrayList;
 
 public abstract class Actor implements Drawable {
     private Cell cell;
@@ -26,9 +23,11 @@ public abstract class Actor implements Drawable {
         cell.setActor(null);
         nextCell.setActor(this);
         cell = nextCell;
-
     }
 
+    public void fight(String name){
+
+    }
 
     public Cell cellCheck(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
