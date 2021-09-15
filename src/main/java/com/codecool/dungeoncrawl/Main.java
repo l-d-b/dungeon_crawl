@@ -98,6 +98,20 @@ public class Main extends Application {
                         refresh();
                         break;
                     }
+                    else if (map.getPlayer().cellCheck(0, -1).getType() == CellType.CLOSED_DOOR &&
+                            !map.getPlayer().getInventory().contains(CellType.KEY)) {
+
+                        refresh();
+                        break;
+                    }
+                    else if (map.getPlayer().cellCheck(0, -1).getType() == CellType.CLOSED_DOOR &&
+                            map.getPlayer().getInventory().contains(CellType.KEY)) {
+
+                        map.getPlayer().move(0,-1);
+                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+                        refresh();
+                        break;
+                    }
                     else{
                         map.getPlayer().move(0, -1);
                     }
@@ -119,6 +133,20 @@ public class Main extends Application {
 
                         pickUpButton.setVisible(true);
                         map.getPlayer().move(0, 1);
+                        refresh();
+                        break;
+                    }
+                    else if (map.getPlayer().cellCheck(0, 1).getType() == CellType.CLOSED_DOOR &&
+                            !map.getPlayer().getInventory().contains(CellType.KEY)) {
+
+                        refresh();
+                        break;
+                    }
+                    else if (map.getPlayer().cellCheck(0, 1).getType() == CellType.CLOSED_DOOR &&
+                            map.getPlayer().getInventory().contains(CellType.KEY)) {
+
+                        map.getPlayer().move(0,1);
+                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
                         refresh();
                         break;
                     }
@@ -150,6 +178,20 @@ public class Main extends Application {
                         refresh();
                         break;
                     }
+                    else if (map.getPlayer().cellCheck(-1, 0).getType() == CellType.CLOSED_DOOR &&
+                            !map.getPlayer().getInventory().contains(CellType.KEY)) {
+
+                        refresh();
+                        break;
+                    }
+                    else if (map.getPlayer().cellCheck(-1, 0).getType() == CellType.CLOSED_DOOR &&
+                            map.getPlayer().getInventory().contains(CellType.KEY)) {
+
+                        map.getPlayer().move(-1,0);
+                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+                        refresh();
+                        break;
+                    }
                     else{
                         map.getPlayer().move(-1, 0);
                         refresh();
@@ -174,6 +216,20 @@ public class Main extends Application {
 
                         pickUpButton.setVisible(true);
                         map.getPlayer().move(1,0);
+                        refresh();
+                        break;
+                    }
+                    else if (map.getPlayer().cellCheck(1, 0).getType() == CellType.CLOSED_DOOR &&
+                            !map.getPlayer().getInventory().contains(CellType.KEY)) {
+
+                        refresh();
+                        break;
+                    }
+                    else if (map.getPlayer().cellCheck(1, 0).getType() == CellType.CLOSED_DOOR &&
+                            map.getPlayer().getInventory().contains(CellType.KEY)) {
+
+                        map.getPlayer().move(1,0);
+                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
                         refresh();
                         break;
                     }
