@@ -38,6 +38,8 @@ public class Cell implements Drawable {
         this.item = item;
     }
 
+
+
     public Item getItem() {
         return item;
     }
