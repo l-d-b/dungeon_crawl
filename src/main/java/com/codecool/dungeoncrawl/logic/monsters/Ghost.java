@@ -4,7 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 
 public class Ghost extends Monster{
     public Ghost(Cell cell) {
-        super("Ghost", 10, cell);
+        super(cell, 10,5,"Player");
     }
 
     @Override
