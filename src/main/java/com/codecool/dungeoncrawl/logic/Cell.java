@@ -2,12 +2,14 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.monsters.Monster;
 
 public class Cell implements Drawable {
     public Cell cell;
     private CellType type;
     private Actor actor;
     private Item item;
+    private Monster monster;
     private GameMap gameMap;
     private int x, y;
 
@@ -38,6 +40,9 @@ public class Cell implements Drawable {
         this.item = item;
     }
 
+    public void setMonster(Monster monster){
+        this.monster = monster;
+    }
 
 
     public Item getItem() {
@@ -72,4 +77,5 @@ public class Cell implements Drawable {
     public boolean isOpenDoor() {
         return this.type.equals(CellType.OPENED_DOOR);
     }
+
 }
