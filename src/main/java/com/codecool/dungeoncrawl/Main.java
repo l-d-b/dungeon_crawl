@@ -86,7 +86,7 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
 
-                if(map.getPlayer().cellCheck(0, -1).getType() != CellType.WALL ||
+                if(map.getPlayer().cellCheck(0, -1).getType() != CellType.WALL &&
                         map.getPlayer().cellCheck(0, -1).getType() != CellType.SKELETON){
 
                     if(map.getPlayer().cellCheck(0, -1).getType() == CellType.SWORD ||
@@ -110,7 +110,7 @@ public class Main extends Application {
                 }
             case DOWN:
 
-                if(map.getPlayer().cellCheck(0, 1).getType() != CellType.WALL ||
+                if(map.getPlayer().cellCheck(0, 1).getType() != CellType.WALL &&
                         map.getPlayer().cellCheck(0, 1).getType() != CellType.SKELETON){
 
                     if(map.getPlayer().cellCheck(0, 1).getType() == CellType.SWORD ||
