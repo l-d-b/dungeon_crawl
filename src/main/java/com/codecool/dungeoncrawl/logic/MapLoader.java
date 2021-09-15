@@ -60,6 +60,9 @@ public class MapLoader {
                         case 'g':
                             cell.setType(CellType.GOLEM);
                             break;
+                        case '¤':
+                            cell.setType(CellType.GHOST);
+                            break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }
