@@ -27,7 +27,9 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Button pickUpButton;
+
     Label inventory = new Label();
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -45,7 +47,7 @@ public class Main extends Application {
         Scene s = new Scene(pickUpButton, 200,200);
         primaryStage.setScene(s);
         pickUpButton.setVisible(false);
-        map.getPlayer();
+        //map.getPlayer();
         pickUpButton.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             pickUp();
         });
@@ -107,6 +109,7 @@ public class Main extends Application {
                     break;
                 }
             case DOWN:
+
                 if(map.getPlayer().cellCheck(0, 1).getType() != CellType.WALL ||
                         map.getPlayer().cellCheck(0, 1).getType() != CellType.SKELETON){
 
@@ -129,8 +132,10 @@ public class Main extends Application {
                 else {
                     refresh();
                     break;
+
                 }
             case LEFT:
+
                 if(map.getPlayer().cellCheck(-1, 0).getType() != CellType.WALL &&
                         map.getPlayer().cellCheck(-1, 0).getType() != CellType.SKELETON){
 
@@ -154,8 +159,10 @@ public class Main extends Application {
                 else {
                     refresh();
                     break;
+
                 }
             case RIGHT:
+
                 if(map.getPlayer().cellCheck(1,0).getType() != CellType.WALL &&
                         map.getPlayer().cellCheck(1,0).getType() != CellType.SKELETON){
 
