@@ -29,7 +29,6 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Button pickUpButton;
-    Actor actor = new Actor();
 
     Label inventory = new Label();
 
@@ -154,7 +153,7 @@ public class Main extends Application {
                         break;
                     }
                     else if(map.getPlayer().cellCheck(0, 1).getType() == CellType.SKELETON){
-                        actor.fight();
+                        //actor.fight();
                     }
                     else{
                         map.getPlayer().move(0, 1);
@@ -276,6 +275,7 @@ public class Main extends Application {
         pickUpButton.setVisible(false);
         refresh();
         updateInventory();
+        updateHealth();
 
     }
 
@@ -286,6 +286,10 @@ public class Main extends Application {
             System.out.println(stringBuilder);
             inventory.setText(String.valueOf(stringBuilder));
         }
+    }
+
+    public void updateHealth(){
+        healthLabel.setText(String.valueOf(map.getPlayer().getHealth()));
     }
 
     public void checkingIsWall(){

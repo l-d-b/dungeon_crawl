@@ -28,10 +28,10 @@ public class Player extends Actor {
     }
 
     public void pickUpItem(CellType item, GameMap map){
-        System.out.println(inventory);
+        System.out.println(item);
         this.inventory.add(item);
-        if(item.getClass().getSimpleName().equals("SWORD")) {
-            int health = getHealth();
+        if(item == CellType.SWORD) {
+            int health = this.getHealth();
             health += 3;
             setHealth(health);
         }
