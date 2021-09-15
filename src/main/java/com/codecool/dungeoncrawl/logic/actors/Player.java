@@ -15,7 +15,13 @@ public class Player extends Actor {
     }
 
     public String getTileName() {
-        return "player";
+        if(inventory.contains(CellType.SWORD) && inventory.contains(CellType.SHIELD)){
+            return "player-sword-shield";
+        } else if(inventory.contains(CellType.SWORD)){
+            return "player-sword";
+        }else {
+            return "player";
+        }
     }
 
     public ArrayList<CellType> getInventory() {
@@ -28,15 +34,11 @@ public class Player extends Actor {
     }
 
     public void pickUpItem(CellType item, GameMap map){
-        System.out.println(inventory);
         this.inventory.add(item);
-        if(item.getClass().getSimpleName().equals("SWORD")) {
-            int health = getHealth();
-            health += 3;
-            setHealth(health);
+        if(item == CellType.SWORD) {
+            int attack = getAttack() + 3;
+            setAttack(attack);
         }
         map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).setType(CellType.FLOOR);
-        System.out.println(inventory);
-
     }
 }

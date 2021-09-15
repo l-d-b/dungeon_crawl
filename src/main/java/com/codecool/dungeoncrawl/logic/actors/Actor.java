@@ -9,6 +9,7 @@ public abstract class Actor implements Drawable {
     private int health;
     private int attack;
     private String name;
+    private int power;
 
     public Actor(Cell cell, int health, int attack, String name) {
         this.name = name;

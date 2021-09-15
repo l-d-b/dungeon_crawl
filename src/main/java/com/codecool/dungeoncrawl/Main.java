@@ -38,6 +38,8 @@ public class Main extends Application {
     Cell cell;
 
     Label inventory = new Label();
+    Label powerLabel = new Label();
+    Button pickUpButton;
 
     public static void main(String[] args) {
         launch(args);
@@ -46,17 +48,20 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         GridPane ui = new GridPane();
-        ui.setPrefWidth(200);
+        ui.setPrefWidth(250);
         ui.setPadding(new Insets(10));
 
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
 
+        ui.add(new Label("Power: "), 0,1);
+        ui.add(powerLabel,1,1);
+
         pickUpButton = new Button("Pick up");
         Scene s = new Scene(pickUpButton, 200,200);
         primaryStage.setScene(s);
         pickUpButton.setVisible(false);
-        //map.getPlayer();
+
         pickUpButton.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             pickUp();
         });
@@ -67,21 +72,17 @@ public class Main extends Application {
            }
         });
 
-
         primaryStage.show();
 
-        //primaryStage.show();
 
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
-        ui.add(pickUpButton,0,1);
+        ui.add(pickUpButton,0,2);
 
-        ui.add(new Label("Inventory:"),0,7);
-        ui.add(inventory, 0, 8);
-        //System.out.println(map.getPlayer().getInventory());
-
+        ui.add(new Label("Inventory:"),0,3);
+        ui.add(inventory, 0, 4);
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
@@ -172,6 +173,7 @@ public class Main extends Application {
                         break;
                     }
                     else if(map.getPlayer().cellCheck(0, 1).getType() == CellType.SKELETON){
+
                     }
                     else{
                         map.getPlayer().move(0, 1);
@@ -290,7 +292,9 @@ public class Main extends Application {
                 }
             }
         }
-        healthLabel.setText("" + map.getPlayer().getHealth());
+        updateHealth();
+        updateInventory();
+        updatePower();
     }
 
     public void pickUp(){
@@ -298,8 +302,6 @@ public class Main extends Application {
         map.getPlayer().pickUpItem(itemToPick, map);
         pickUpButton.setVisible(false);
         refresh();
-        updateInventory();
-
     }
 
     public void updateInventory(){
@@ -309,6 +311,14 @@ public class Main extends Application {
             System.out.println(stringBuilder);
             inventory.setText(String.valueOf(stringBuilder));
         }
+    }
+
+    public void updateHealth(){
+        healthLabel.setText(String.valueOf(map.getPlayer().getHealth()));
+    }
+
+    public void updatePower(){
+        powerLabel.setText(String.valueOf(map.getPlayer().getAttack()));
     }
 
     public void checkingIsWall(){
