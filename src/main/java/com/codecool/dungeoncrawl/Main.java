@@ -46,7 +46,7 @@ public class Main extends Application {
         ui.add(healthLabel, 1, 0);
 
         ui.add(new Label("Power: "), 0,1);
-        ui.add(powerLabel,1,0);
+        ui.add(powerLabel,1,1);
 
         pickUpButton = new Button("Pick up");
         Scene s = new Scene(pickUpButton, 200,200);
@@ -265,7 +265,9 @@ public class Main extends Application {
                 }
             }
         }
-        healthLabel.setText("" + map.getPlayer().getHealth());
+        updateHealth();
+        updateInventory();
+        updatePower();
     }
 
     public void pickUp(){
@@ -273,9 +275,6 @@ public class Main extends Application {
         map.getPlayer().pickUpItem(itemToPick, map);
         pickUpButton.setVisible(false);
         refresh();
-        updateInventory();
-        updateHealth();
-
     }
 
     public void updateInventory(){
@@ -289,6 +288,10 @@ public class Main extends Application {
 
     public void updateHealth(){
         healthLabel.setText(String.valueOf(map.getPlayer().getHealth()));
+    }
+
+    public void updatePower(){
+        powerLabel.setText(String.valueOf(map.getPlayer().getAttack()));
     }
 
     public void checkingIsWall(){
