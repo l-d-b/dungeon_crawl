@@ -23,6 +23,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
@@ -72,8 +73,12 @@ public class Main extends Application {
         ui.setHalignment(healthLabel, HPos.CENTER);
         healthLabel.setPadding(new Insets(0,55, 0, 55));
         healthbar = new Rectangle(100,100,200,20);
+        Rectangle background = new Rectangle(100,100,200,20);
 
+        ui.add(background, 0, 11);
         ui.add(healthbar,0,11);
+        background.setFill(Color.GREY);
+
         healthbar.setFill(Color.RED);
 
         pickUpButton = new Button("Pick up");
