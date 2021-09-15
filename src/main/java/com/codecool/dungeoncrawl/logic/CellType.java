@@ -12,8 +12,9 @@ public enum CellType {
     OPENED_DOOR("openedDoor"),
 
     SKELETON("skeleton"),
-
-    PLAYER("player");
+    GHOST("ghost"),
+    GOLEM("golem"),
+    SPIDER("spider");
 
     private final String tileName;
 
