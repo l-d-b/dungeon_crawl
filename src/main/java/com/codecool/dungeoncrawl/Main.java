@@ -172,7 +172,6 @@ public class Main extends Application {
                         break;
                     }
                     else if(map.getPlayer().cellCheck(0, 1).getType() == CellType.SKELETON){
-                        //player.fight(monster);
                     }
                     else{
                         map.getPlayer().move(0, 1);
