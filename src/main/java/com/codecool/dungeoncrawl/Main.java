@@ -18,6 +18,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+
+import java.awt.*;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
@@ -38,13 +43,27 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
-        ui.setPadding(new Insets(10));
+        ui.setPadding(new Insets(100));
 
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
 
+        Group root = new Group();
+        Scene healthScene = new Scene(root, 200, 400, Color.GREY);
+        ui.add(root,0,1);
+
+        Rectangle healthbar = new Rectangle(100,100,200,20);
+        ui.add(healthbar,0,10);
+        healthbar.setFill(Color.RED);
+
+        root.getChildren().add(healthbar);
+
+        primaryStage.setScene(healthScene);
+        primaryStage.show();
+
         pickUpButton = new Button("Pick up");
         Scene s = new Scene(pickUpButton, 200,200);
+
         primaryStage.setScene(s);
         pickUpButton.setVisible(false);
         //map.getPlayer();
