@@ -9,21 +9,26 @@ import com.codecool.dungeoncrawl.logic.monsters.Monster;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
 import javafx.scene.shape.Rectangle;
+
+import javax.swing.*;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
@@ -54,7 +59,6 @@ public class Main extends Application {
         GridPane ui = new GridPane();
         ui.setMinWidth(300);
         ui.setVgap(1);
-        ui.setHgap(0);
         ui.setPadding(new Insets(50));
         String playerHealth = String.valueOf(map.getPlayer().getHealth());
         System.out.println(currentHealthLabel);
@@ -64,8 +68,9 @@ public class Main extends Application {
         currentHealthLabel.setText(playerHealth);
         ui.add(healthLabel, 0, 0);
         ui.add(currentHealthLabel, 0, 1);
-        ui.setHalignment(healthLabel, HPos.CENTER);
 
+        ui.setHalignment(healthLabel, HPos.CENTER);
+        healthLabel.setPadding(new Insets(0,55, 0, 55));
         healthbar = new Rectangle(100,100,200,20);
 
         ui.add(healthbar,0,11);
@@ -82,6 +87,7 @@ public class Main extends Application {
                pickUp();
            }
         });
+
         primaryStage.show();
 
         BorderPane borderPane = new BorderPane();
