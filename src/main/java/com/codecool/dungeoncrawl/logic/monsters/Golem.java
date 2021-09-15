@@ -4,11 +4,11 @@ import com.codecool.dungeoncrawl.logic.Cell;
 
 public class Golem extends Monster{
     public Golem(String name, int health, Cell cell) {
-        super(name, health, cell);
+        super("Golem", 20, cell);
     }
 
     @Override
     public String getTileName() {
-        return null;
+        return "golem";
     }
 }
