@@ -44,6 +44,9 @@ public class Cell implements Drawable {
         this.monster = monster;
     }
 
+    public Monster getMonster() {
+        return monster;
+    }
 
     public Item getItem() {
         return item;

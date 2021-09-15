@@ -35,7 +35,11 @@ public class GameMap {
     }
 
     public Monster getMonster() {
-        return monster;
+        return this.monster;
+    }
+
+    public void setMonster(Monster monster) {
+        this.monster = monster;
     }
 
     public int getWidth() {
