@@ -51,7 +51,7 @@ public class Main extends Application {
 
     Label inventory = new Label();
     Label powerLabel = new Label();
-    Button pickUpButton;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -83,8 +83,8 @@ public class Main extends Application {
 
         healthbar.setFill(Color.RED);
 
-        ui.add(new Label("Power: "), 0,1);
-        ui.add(powerLabel,1,1);
+        ui.add(new Label("Power: "), 0,12);
+        ui.add(powerLabel,1,12);
 
         pickUpButton = new Button("Pick up");
         pickUpButton.setVisible(false);
@@ -355,7 +355,8 @@ public class Main extends Application {
     }
 
     public void updateHealth(){
-        healthLabel.setText(String.valueOf(map.getPlayer().getHealth()));
+       // healthLabel.setText(String.valueOf(map.getPlayer().getHealth()));
+        currentHealth = map.getPlayer().getHealth();
     }
 
     public void updatePower(){
