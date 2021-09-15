@@ -4,7 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 
 public class Spider extends Monster{
     public Spider(Cell cell) {
-        super("Spider", 15, cell);
+        super(cell, 10,5,"Spider");
     }
 
     @Override

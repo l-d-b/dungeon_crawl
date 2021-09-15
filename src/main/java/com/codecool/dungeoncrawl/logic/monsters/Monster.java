@@ -2,40 +2,12 @@ package com.codecool.dungeoncrawl.logic.monsters;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.actors.Actor;
 
-public abstract class Monster implements Drawable {
-    private String name;
-    private int health;
-    private Cell cell;
+public abstract class Monster extends Actor {
 
-    public Monster(String name, int health, Cell cell) {
-        this.name = name;
-        this.health = health;
-        this.cell = cell;
+    public Monster(Cell cell, int health, int attack, String name) {
+        super(cell, health, attack, name);
         this.cell.setMonster(this);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public Cell getCell() {
-        return cell;
-    }
-
-    public void setCell(Cell cell) {
-        this.cell = cell;
     }
 }
