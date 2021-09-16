@@ -74,6 +74,9 @@ public class MapLoader {
                         case 'h':
                             cell.setType(CellType.HEAL);
                             break;
+                        case 't':
+                            cell.setType(CellType.TREE);
+                            break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }
