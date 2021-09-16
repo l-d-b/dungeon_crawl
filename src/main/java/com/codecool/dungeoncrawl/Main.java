@@ -38,10 +38,11 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     int currentHealth = map.getPlayer().getHealth();
-    int healthbarWidth = currentHealth*20;
+   // int healthbarWidth = currentHealth*20;
     Label healthLabel = new Label();
-    Label uzenet = new Label();
+ //   Label uzenet = new Label();
     Label currentHealthLabel = new Label();
+    Label currentPowerLabel = new Label();
     Label inventoryLabel = new Label();
     Rectangle healthbar = new Rectangle();
     Button pickUpButton;
@@ -64,7 +65,6 @@ public class Main extends Application {
         ui.setVgap(1);
         ui.setPadding(new Insets(50));
         String playerHealth = String.valueOf(map.getPlayer().getHealth());
-        System.out.println(currentHealthLabel);
         healthLabel.setText("Health: ");
         healthLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
         healthLabel.setTextFill(Color.BROWN);
@@ -83,8 +83,16 @@ public class Main extends Application {
 
         healthbar.setFill(Color.RED);
 
-        ui.add(new Label("Power: "), 0,12);
-        ui.add(powerLabel,1,12);
+     //   ui.add(new Label("Power: "), 0,12);
+      //  ui.add(powerLabel,1,12);
+
+        powerLabel.setText("Power: ");
+        powerLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
+        powerLabel.setTextFill(Color.BROWN);
+        currentPowerLabel.setText(playerHealth);
+        ui.add(powerLabel, 0, 12);
+        ui.add(currentPowerLabel, 0, 14);
+        ui.setHalignment(powerLabel, HPos.CENTER);
 
         pickUpButton = new Button("Pick up");
         pickUpButton.setVisible(false);
@@ -107,12 +115,12 @@ public class Main extends Application {
         borderPane.setLeft(canvas);
         borderPane.setRight(ui);
 
-        ui.add(pickUpButton,0,13);
+        ui.add(pickUpButton,0,16);
         ui.setHalignment(pickUpButton, HPos.CENTER);
 
         inventoryLabel.setText("Inventory:");
-        ui.add(inventoryLabel,0,14);
-        ui.add(inventory, 0, 16);
+        ui.add(inventoryLabel,0,18);
+        ui.add(inventory, 0, 20);
         inventoryLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
         inventoryLabel.setTextFill(Color.BROWN);
         ui.setHalignment(inventoryLabel, HPos.CENTER);
@@ -360,7 +368,7 @@ public class Main extends Application {
     }
 
     public void updatePower(){
-        powerLabel.setText(String.valueOf(map.getPlayer().getAttack()));
+        currentPowerLabel.setText(String.valueOf(map.getPlayer().getAttack()));
     }
 
     public void checkingIsWall(){
