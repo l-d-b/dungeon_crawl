@@ -157,8 +157,6 @@ public class Main extends Application {
             case UP:
 
                 if(map.getPlayer().cellCheck(0, -1).getType() != CellType.WALL &&
-
-                        map.getPlayer().cellCheck(0, -1).getType() != CellType.GOLEM){
                         !map.getPlayer().cellCheck(0, -1).isMonster()){
 
                     if(map.getPlayer().cellCheck(0, -1).isItem()) {
@@ -190,9 +188,6 @@ public class Main extends Application {
                     }
 
                 }
-
-                else if(map.getPlayer().cellCheck(0,-1).getType() == CellType.GOLEM){
-
                 else if(map.getPlayer().cellCheck(0,-1).isMonster()){
 
                     map.getPlayer().fight(map.getPlayer().cellCheck(0,-1).getMonster());
