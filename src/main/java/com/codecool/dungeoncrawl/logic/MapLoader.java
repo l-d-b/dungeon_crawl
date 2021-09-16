@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
+
 import com.codecool.dungeoncrawl.logic.monsters.Ghost;
 import com.codecool.dungeoncrawl.logic.monsters.Golem;
 import com.codecool.dungeoncrawl.logic.monsters.Skeleton;
