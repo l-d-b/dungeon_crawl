@@ -176,12 +176,9 @@ public class Main extends Application {
 
                         map.getPlayer().move(0,-1);
                         mapLevel(this.mapLevelCounter);
-
-
                         refresh();
                         break;
                     }
-
                     else{
                         map.getPlayer().move(0, -1);
                         refresh();
@@ -286,8 +283,6 @@ public class Main extends Application {
 
                         map.getPlayer().move(-1,0);
                         mapLevel(this.mapLevelCounter);
-
-
                         refresh();
                         break;
                     }
@@ -338,8 +333,6 @@ public class Main extends Application {
 
                         map.getPlayer().move(1,0);
                         mapLevel(this.mapLevelCounter);
-
-
 
                         refresh();
                         break;

@@ -45,9 +45,9 @@ public abstract class Actor implements Drawable {
                     monster.setHealth(actuelMonsterHealth);
 
                     round++;
-                    if (monster.getName().equals("Boss") && monster.getHealth() == 0) {
-                        endGame(this);
-                    }
+//                    if (monster.getName().equals("Boss") && monster.getHealth() <= 0) {
+//                        endGame(this);
+//                    }
                     break;
                 case 2:
                     int actuelPlayerHealth = playerHealth - monsterAttack;
@@ -55,13 +55,12 @@ public abstract class Actor implements Drawable {
                     this.setHealth(actuelPlayerHealth);
 
                     round--;
-                    if (this.getHealth() == 0) {
-                        endGame(monster);
-                    }
-                    break;
+//                    if (actuelPlayerHealth <= 0) {
+//                        endGame(monster);
+//                    }
+//                    break;
             }
        }
-
     }
 
     public Cell cellCheck(int dx, int dy) {
@@ -70,12 +69,10 @@ public abstract class Actor implements Drawable {
     }
 
     public void endGame(Actor actor) {
+        JFrame parent = new JFrame();
         if (actor.getName().equals("Boss")) {
-
-            JFrame parent = new JFrame();
             JOptionPane.showMessageDialog(parent, "Game over! You are dead!");
         } else {
-            JFrame parent = new JFrame();
             JOptionPane.showMessageDialog(parent, "You have finished it HERO!");
         }
     }
