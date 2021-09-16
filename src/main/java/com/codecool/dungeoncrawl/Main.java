@@ -135,9 +135,7 @@ public class Main extends Application {
                 if(map.getPlayer().cellCheck(0, -1).getType() != CellType.WALL &&
                         map.getPlayer().cellCheck(0, -1).getType() != CellType.SKELETON){
 
-                    if(map.getPlayer().cellCheck(0, -1).getType() == CellType.SWORD ||
-                            map.getPlayer().cellCheck(0, -1).getType() == CellType.SHIELD ||
-                            map.getPlayer().cellCheck(0, -1).getType() == CellType.KEY) {
+                    if(map.getPlayer().cellCheck(0, -1).isItem()) {
 
                         pickUpButton.setVisible(true);
                         map.getPlayer().move(0, -1);
@@ -185,9 +183,7 @@ public class Main extends Application {
                 if(map.getPlayer().cellCheck(0, 1).getType() != CellType.WALL &&
                         map.getPlayer().cellCheck(0, 1).getType() != CellType.SKELETON){
 
-                    if(map.getPlayer().cellCheck(0, 1).getType() == CellType.SWORD ||
-                            map.getPlayer().cellCheck(0, 1).getType() == CellType.SHIELD ||
-                            map.getPlayer().cellCheck(0, 1).getType() == CellType.KEY) {
+                    if(map.getPlayer().cellCheck(0, 1).isItem()) {
 
                         pickUpButton.setVisible(true);
                         map.getPlayer().move(0, 1);
@@ -230,9 +226,7 @@ public class Main extends Application {
 
 
 
-                    if(map.getPlayer().cellCheck(-1, 0).getType() == CellType.SWORD ||
-                            map.getPlayer().cellCheck(-1, 0).getType() == CellType.SHIELD ||
-                            map.getPlayer().cellCheck(-1, 0).getType() == CellType.KEY) {
+                    if(map.getPlayer().cellCheck(-1, 0).isItem()) {
 
                         pickUpButton.setVisible(true);
                         map.getPlayer().move(-1, 0);
@@ -272,9 +266,7 @@ public class Main extends Application {
                 if(map.getPlayer().cellCheck(1,0).getType() != CellType.WALL &&
                         map.getPlayer().cellCheck(1,0).getType() != CellType.SKELETON){
 
-                    if(map.getPlayer().cellCheck(1,0).getType() == CellType.SWORD ||
-                            map.getPlayer().cellCheck(1,0).getType() == CellType.SHIELD ||
-                            map.getPlayer().cellCheck(1,0).getType() == CellType.KEY) {
+                    if(map.getPlayer().cellCheck(1,0).isItem()) {
 
                         pickUpButton.setVisible(true);
                         map.getPlayer().move(1,0);
