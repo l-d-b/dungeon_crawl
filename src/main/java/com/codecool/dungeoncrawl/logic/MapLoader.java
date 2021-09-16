@@ -7,13 +7,9 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class MapLoader {
-    public static GameMap loadMap() {
-        InputStream is;
-        //if (levelFirst) {
-            is = MapLoader.class.getResourceAsStream("/map.txt");
-//        } else {
-//            is = MapLoader.class.getResourceAsStream("/map_2.txt");
-//        }
+//    "/map.txt"
+    public static <currentMap> GameMap loadMap(currentMap) {
+        InputStream is = MapLoader.class.getResourceAsStream(currentMap);
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
         int height = scanner.nextInt();
@@ -79,6 +75,5 @@ public class MapLoader {
         }
         return map;
     }
-
 
 }
