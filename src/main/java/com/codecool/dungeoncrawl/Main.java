@@ -154,7 +154,6 @@ public class Main extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-
                 if(map.getPlayer().cellCheck(0, -1).getType() != CellType.WALL &&
                         !map.getPlayer().cellCheck(0, -1).isMonster()){
 
