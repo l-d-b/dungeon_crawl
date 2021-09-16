@@ -41,6 +41,7 @@ public class Tiles {
         tileMap.put(("heal"), new Tile(23,22));
         tileMap.put(("tree"), new Tile(4,2));
         tileMap.put(("gameover"), new Tile(13,18));
+        tileMap.put(("boss"), new Tile(29,8));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {

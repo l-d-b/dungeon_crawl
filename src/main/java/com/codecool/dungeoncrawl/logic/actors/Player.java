@@ -11,15 +11,15 @@ public class Player extends Actor {
     private ArrayList<CellType> inventory = new ArrayList<CellType>();
 
     public Player(Cell cell) {
-        super(cell, 100,5,"Player");
+        super(cell, 100, 5, "Player");
     }
 
     public String getTileName() {
-        if(inventory.contains(CellType.SWORD) && inventory.contains(CellType.SHIELD)){
+        if (inventory.contains(CellType.SWORD) && inventory.contains(CellType.SHIELD)) {
             return "player-sword-shield";
-        } else if(inventory.contains(CellType.SWORD)){
+        } else if (inventory.contains(CellType.SWORD)) {
             return "player-sword";
-        }else {
+        } else {
             return "player";
         }
     }
@@ -33,16 +33,22 @@ public class Player extends Actor {
 
     }
 
-    public void pickUpItem(CellType item, GameMap map){
-        if (!(item == CellType.HEAL)){
+    public void pickUpItem(CellType item, GameMap map, int maxhealth) {
+        if (!(item == CellType.HEAL)) {
             this.inventory.add(item);
         }
-        if(item == CellType.SWORD) {
+        if (item == CellType.SWORD) {
             int attack = getAttack() + 5;
             setAttack(attack);
-        } else if(item == CellType.HEAL){
-            int health = getHealth() + 15;
-            setHealth(health);
+        } else if (item == CellType.HEAL) {
+            if (this.getHealth() + 15 > 100) {
+                int health = this.getHealth() + (100 - this.getHealth());
+                setHealth(health);
+            } else {
+                int health = this.getHealth() + 15;
+                setHealth(health);
+            }
+
         }
         map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).setType(CellType.FLOOR);
     }

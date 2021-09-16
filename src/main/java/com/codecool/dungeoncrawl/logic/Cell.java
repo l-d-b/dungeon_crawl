@@ -76,7 +76,7 @@ public class Cell implements Drawable {
 
     public boolean isMonster() {
         return this.type.equals(CellType.GOLEM) || this.type.equals(CellType.GHOST)
-                || this.type.equals(CellType.SKELETON) || this.type.equals(CellType.SPIDER);
+                || this.type.equals(CellType.SKELETON) || this.type.equals(CellType.SPIDER) || this.type.equals(CellType.BOSS);
     }
 
 
