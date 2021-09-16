@@ -34,10 +34,15 @@ public class Player extends Actor {
     }
 
     public void pickUpItem(CellType item, GameMap map){
-        this.inventory.add(item);
+        if (!(item == CellType.HEAL)){
+            this.inventory.add(item);
+        }
         if(item == CellType.SWORD) {
-            int attack = getAttack() + 3;
+            int attack = getAttack() + 5;
             setAttack(attack);
+        } else if(item == CellType.HEAL){
+            int health = getHealth() + 15;
+            setHealth(health);
         }
         map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).setType(CellType.FLOOR);
     }
