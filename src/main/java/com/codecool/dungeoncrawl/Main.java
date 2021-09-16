@@ -171,6 +171,7 @@ public class Main extends Application {
                     }
                     else if(map.getPlayer().cellCheck(0,-1).getMonster().getHealth()<=0){
                         map.getPlayer().cellCheck(0,-1).setType(CellType.FLOOR);
+                        break;
                     }
                 }
                 else{
@@ -217,6 +218,7 @@ public class Main extends Application {
                     }
                     else if(map.getPlayer().cellCheck(0, 1).getMonster().getHealth()<=0){
                         map.getPlayer().cellCheck(0, 1).setType(CellType.FLOOR);
+                        break;
                     }
                 }
                 else {
@@ -265,6 +267,7 @@ public class Main extends Application {
                     }
                     else if(map.getPlayer().cellCheck(-1, 0).getMonster().getHealth()<=0){
                         map.getPlayer().cellCheck(-1, 0).setType(CellType.FLOOR);
+                        break;
                     }
                 }
                 else {
@@ -311,6 +314,7 @@ public class Main extends Application {
                     }
                     else if(map.getPlayer().cellCheck(1,0).getMonster().getHealth()<=0){
                         map.getPlayer().cellCheck(1,0).setType(CellType.FLOOR);
+                        break;
                     }
                 }
                 else {
