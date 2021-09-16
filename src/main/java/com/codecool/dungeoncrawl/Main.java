@@ -167,10 +167,9 @@ public class Main extends Application {
 
                 }
                 else if(map.getPlayer().cellCheck(0,-1).getType() == CellType.SKELETON){
-//                    System.out.println(map.getPlayer().cellCheck(0,-1).getMonster());
                     map.getPlayer().fight(map.getPlayer().cellCheck(0,-1).getMonster());
                     if (map.getPlayer().getHealth()<=0){
-                        System.out.println("kakiiiiii");
+                        return;
                     }
                     else if(map.getPlayer().cellCheck(0,-1).getMonster().getHealth()<=0){
                         map.getPlayer().cellCheck(0,-1).setType(CellType.FLOOR);
@@ -208,15 +207,21 @@ public class Main extends Application {
                         refresh();
                         break;
                     }
-                    else if(map.getPlayer().cellCheck(0, 1).getType() == CellType.SKELETON){
-
-                    }
                     else{
                         map.getPlayer().move(0, 1);
                         refresh();
                         break;
                     }
 
+                }
+                else if(map.getPlayer().cellCheck(0, 1).getType() == CellType.SKELETON){
+                    map.getPlayer().fight(map.getPlayer().cellCheck(0, 1).getMonster());
+                    if (map.getPlayer().getHealth()<=0){
+                        return;
+                    }
+                    else if(map.getPlayer().cellCheck(0, 1).getMonster().getHealth()<=0){
+                        map.getPlayer().cellCheck(0, 1).setType(CellType.FLOOR);
+                    }
                 }
                 else {
                     refresh();
@@ -253,13 +258,19 @@ public class Main extends Application {
                         refresh();
                         break;
                     }
-                    else if(map.getPlayer().cellCheck(-1, 0).getType() == CellType.SKELETON){
-                        //player.fight(monster);
-                    }
                     else{
                         map.getPlayer().move(-1, 0);
                         refresh();
                         break;
+                    }
+                }
+                else if(map.getPlayer().cellCheck(-1, 0).getType() == CellType.SKELETON){
+                    map.getPlayer().fight(map.getPlayer().cellCheck(-1, 0).getMonster());
+                    if (map.getPlayer().getHealth()<=0){
+                        return;
+                    }
+                    else if(map.getPlayer().cellCheck(-1, 0).getMonster().getHealth()<=0){
+                        map.getPlayer().cellCheck(-1, 0).setType(CellType.FLOOR);
                     }
                 }
                 else {
@@ -295,13 +306,19 @@ public class Main extends Application {
                         refresh();
                         break;
                     }
-                    else if(map.getPlayer().cellCheck(1,0).getType() == CellType.SKELETON){
-                        //player.fight(monster);
-                    }
                     else{
                         map.getPlayer().move(1,0);
                         refresh();
                         break;
+                    }
+                }
+                else if(map.getPlayer().cellCheck(1,0).getType() == CellType.SKELETON){
+                    map.getPlayer().fight(map.getPlayer().cellCheck(1,0).getMonster());
+                    if (map.getPlayer().getHealth()<=0){
+                        return;
+                    }
+                    else if(map.getPlayer().cellCheck(1,0).getMonster().getHealth()<=0){
+                        map.getPlayer().cellCheck(1,0).setType(CellType.FLOOR);
                     }
                 }
                 else {
