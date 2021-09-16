@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
 
 public abstract class Actor implements Drawable {
@@ -28,7 +29,7 @@ public abstract class Actor implements Drawable {
     }
 
     public void fight(Monster monster){
-        System.out.println(monster.getAttack());
+        String gameOver = "/gameover.txt";
        int monsterHealth = monster.getHealth();
        int monsterAttack = monster.getAttack();
        int playerAttack = this.attack;
@@ -49,6 +50,9 @@ public abstract class Actor implements Drawable {
                     round--;
                     break;
             }
+       }
+       if (playerHealth<=0){
+           MapLoader.loadMap(gameOver);
        }
     }
 

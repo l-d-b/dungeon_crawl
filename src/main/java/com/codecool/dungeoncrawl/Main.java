@@ -141,7 +141,7 @@ public class Main extends Application {
         ui.setHalignment(inventoryLabel, HPos.CENTER);
         ui.setHalignment(inventory, HPos.CENTER);
         inventory.setFont(Font.font ("Verdana", 16));
-        //System.out.println(map.getPlayer().getInventory());
+
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
@@ -175,7 +175,7 @@ public class Main extends Application {
 
                         map.getPlayer().move(0,-1);
                         mapLevel(this.mapLevelCounter);
-//                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+
 
                         refresh();
                         break;
@@ -226,7 +226,7 @@ public class Main extends Application {
 
                         map.getPlayer().move(0,1);
                         mapLevel(this.mapLevelCounter);
-//                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+
 
                         refresh();
                         break;
@@ -278,7 +278,7 @@ public class Main extends Application {
 
                         map.getPlayer().move(-1,0);
                         mapLevel(this.mapLevelCounter);
-//                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+
 
                         refresh();
                         break;
@@ -327,7 +327,7 @@ public class Main extends Application {
 
                         map.getPlayer().move(1,0);
                         mapLevel(this.mapLevelCounter);
-//                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+
 
 
                         refresh();
@@ -416,7 +416,7 @@ public class Main extends Application {
     }
 
     public int mapLevel(int mapLevelCounter){
-//        int mapLevelCounter;
+
         switch (mapLevelCounter){
             case 1:
                 map = MapLoader.loadMap(map2);

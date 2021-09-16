@@ -10,6 +10,7 @@ public class GameMap {
 
     private Player player;
     private Monster monster;
+//    private Map map
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -37,6 +38,13 @@ public class GameMap {
     public Monster getMonster() {
         return this.monster;
     }
+
+//    public Monster getMonsters() {
+//        for (Cell[] monster: cells){
+//
+//        }
+//        return this.monster;
+//    }
 
     public void setMonster(Monster monster) {
         this.monster = monster;
