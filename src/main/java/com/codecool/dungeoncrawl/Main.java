@@ -155,7 +155,7 @@ public class Main extends Application {
             case UP:
 
                 if(map.getPlayer().cellCheck(0, -1).getType() != CellType.WALL &&
-                        map.getPlayer().cellCheck(0, -1).getType() != CellType.SKELETON){
+                        !map.getPlayer().cellCheck(0, -1).isMonster()){
 
                     if(map.getPlayer().cellCheck(0, -1).isItem()) {
 
@@ -186,7 +186,7 @@ public class Main extends Application {
                     }
 
                 }
-                else if(map.getPlayer().cellCheck(0,-1).getType() == CellType.SKELETON){
+                else if(map.getPlayer().cellCheck(0,-1).isMonster()){
                     map.getPlayer().fight(map.getPlayer().cellCheck(0,-1).getMonster());
                     if (map.getPlayer().getHealth()<=0){
                         return;
@@ -203,7 +203,7 @@ public class Main extends Application {
             case DOWN:
 
                 if(map.getPlayer().cellCheck(0, 1).getType() != CellType.WALL &&
-                        map.getPlayer().cellCheck(0, 1).getType() != CellType.SKELETON){
+                        !map.getPlayer().cellCheck(0, 1).isMonster()){
 
                     if(map.getPlayer().cellCheck(0, 1).isItem()) {
 
@@ -233,7 +233,7 @@ public class Main extends Application {
                     }
 
                 }
-                else if(map.getPlayer().cellCheck(0, 1).getType() == CellType.SKELETON){
+                else if(map.getPlayer().cellCheck(0, 1).isMonster()){
                     map.getPlayer().fight(map.getPlayer().cellCheck(0, 1).getMonster());
                     if (map.getPlayer().getHealth()<=0){
                         return;
@@ -251,7 +251,7 @@ public class Main extends Application {
             case LEFT:
 
                 if(map.getPlayer().cellCheck(-1, 0).getType() != CellType.WALL &&
-                        map.getPlayer().cellCheck(-1, 0).getType() != CellType.SKELETON){
+                        !map.getPlayer().cellCheck(-1, 0).isMonster()){
 
 
 
@@ -282,7 +282,7 @@ public class Main extends Application {
                         break;
                     }
                 }
-                else if(map.getPlayer().cellCheck(-1, 0).getType() == CellType.SKELETON){
+                else if(map.getPlayer().cellCheck(-1, 0).isMonster()){
                     map.getPlayer().fight(map.getPlayer().cellCheck(-1, 0).getMonster());
                     if (map.getPlayer().getHealth()<=0){
                         return;
@@ -300,7 +300,7 @@ public class Main extends Application {
             case RIGHT:
 
                 if(map.getPlayer().cellCheck(1,0).getType() != CellType.WALL &&
-                        map.getPlayer().cellCheck(1,0).getType() != CellType.SKELETON){
+                        !map.getPlayer().cellCheck(1,0).isMonster()){
 
                     if(map.getPlayer().cellCheck(1,0).isItem()) {
 
@@ -329,7 +329,7 @@ public class Main extends Application {
                         break;
                     }
                 }
-                else if(map.getPlayer().cellCheck(1,0).getType() == CellType.SKELETON){
+                else if(map.getPlayer().cellCheck(1,0).isMonster()){
                     map.getPlayer().fight(map.getPlayer().cellCheck(1,0).getMonster());
                     if (map.getPlayer().getHealth()<=0){
                         return;
@@ -363,9 +363,10 @@ public class Main extends Application {
                 }
             }
         }
-        currentHealthLabel.setText("" + map.getPlayer().getHealth());
+        currentHealthLabel.setText(String.valueOf(map.getPlayer().getHealth()));
         currentHealth = map.getPlayer().getHealth();
-        healthbar.setWidth(currentHealth * 2);
+        System.out.println(map.getPlayer().getHealth());
+        healthbar.setWidth(map.getPlayer().getHealth() * 2);
         currentPowerLabel.setText(String.valueOf(currentPower));
         powerbar.setWidth(currentPower * 10);
 

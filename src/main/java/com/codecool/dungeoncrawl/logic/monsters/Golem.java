@@ -4,7 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 
 public class Golem extends Monster{
     public Golem(Cell cell) {
-        super(cell, 25,2,"Golem");
+        super(cell, 25,10,"Golem");
     }
 
     @Override
