@@ -26,6 +26,7 @@ import javafx.scene.text.Font;
 import javafx.scene.shape.Rectangle;
 
 public class Main extends Application {
+    String gameOver = "/gameover.txt";
     String map1 = "/map.txt";
     String map2 = "/map_2.txt";
     String map3 = "/map_3.txt";
@@ -141,7 +142,7 @@ public class Main extends Application {
         ui.setHalignment(inventoryLabel, HPos.CENTER);
         ui.setHalignment(inventory, HPos.CENTER);
         inventory.setFont(Font.font ("Verdana", 16));
-        //System.out.println(map.getPlayer().getInventory());
+
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
@@ -175,7 +176,7 @@ public class Main extends Application {
 
                         map.getPlayer().move(0,-1);
                         mapLevel(this.mapLevelCounter);
-//                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+
 
                         refresh();
                         break;
@@ -193,7 +194,9 @@ public class Main extends Application {
                     map.getPlayer().fight(map.getPlayer().cellCheck(0,-1).getMonster());
                     refresh();
                     if (map.getPlayer().getHealth()<=0){
-                        return;
+                        map = MapLoader.loadMap(gameOver);
+                        refresh();
+                        break;
                     }
                     else if(map.getPlayer().cellCheck(0,-1).getMonster().getHealth()<=0){
                         map.getPlayer().cellCheck(0,-1).setType(CellType.FLOOR);
@@ -228,7 +231,7 @@ public class Main extends Application {
 
                         map.getPlayer().move(0,1);
                         mapLevel(this.mapLevelCounter);
-//                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+
 
                         refresh();
                         break;
@@ -244,7 +247,9 @@ public class Main extends Application {
                     map.getPlayer().fight(map.getPlayer().cellCheck(0, 1).getMonster());
                     refresh();
                     if (map.getPlayer().getHealth()<=0){
-                        return;
+                        map =MapLoader.loadMap(gameOver);
+                        refresh();
+                        break;
                     }
                     else if(map.getPlayer().cellCheck(0, 1).getMonster().getHealth()<=0){
                         map.getPlayer().cellCheck(0, 1).setType(CellType.FLOOR);
@@ -281,7 +286,7 @@ public class Main extends Application {
 
                         map.getPlayer().move(-1,0);
                         mapLevel(this.mapLevelCounter);
-//                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+
 
                         refresh();
                         break;
@@ -296,7 +301,9 @@ public class Main extends Application {
                     map.getPlayer().fight(map.getPlayer().cellCheck(-1, 0).getMonster());
                     refresh();
                     if (map.getPlayer().getHealth()<=0){
-                        return;
+                        map =MapLoader.loadMap(gameOver);
+                        refresh();
+                        break;
                     }
                     else if(map.getPlayer().cellCheck(-1, 0).getMonster().getHealth()<=0){
                         map.getPlayer().cellCheck(-1, 0).setType(CellType.FLOOR);
@@ -331,7 +338,9 @@ public class Main extends Application {
 
                         map.getPlayer().move(1,0);
                         mapLevel(this.mapLevelCounter);
-//                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+
+
+
                         refresh();
                         break;
                     }
@@ -345,7 +354,9 @@ public class Main extends Application {
                     map.getPlayer().fight(map.getPlayer().cellCheck(1,0).getMonster());
                     refresh();
                     if (map.getPlayer().getHealth()<=0){
-                        return;
+                        map =MapLoader.loadMap(gameOver);
+                        refresh();
+                        break;
                     }
                     else if(map.getPlayer().cellCheck(1,0).getMonster().getHealth()<=0){
                         map.getPlayer().cellCheck(1,0).setType(CellType.FLOOR);
@@ -419,7 +430,7 @@ public class Main extends Application {
     }
 
     public int mapLevel(int mapLevelCounter){
-//        int mapLevelCounter;
+
         switch (mapLevelCounter){
             case 1:
                 map = MapLoader.loadMap(map2);

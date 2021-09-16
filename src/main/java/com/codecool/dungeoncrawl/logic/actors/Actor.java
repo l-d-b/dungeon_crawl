@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -30,7 +31,7 @@ public abstract class Actor implements Drawable {
     }
 
     public void fight(Monster monster){
-        System.out.println(monster.getAttack());
+
        int monsterHealth = monster.getHealth();
        int monsterAttack = monster.getAttack();
        int playerAttack = this.attack;
@@ -60,6 +61,7 @@ public abstract class Actor implements Drawable {
                     break;
             }
        }
+
     }
 
     public Cell cellCheck(int dx, int dy) {

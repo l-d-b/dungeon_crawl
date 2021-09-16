@@ -78,6 +78,9 @@ public class MapLoader {
                             cell.setType(CellType.BOSS);
                             new Boss(cell);
                             break;
+                        case 'o':
+                            cell.setType(CellType.OVER);
+                            break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }
