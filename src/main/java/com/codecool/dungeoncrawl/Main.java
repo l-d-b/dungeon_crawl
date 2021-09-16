@@ -330,7 +330,7 @@ public class Main extends Application {
         }
         currentHealthLabel.setText("" + map.getPlayer().getHealth());
         currentHealth = map.getPlayer().getHealth();
-        healthbar.setWidth(currentHealth * 20);
+        healthbar.setWidth(currentHealth * 2);
 
 
         updateHealth();
