@@ -2,8 +2,8 @@ package com.codecool.dungeoncrawl.logic.items;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 
-public class RedPotion extends Item{
-    public RedPotion(Cell cell) {
+public class Heal extends Item{
+    public Heal(Cell cell) {
         super(cell);
     }
 
