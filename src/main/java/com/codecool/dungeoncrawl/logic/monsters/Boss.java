@@ -9,6 +9,6 @@ public class Boss extends Monster{
 
     @Override
     public String getTileName() {
-        return null;
+        return "boss";
     }
 }

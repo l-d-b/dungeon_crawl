@@ -74,7 +74,7 @@ public class MapLoader {
                         case 't':
                             cell.setType(CellType.TREE);
                             break;
-                        case 'B':
+                        case 'b':
                             cell.setType(CellType.BOSS);
                             new Boss(cell);
                             break;
