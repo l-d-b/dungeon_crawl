@@ -18,6 +18,7 @@ public enum CellType {
     GHOST("ghost"),
     GOLEM("golem"),
     SPIDER("spider"),
+    BOSS("boss"),
 
     TREE("tree");
     private final String tileName;

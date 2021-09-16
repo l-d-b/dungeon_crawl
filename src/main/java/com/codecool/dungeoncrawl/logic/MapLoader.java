@@ -2,10 +2,7 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
 
-import com.codecool.dungeoncrawl.logic.monsters.Ghost;
-import com.codecool.dungeoncrawl.logic.monsters.Golem;
-import com.codecool.dungeoncrawl.logic.monsters.Skeleton;
-import com.codecool.dungeoncrawl.logic.monsters.Spider;
+import com.codecool.dungeoncrawl.logic.monsters.*;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -76,6 +73,10 @@ public class MapLoader {
                             break;
                         case 't':
                             cell.setType(CellType.TREE);
+                            break;
+                        case 'b':
+                            cell.setType(CellType.BOSS);
+                            new Boss(cell);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
