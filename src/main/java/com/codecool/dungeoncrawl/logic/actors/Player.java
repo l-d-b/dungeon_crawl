@@ -34,7 +34,9 @@ public class Player extends Actor {
     }
 
     public void pickUpItem(CellType item, GameMap map){
-        this.inventory.add(item);
+        if (!(item == CellType.HEAL)){
+            this.inventory.add(item);
+        }
         if(item == CellType.SWORD) {
             int attack = getAttack() + 3;
             setAttack(attack);
