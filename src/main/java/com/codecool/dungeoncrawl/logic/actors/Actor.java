@@ -47,13 +47,14 @@ public abstract class Actor implements Drawable {
                     int actuelPlayerHealth = playerHealth - monsterAttack;
                     playerHealth = actuelPlayerHealth;
                     this.setHealth(actuelPlayerHealth);
+                    if (playerHealth<=0){
+                        MapLoader.loadMap(gameOver);
+                    }
                     round--;
                     break;
             }
        }
-       if (playerHealth<=0){
-           MapLoader.loadMap(gameOver);
-       }
+
     }
 
     public Cell cellCheck(int dx, int dy) {
