@@ -36,32 +36,33 @@ public abstract class Actor implements Drawable {
        int monsterAttack = monster.getAttack();
        int playerAttack = this.attack;
        int playerHealth = this.health;
-       int round = 1;
-       while((monsterHealth >= 1) && ( playerHealth >= 1)){
-            switch (round){
-                case 1:
+//       int round = 1;
+//       while((monsterHealth >= 1) && ( playerHealth >= 1)){
+//            switch (round){
+//                case 1:
                     int actuelMonsterHealth = monsterHealth - playerAttack;
                     monsterHealth = actuelMonsterHealth;
                     monster.setHealth(actuelMonsterHealth);
-
-                    round++;
-//                    if (monster.getName().equals("Boss") && monster.getHealth() <= 0) {
-//                        endGame(this);
-//                    }
-                    break;
-                case 2:
+                    System.out.println("MH: " +monsterHealth);
+//                    round++;
+                    if (monster.getName().equals("Boss") && monster.getHealth() <= 0) {
+                        endGame(this);
+                    }
+//                    break;
+//                case 2:
                     int actuelPlayerHealth = playerHealth - monsterAttack;
                     playerHealth = actuelPlayerHealth;
+                    System.out.println("PH: " +playerHealth);
                     this.setHealth(actuelPlayerHealth);
 
-                    round--;
-//                    if (actuelPlayerHealth <= 0) {
-//                        endGame(monster);
-//                    }
+//                    round--;
+                    if (actuelPlayerHealth <= 0) {
+                        endGame(monster);
+                    }
 //                    break;
             }
-       }
-    }
+//       }
+//    }
 
     public Cell cellCheck(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
@@ -70,7 +71,7 @@ public abstract class Actor implements Drawable {
 
     public void endGame(Actor actor) {
         JFrame parent = new JFrame();
-        if (actor.getName().equals("Boss")) {
+        if (actor.cell.isMonster()) {
             JOptionPane.showMessageDialog(parent, "Game over! You are dead!");
         } else {
             JOptionPane.showMessageDialog(parent, "You have finished it HERO!");

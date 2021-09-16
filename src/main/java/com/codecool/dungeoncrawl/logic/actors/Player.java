@@ -11,7 +11,7 @@ public class Player extends Actor {
     private ArrayList<CellType> inventory = new ArrayList<CellType>();
 
     public Player(Cell cell) {
-        super(cell, 100, 15, "Player");
+        super(cell, 100, 10, "Player");
     }
 
     public String getTileName() {

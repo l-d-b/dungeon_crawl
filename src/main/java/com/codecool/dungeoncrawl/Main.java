@@ -187,10 +187,11 @@ public class Main extends Application {
 
                 }
                 else if(map.getPlayer().cellCheck(0,-1).isMonster()){
-
-                    map.getPlayer().fight(map.getPlayer().cellCheck(0,-1).getMonster());
+                    Monster monster = map.getPlayer().cellCheck(0,-1).getMonster();
+                    map.getPlayer().fight(monster);
+                    //map.getPlayer().fight(map.getPlayer().cellCheck(0,-1).getMonster());
                     refresh();
-                    if (map.getPlayer().getHealth()<=0){
+                    if ((monster.getName().equals("Boss") && monster.getHealth() <= 0) || (map.getPlayer().getHealth()<=0)){
                         map = MapLoader.loadMap(gameOver);
                         refresh();
                         break;
