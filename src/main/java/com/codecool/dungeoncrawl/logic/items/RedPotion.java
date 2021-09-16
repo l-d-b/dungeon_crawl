@@ -6,4 +6,9 @@ public class RedPotion extends Item{
     public RedPotion(Cell cell) {
         super(cell);
     }
+
+    @Override
+    public String getTileName() {
+        return "red-potion";
+    }
 }
