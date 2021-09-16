@@ -32,6 +32,7 @@ import javafx.scene.shape.Rectangle;
 import javax.swing.*;
 
 public class Main extends Application {
+
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
