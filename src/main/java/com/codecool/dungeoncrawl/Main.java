@@ -37,13 +37,18 @@ public class Main extends Application {
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
+    int maxPower = 20;
+    int maxHealth = 100;
     int currentHealth = map.getPlayer().getHealth();
-    int healthbarWidth = currentHealth*20;
+    int currentPower = map.getPlayer().getAttack();
+   // int healthbarWidth = currentHealth*20;
     Label healthLabel = new Label();
-    Label uzenet = new Label();
+ //   Label uzenet = new Label();
     Label currentHealthLabel = new Label();
+    Label currentPowerLabel = new Label();
     Label inventoryLabel = new Label();
     Rectangle healthbar = new Rectangle();
+    Rectangle powerbar = new Rectangle();
     Button pickUpButton;
     Player player;
     Monster monster;
@@ -64,7 +69,7 @@ public class Main extends Application {
         ui.setVgap(1);
         ui.setPadding(new Insets(50));
         String playerHealth = String.valueOf(map.getPlayer().getHealth());
-        System.out.println(currentHealthLabel);
+        String playerPower = String.valueOf(map.getPlayer().getAttack());
         healthLabel.setText("Health: ");
         healthLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
         healthLabel.setTextFill(Color.BROWN);
@@ -74,6 +79,7 @@ public class Main extends Application {
 
         ui.setHalignment(healthLabel, HPos.CENTER);
         healthLabel.setPadding(new Insets(0,55, 0, 55));
+
         healthbar = new Rectangle(100,100,200,20);
         Rectangle background = new Rectangle(100,100,200,20);
 
@@ -81,10 +87,27 @@ public class Main extends Application {
         ui.add(healthbar,0,11);
         background.setFill(Color.GREY);
 
-        healthbar.setFill(Color.RED);
+        healthbar.setFill(Color.GREEN);
 
-        ui.add(new Label("Power: "), 0,12);
-        ui.add(powerLabel,1,12);
+     //   ui.add(new Label("Power: "), 0,12);
+      //  ui.add(powerLabel,1,12);
+
+        powerLabel.setText("Power: ");
+        powerLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
+        powerLabel.setTextFill(Color.BROWN);
+        currentPowerLabel.setText(playerPower);
+        ui.add(powerLabel, 0, 12);
+        ui.add(currentPowerLabel, 0, 14);
+        ui.setHalignment(powerLabel, HPos.CENTER);
+
+        powerbar = new Rectangle(100,100,200,20);
+        Rectangle powBackground = new Rectangle(100,100,200,20);
+
+        ui.add(powBackground, 0, 15);
+        ui.add(powerbar,0,15);
+        powBackground.setFill(Color.GREY);
+
+        powerbar.setFill(Color.RED);
 
         pickUpButton = new Button("Pick up");
         pickUpButton.setVisible(false);
@@ -101,19 +124,18 @@ public class Main extends Application {
 
         primaryStage.show();
 
-
         BorderPane borderPane = new BorderPane();
 
         borderPane.setLeft(canvas);
         borderPane.setRight(ui);
 
-        ui.add(pickUpButton,0,13);
+        ui.add(pickUpButton,0,17);
         ui.setHalignment(pickUpButton, HPos.CENTER);
 
         inventoryLabel.setText("Inventory:");
-        ui.add(inventoryLabel,0,14);
-        ui.add(inventory, 0, 16);
-        inventoryLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
+        ui.add(inventoryLabel,0,19);
+        ui.add(inventory, 0, 21);
+        inventoryLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 22));
         inventoryLabel.setTextFill(Color.BROWN);
         ui.setHalignment(inventoryLabel, HPos.CENTER);
         ui.setHalignment(inventory, HPos.CENTER);
@@ -344,7 +366,8 @@ public class Main extends Application {
         currentHealthLabel.setText("" + map.getPlayer().getHealth());
         currentHealth = map.getPlayer().getHealth();
         healthbar.setWidth(currentHealth * 2);
-
+        currentPowerLabel.setText(String.valueOf(currentPower));
+        powerbar.setWidth(currentPower * 10);
 
         updateHealth();
         updateInventory();
@@ -373,7 +396,12 @@ public class Main extends Application {
     }
 
     public void updatePower(){
-        powerLabel.setText(String.valueOf(map.getPlayer().getAttack()));
+   //     currentPowerLabel.setText(String.valueOf(map.getPlayer().getAttack()));
+        if (map.getPlayer().getAttack() <= 20) {
+            currentPower = map.getPlayer().getAttack();
+        } else {
+            currentPower = maxPower;
+        }
     }
 
     public void checkingIsWall(){
