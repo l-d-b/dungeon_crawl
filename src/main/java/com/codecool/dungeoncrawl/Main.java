@@ -45,6 +45,7 @@ public class Main extends Application {
     Label currentPowerLabel = new Label();
     Label inventoryLabel = new Label();
     Rectangle healthbar = new Rectangle();
+    Rectangle powerbar = new Rectangle();
     Button pickUpButton;
     Player player;
     Monster monster;
@@ -65,6 +66,7 @@ public class Main extends Application {
         ui.setVgap(1);
         ui.setPadding(new Insets(50));
         String playerHealth = String.valueOf(map.getPlayer().getHealth());
+        String playerPower = String.valueOf(map.getPlayer().getAttack());
         healthLabel.setText("Health: ");
         healthLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
         healthLabel.setTextFill(Color.BROWN);
@@ -74,6 +76,7 @@ public class Main extends Application {
 
         ui.setHalignment(healthLabel, HPos.CENTER);
         healthLabel.setPadding(new Insets(0,55, 0, 55));
+
         healthbar = new Rectangle(100,100,200,20);
         Rectangle background = new Rectangle(100,100,200,20);
 
@@ -81,7 +84,7 @@ public class Main extends Application {
         ui.add(healthbar,0,11);
         background.setFill(Color.GREY);
 
-        healthbar.setFill(Color.RED);
+        healthbar.setFill(Color.GREEN);
 
      //   ui.add(new Label("Power: "), 0,12);
       //  ui.add(powerLabel,1,12);
@@ -89,10 +92,19 @@ public class Main extends Application {
         powerLabel.setText("Power: ");
         powerLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
         powerLabel.setTextFill(Color.BROWN);
-        currentPowerLabel.setText(playerHealth);
+        currentPowerLabel.setText(playerPower);
         ui.add(powerLabel, 0, 12);
         ui.add(currentPowerLabel, 0, 14);
         ui.setHalignment(powerLabel, HPos.CENTER);
+
+        powerbar = new Rectangle(100,100,200,20);
+        Rectangle powBackground = new Rectangle(100,100,200,20);
+
+        ui.add(powBackground, 0, 15);
+        ui.add(powerbar,0,15);
+        powBackground.setFill(Color.GREY);
+
+        powerbar.setFill(Color.RED);
 
         pickUpButton = new Button("Pick up");
         pickUpButton.setVisible(false);
@@ -339,6 +351,7 @@ public class Main extends Application {
         currentHealthLabel.setText("" + map.getPlayer().getHealth());
         currentHealth = map.getPlayer().getHealth();
         healthbar.setWidth(currentHealth * 2);
+        powerbar.setWidth(map.getPlayer().getAttack() * 10);
 
 
         updateHealth();
@@ -369,6 +382,7 @@ public class Main extends Application {
 
     public void updatePower(){
         currentPowerLabel.setText(String.valueOf(map.getPlayer().getAttack()));
+
     }
 
     public void checkingIsWall(){
