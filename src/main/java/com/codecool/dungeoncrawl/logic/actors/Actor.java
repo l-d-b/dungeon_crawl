@@ -29,7 +29,7 @@ public abstract class Actor implements Drawable {
     }
 
     public void fight(Monster monster){
-        String gameOver = "/gameover.txt";
+
        int monsterHealth = monster.getHealth();
        int monsterAttack = monster.getAttack();
        int playerAttack = this.attack;
@@ -47,9 +47,6 @@ public abstract class Actor implements Drawable {
                     int actuelPlayerHealth = playerHealth - monsterAttack;
                     playerHealth = actuelPlayerHealth;
                     this.setHealth(actuelPlayerHealth);
-                    if (playerHealth<=0){
-                        MapLoader.loadMap(gameOver);
-                    }
                     round--;
                     break;
             }

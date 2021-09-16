@@ -26,6 +26,7 @@ import javafx.scene.text.Font;
 import javafx.scene.shape.Rectangle;
 
 public class Main extends Application {
+    String gameOver = "/gameover.txt";
     String map1 = "/map.txt";
     String map2 = "/map_2.txt";
     String map3 = "/map_3.txt";
@@ -192,7 +193,9 @@ public class Main extends Application {
 
                     map.getPlayer().fight(map.getPlayer().cellCheck(0,-1).getMonster());
                     if (map.getPlayer().getHealth()<=0){
-                        return;
+                        MapLoader.loadMap(gameOver);
+                        refresh();
+                        break;
                     }
                     else if(map.getPlayer().cellCheck(0,-1).getMonster().getHealth()<=0){
                         map.getPlayer().cellCheck(0,-1).setType(CellType.FLOOR);
@@ -241,7 +244,9 @@ public class Main extends Application {
                 else if(map.getPlayer().cellCheck(0, 1).isMonster()){
                     map.getPlayer().fight(map.getPlayer().cellCheck(0, 1).getMonster());
                     if (map.getPlayer().getHealth()<=0){
-                        return;
+                        MapLoader.loadMap(gameOver);
+                        refresh();
+                        break;
                     }
                     else if(map.getPlayer().cellCheck(0, 1).getMonster().getHealth()<=0){
                         map.getPlayer().cellCheck(0, 1).setType(CellType.FLOOR);
@@ -292,7 +297,9 @@ public class Main extends Application {
                 else if(map.getPlayer().cellCheck(-1, 0).isMonster()){
                     map.getPlayer().fight(map.getPlayer().cellCheck(-1, 0).getMonster());
                     if (map.getPlayer().getHealth()<=0){
-                        return;
+                        MapLoader.loadMap(gameOver);
+                        refresh();
+                        break;
                     }
                     else if(map.getPlayer().cellCheck(-1, 0).getMonster().getHealth()<=0){
                         map.getPlayer().cellCheck(-1, 0).setType(CellType.FLOOR);
@@ -342,7 +349,9 @@ public class Main extends Application {
                 else if(map.getPlayer().cellCheck(1,0).isMonster()){
                     map.getPlayer().fight(map.getPlayer().cellCheck(1,0).getMonster());
                     if (map.getPlayer().getHealth()<=0){
-                        return;
+                        MapLoader.loadMap(gameOver);
+                        refresh();
+                        break;
                     }
                     else if(map.getPlayer().cellCheck(1,0).getMonster().getHealth()<=0){
                         map.getPlayer().cellCheck(1,0).setType(CellType.FLOOR);
