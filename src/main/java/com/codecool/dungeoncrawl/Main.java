@@ -9,30 +9,28 @@ import com.codecool.dungeoncrawl.logic.monsters.Monster;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
 import javafx.scene.shape.Rectangle;
 
-import javax.swing.*;
-
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
+    String map1 = "/map.txt";
+    String map2 = "/map_2.txt";
+    String map3 = "/map_3.txt";
+    private int mapLevelCounter;
+    GameMap map = MapLoader.loadMap(map1);
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -43,7 +41,6 @@ public class Main extends Application {
     int currentPower = map.getPlayer().getAttack();
    // int healthbarWidth = currentHealth*20;
     Label healthLabel = new Label();
- //   Label uzenet = new Label();
     Label currentHealthLabel = new Label();
     Label currentPowerLabel = new Label();
     Label inventoryLabel = new Label();
@@ -88,6 +85,8 @@ public class Main extends Application {
         background.setFill(Color.GREY);
 
         healthbar.setFill(Color.GREEN);
+
+        mapLevelCounter = 1;
 
      //   ui.add(new Label("Power: "), 0,12);
       //  ui.add(powerLabel,1,12);
@@ -176,7 +175,9 @@ public class Main extends Application {
                             map.getPlayer().getInventory().contains(CellType.KEY)) {
 
                         map.getPlayer().move(0,-1);
-                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+                        mapLevel(this.mapLevelCounter);
+//                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+
                         refresh();
                         break;
                     }
@@ -225,7 +226,9 @@ public class Main extends Application {
                             map.getPlayer().getInventory().contains(CellType.KEY)) {
 
                         map.getPlayer().move(0,1);
-                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+                        mapLevel(this.mapLevelCounter);
+//                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+
                         refresh();
                         break;
                     }
@@ -275,7 +278,9 @@ public class Main extends Application {
                             map.getPlayer().getInventory().contains(CellType.KEY)) {
 
                         map.getPlayer().move(-1,0);
-                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+                        mapLevel(this.mapLevelCounter);
+//                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+
                         refresh();
                         break;
                     }
@@ -322,7 +327,10 @@ public class Main extends Application {
                             map.getPlayer().getInventory().contains(CellType.KEY)) {
 
                         map.getPlayer().move(1,0);
-                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+                        mapLevel(this.mapLevelCounter);
+//                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
+
+
                         refresh();
                         break;
                     }
@@ -408,7 +416,32 @@ public class Main extends Application {
         }
     }
 
-    public void checkingIsWall(){
+    public int mapLevel(int mapLevelCounter){
+//        int mapLevelCounter;
+        switch (mapLevelCounter){
+            case 1:
+                map = MapLoader.loadMap(map2);
+                this.mapLevelCounter = 2;
+                break;
 
+            case 2:
+                if(map.getPlayer().cellCheck(0, 0).getType() == CellType.CLOSED_DOOR){
+                    map = MapLoader.loadMap(map3);
+                    this.mapLevelCounter = 3;
+                    break;
+                }
+                else if(map.getPlayer().cellCheck(0, 0).getType() == CellType.OPENED_DOOR){
+                    map = MapLoader.loadMap(map1);
+                    this.mapLevelCounter = 1;
+                     break;
+                }
+            case 3:
+                if(map.getPlayer().cellCheck(0, 0).getType() == CellType.OPENED_DOOR){
+                    map = MapLoader.loadMap(map2);
+                    this.mapLevelCounter = 2;
+                    break;
+                }
+        }
+        return 0;
     }
 }
