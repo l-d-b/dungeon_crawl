@@ -3,6 +3,8 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public abstract class Actor implements Drawable {
     protected Cell cell;
@@ -40,13 +42,21 @@ public abstract class Actor implements Drawable {
                     int actuelMonsterHealth = monsterHealth - playerAttack;
                     monsterHealth = actuelMonsterHealth;
                     monster.setHealth(actuelMonsterHealth);
+
                     round++;
+                    if (monster.getName().equals("Boss") && monster.getHealth() == 0) {
+                        endGame(this);
+                    }
                     break;
                 case 2:
                     int actuelPlayerHealth = playerHealth - monsterAttack;
                     playerHealth = actuelPlayerHealth;
                     this.setHealth(actuelPlayerHealth);
+
                     round--;
+                    if (this.getHealth() == 0) {
+                        endGame(monster);
+                    }
                     break;
             }
        }
@@ -55,6 +65,17 @@ public abstract class Actor implements Drawable {
     public Cell cellCheck(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
         return nextCell;
+    }
+
+    public void endGame(Actor actor) {
+        if (actor.getName().equals("Boss")) {
+
+            JFrame parent = new JFrame();
+            JOptionPane.showMessageDialog(parent, "Game over! You are dead!");
+        } else {
+            JFrame parent = new JFrame();
+            JOptionPane.showMessageDialog(parent, "You have finished it HERO!");
+        }
     }
 
     public void setCell(Cell cell) {

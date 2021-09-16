@@ -191,11 +191,13 @@ public class Main extends Application {
                 else if(map.getPlayer().cellCheck(0,-1).isMonster()){
 
                     map.getPlayer().fight(map.getPlayer().cellCheck(0,-1).getMonster());
+                    refresh();
                     if (map.getPlayer().getHealth()<=0){
                         return;
                     }
                     else if(map.getPlayer().cellCheck(0,-1).getMonster().getHealth()<=0){
                         map.getPlayer().cellCheck(0,-1).setType(CellType.FLOOR);
+                        updateHealth();
                         break;
                     }
                 }
@@ -240,6 +242,7 @@ public class Main extends Application {
                 }
                 else if(map.getPlayer().cellCheck(0, 1).isMonster()){
                     map.getPlayer().fight(map.getPlayer().cellCheck(0, 1).getMonster());
+                    refresh();
                     if (map.getPlayer().getHealth()<=0){
                         return;
                     }
@@ -291,6 +294,7 @@ public class Main extends Application {
                 }
                 else if(map.getPlayer().cellCheck(-1, 0).isMonster()){
                     map.getPlayer().fight(map.getPlayer().cellCheck(-1, 0).getMonster());
+                    refresh();
                     if (map.getPlayer().getHealth()<=0){
                         return;
                     }
@@ -328,8 +332,6 @@ public class Main extends Application {
                         map.getPlayer().move(1,0);
                         mapLevel(this.mapLevelCounter);
 //                        map.getPlayer().cellCheck(0, 0).setType(CellType.OPENED_DOOR);
-
-
                         refresh();
                         break;
                     }
@@ -341,6 +343,7 @@ public class Main extends Application {
                 }
                 else if(map.getPlayer().cellCheck(1,0).isMonster()){
                     map.getPlayer().fight(map.getPlayer().cellCheck(1,0).getMonster());
+                    refresh();
                     if (map.getPlayer().getHealth()<=0){
                         return;
                     }
