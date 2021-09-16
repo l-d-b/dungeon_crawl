@@ -193,7 +193,7 @@ public class Main extends Application {
 
                     map.getPlayer().fight(map.getPlayer().cellCheck(0,-1).getMonster());
                     if (map.getPlayer().getHealth()<=0){
-                        MapLoader.loadMap(gameOver);
+                        map = MapLoader.loadMap(gameOver);
                         refresh();
                         break;
                     }
@@ -244,7 +244,7 @@ public class Main extends Application {
                 else if(map.getPlayer().cellCheck(0, 1).isMonster()){
                     map.getPlayer().fight(map.getPlayer().cellCheck(0, 1).getMonster());
                     if (map.getPlayer().getHealth()<=0){
-                        MapLoader.loadMap(gameOver);
+                        map =MapLoader.loadMap(gameOver);
                         refresh();
                         break;
                     }
@@ -297,7 +297,7 @@ public class Main extends Application {
                 else if(map.getPlayer().cellCheck(-1, 0).isMonster()){
                     map.getPlayer().fight(map.getPlayer().cellCheck(-1, 0).getMonster());
                     if (map.getPlayer().getHealth()<=0){
-                        MapLoader.loadMap(gameOver);
+                        map =MapLoader.loadMap(gameOver);
                         refresh();
                         break;
                     }
@@ -349,7 +349,7 @@ public class Main extends Application {
                 else if(map.getPlayer().cellCheck(1,0).isMonster()){
                     map.getPlayer().fight(map.getPlayer().cellCheck(1,0).getMonster());
                     if (map.getPlayer().getHealth()<=0){
-                        MapLoader.loadMap(gameOver);
+                        map =MapLoader.loadMap(gameOver);
                         refresh();
                         break;
                     }
