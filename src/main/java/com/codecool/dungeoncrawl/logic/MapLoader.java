@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.monsters.Golem;
 import com.codecool.dungeoncrawl.logic.monsters.Skeleton;
 
 import java.io.InputStream;
@@ -59,6 +60,7 @@ public class MapLoader {
                             break;
                         case 'g':
                             cell.setType(CellType.GOLEM);
+                            new Golem(cell);
                             break;
                         case '¤':
                             cell.setType(CellType.GHOST);

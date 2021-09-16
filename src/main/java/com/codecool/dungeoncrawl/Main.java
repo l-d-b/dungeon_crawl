@@ -104,7 +104,9 @@ public class Main extends Application {
 
         BorderPane borderPane = new BorderPane();
 
-        borderPane.setLeft(canvas);
+        borderPane.setCenter(canvas);
+        canvas.setWidth(1600);
+        canvas.setHeight(1000);
         borderPane.setRight(ui);
 
         ui.add(pickUpButton,0,13);
@@ -133,7 +135,7 @@ public class Main extends Application {
             case UP:
 
                 if(map.getPlayer().cellCheck(0, -1).getType() != CellType.WALL &&
-                        map.getPlayer().cellCheck(0, -1).getType() != CellType.SKELETON){
+                        map.getPlayer().cellCheck(0, -1).getType() != CellType.GOLEM){
 
                     if(map.getPlayer().cellCheck(0, -1).isItem()) {
 
@@ -164,7 +166,7 @@ public class Main extends Application {
                     }
 
                 }
-                else if(map.getPlayer().cellCheck(0,-1).getType() == CellType.SKELETON){
+                else if(map.getPlayer().cellCheck(0,-1).getType() == CellType.GOLEM){
                     map.getPlayer().fight(map.getPlayer().cellCheck(0,-1).getMonster());
                     if (map.getPlayer().getHealth()<=0){
                         return;
@@ -331,9 +333,9 @@ public class Main extends Application {
     private void refresh() {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < 25; x++) {
-            for (int y = 0; y < 25; y++) {
-                Cell cell = map.getCell(map.getPlayer().getX() - 13 + x, map.getPlayer().getY() - 13 + y);
+        for (int x = 0; x < 50; x++) {
+            for (int y = 0; y < 32; y++) {
+                Cell cell = map.getCell(map.getPlayer().getX() - 25 + x, map.getPlayer().getY() - 16 + y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else {
