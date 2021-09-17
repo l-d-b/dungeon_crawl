@@ -395,7 +395,7 @@ public class Main extends Application {
 
     public void pickUp(){
         CellType itemToPick = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getType();
-        map.getPlayer().pickUpItem(itemToPick, map, maxHealth);
+        map.getPlayer().pickUpItem(itemToPick, map);
         pickUpButton.setVisible(false);
         refresh();
     }

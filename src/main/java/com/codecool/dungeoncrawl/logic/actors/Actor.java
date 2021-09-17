@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -30,39 +31,27 @@ public abstract class Actor implements Drawable {
         cell = nextCell;
     }
 
-    public void fight(Monster monster){
+    public void fight(Monster monster) {
 
-       int monsterHealth = monster.getHealth();
-       int monsterAttack = monster.getAttack();
-       int playerAttack = this.attack;
-       int playerHealth = this.health;
-//       int round = 1;
-//       while((monsterHealth >= 1) && ( playerHealth >= 1)){
-//            switch (round){
-//                case 1:
-                    int actuelMonsterHealth = monsterHealth - playerAttack;
-                    monsterHealth = actuelMonsterHealth;
-                    monster.setHealth(actuelMonsterHealth);
-                    System.out.println("MH: " +monsterHealth);
-//                    round++;
-                    if (monster.getName().equals("Boss") && monster.getHealth() <= 0) {
-                        endGame(this);
-                    }
-//                    break;
-//                case 2:
-                    int actuelPlayerHealth = playerHealth - monsterAttack;
-                    playerHealth = actuelPlayerHealth;
-                    System.out.println("PH: " +playerHealth);
-                    this.setHealth(actuelPlayerHealth);
+        int monsterHealth = monster.getHealth();
+        int monsterAttack = monster.getAttack();
+        int playerAttack = this.attack;
+        int playerHealth = this.health;
 
-//                    round--;
-                    if (actuelPlayerHealth <= 0) {
-                        endGame(monster);
-                    }
-//                    break;
-            }
-//       }
-//    }
+        int actualMonsterHealth = monsterHealth - playerAttack;
+        monster.setHealth(actualMonsterHealth);
+
+        if (monster.getName().equals("Boss") && monster.getHealth() <= 0) {
+            endGame(this);
+        }
+
+        int actualPlayerHealth = playerHealth - monsterAttack;
+        this.setHealth(actualPlayerHealth);
+
+        if (actualPlayerHealth <= 0) {
+            endGame(monster);
+        }
+    }
 
     public Cell cellCheck(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
@@ -98,7 +87,7 @@ public abstract class Actor implements Drawable {
         this.name = name;
     }
 
-    public void setGyozo(String name){
+    public void setGyozo(String name) {
         this.name = name;
     }
 
