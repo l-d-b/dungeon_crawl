@@ -7,8 +7,7 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import java.util.ArrayList;
 
 public class Player extends Actor {
-    private CellType cellType;
-    private ArrayList<CellType> inventory = new ArrayList<CellType>();
+    private final ArrayList<CellType> inventory = new ArrayList<>();
 
     public Player(Cell cell) {
         super(cell, 100, 5, "Player");
@@ -29,11 +28,7 @@ public class Player extends Actor {
     }
 
 
-    public void goThroughDoor() {
-
-    }
-
-    public void pickUpItem(CellType item, GameMap map) {
+    public void pickUpItem(CellType item) {
         if (!(item == CellType.HEAL)) {
             this.inventory.add(item);
         }
@@ -41,15 +36,15 @@ public class Player extends Actor {
             int attack = getAttack() + 5;
             setAttack(attack);
         } else if (item == CellType.HEAL) {
+            int health;
             if (this.getHealth() + 15 > 100) {
-                int health = this.getHealth() + (100 - this.getHealth());
-                setHealth(health);
+                health = this.getHealth() + (100 - this.getHealth());
             } else {
-                int health = this.getHealth() + 15;
-                setHealth(health);
+                health = this.getHealth() + 15;
             }
+            setHealth(health);
 
         }
-        map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).setType(CellType.FLOOR);
+        getCell().setType(CellType.FLOOR);
     }
 }
