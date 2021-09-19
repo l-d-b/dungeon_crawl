@@ -171,6 +171,10 @@ public class Main extends Application {
         pickUpButton.setVisible(true);
     }
 
+    private void setPickUpButtonVisibleFalse() {
+        pickUpButton.setVisible(false);
+    }
+
     private Monster getCurrentMonster(int x, int y) {
         return playerCellCheck(x, y).getMonster();
     }
@@ -246,6 +250,10 @@ public class Main extends Application {
 
 
     private void refresh() {
+        updateHealth();
+        updateInventory();
+        updatePower();
+
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int x = 0; x < 50; x++) {
@@ -258,22 +266,19 @@ public class Main extends Application {
                 }
             }
         }
-        currentHealthLabel.setText(String.valueOf(map.getPlayer().getHealth()));
-        currentPlayerHealth = map.getPlayer().getHealth();
-        System.out.println(map.getPlayer().getHealth());
-        healthbar.setWidth(map.getPlayer().getHealth() * 2);
+        currentHealthLabel.setText(String.valueOf(currentPlayerHealth));
+        healthbar.setWidth(currentPlayerHealth * 2);
         currentPowerLabel.setText(String.valueOf(currentPlayerPower));
         powerbar.setWidth(currentPlayerPower * 10);
-
-        updateHealth();
-        updateInventory();
-        updatePower();
     }
 
     public void pickUp() {
-        CellType itemToPick = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getType();
-        map.getPlayer().pickUpItem(itemToPick);
-        pickUpButton.setVisible(false);
+        int playerCoordX = player.getX();
+        int playerCoordY = player.getY();
+
+        CellType itemToPick = map.getCell(playerCoordX, playerCoordY).getType();
+        player.pickUpItem(itemToPick);
+        setPickUpButtonVisibleFalse();
         refresh();
     }
 
@@ -281,18 +286,17 @@ public class Main extends Application {
         StringBuilder stringBuilder = new StringBuilder();
         for (CellType item : map.getPlayer().getInventory()) {
             stringBuilder.append(item).append("\n");
-            System.out.println(stringBuilder);
             inventory.setText(String.valueOf(stringBuilder));
         }
     }
 
     public void updateHealth() {
-        currentPlayerHealth = map.getPlayer().getHealth();
+        currentPlayerHealth = player.getHealth();
     }
 
     public void updatePower() {
-        if (map.getPlayer().getAttack() <= 20) {
-            currentPlayerPower = map.getPlayer().getAttack();
+        if (currentPlayerPower <= 20) {
+            currentPlayerPower = player.getAttack();
         } else {
             currentPlayerPower = maxPower;
         }
@@ -302,25 +306,26 @@ public class Main extends Application {
         switch (mapLevelCounter) {
             case 1:
                 map = MapLoader.loadMap(map2, this.currentPlayerHealth, this.currentPlayerPower);
-                this.mapLevelCounter = 2;
                 this.player = map.getPlayer();
+                this.mapLevelCounter = 2;
                 break;
 
             case 2:
-                if (map.getPlayer().cellCheck(0, 0).getType() == CellType.CLOSED_DOOR) {
+                if (playerCellCheck(0, 0).isDoorClose()) {
                     map = MapLoader.loadMap(map3, this.currentPlayerHealth, this.currentPlayerPower);
+                    this.player = map.getPlayer();
                     this.mapLevelCounter = 3;
-                    this.player = map.getPlayer();
                     break;
-                } else if (map.getPlayer().cellCheck(0, 0).getType() == CellType.OPENED_DOOR) {
+                } else if (!playerCellCheck(0, 0).isDoorClose()) {
                     map = MapLoader.loadMap(map1, this.currentPlayerHealth, this.currentPlayerPower);
-                    this.mapLevelCounter = 1;
                     this.player = map.getPlayer();
+                    this.mapLevelCounter = 1;
                     break;
                 }
             case 3:
-                if (map.getPlayer().cellCheck(0, 0).getType() == CellType.OPENED_DOOR) {
+                if (!playerCellCheck(0, 0).isDoorClose()) {
                     map = MapLoader.loadMap(map2, this.currentPlayerHealth, this.currentPlayerPower);
+                    this.player = map.getPlayer();
                     this.mapLevelCounter = 2;
                     break;
                 }
