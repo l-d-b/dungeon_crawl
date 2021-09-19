@@ -2,6 +2,10 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
 
+import com.codecool.dungeoncrawl.logic.items.Heal;
+import com.codecool.dungeoncrawl.logic.items.Key;
+import com.codecool.dungeoncrawl.logic.items.Shield;
+import com.codecool.dungeoncrawl.logic.items.Sword;
 import com.codecool.dungeoncrawl.logic.monsters.*;
 
 import java.io.InputStream;
@@ -43,12 +47,15 @@ public class MapLoader {
                             break;
                         case 'ß':
                             cell.setType(CellType.SWORD);
+                            new Sword(cell);
                             break;
                         case '$':
                             cell.setType(CellType.SHIELD);
+                            new Shield(cell);
                             break;
                         case '*':
                             cell.setType(CellType.KEY);
+                            new Key(cell);
                             break;
                         case '|':
                             cell.setType(CellType.OPENED_DOOR);
@@ -70,6 +77,7 @@ public class MapLoader {
                             break;
                         case 'h':
                             cell.setType(CellType.HEAL);
+                            new Heal(cell);
                             break;
                         case 't':
                             cell.setType(CellType.TREE);
