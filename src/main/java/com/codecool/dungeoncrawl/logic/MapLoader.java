@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class MapLoader {
 
-    public static GameMap loadMap(String currentMap) {
+    public static GameMap loadMap(String currentMap, int playerHealth, int playerPower) {
         InputStream is = MapLoader.class.getResourceAsStream(currentMap);
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
@@ -43,7 +43,7 @@ public class MapLoader {
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell));
+                            map.setPlayer(new Player(cell, playerHealth, playerPower));
                             break;
                         case 'ß':
                             cell.setType(CellType.SWORD);

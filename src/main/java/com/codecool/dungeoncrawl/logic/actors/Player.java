@@ -9,8 +9,8 @@ import java.util.ArrayList;
 public class Player extends Actor {
     private final ArrayList<CellType> inventory = new ArrayList<>();
 
-    public Player(Cell cell) {
-        super(cell, 100, 5, "Player");
+    public Player(Cell cell, int health, int attack) {
+        super(cell, health, attack, "Player");
     }
 
     public String getTileName() {

@@ -31,7 +31,7 @@ public class Main extends Application {
     String map2 = "/map_2.txt";
     String map3 = "/map_3.txt";
     private int mapLevelCounter;
-    GameMap map = MapLoader.loadMap(map1);
+    GameMap map = MapLoader.loadMap(map1, 100, 5);
     Player player = map.getPlayer();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
@@ -58,6 +58,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         GridPane ui = new GridPane();
         ui.setMinWidth(300);
         ui.setVgap(1);
@@ -66,20 +67,20 @@ public class Main extends Application {
         String playerHealth = String.valueOf(player.getHealth());
         String playerPower = String.valueOf(player.getAttack());
         healthLabel.setText("Health: ");
-        healthLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
+        healthLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
         healthLabel.setTextFill(Color.BROWN);
         currentHealthLabel.setText(playerHealth);
         ui.add(healthLabel, 0, 0);
         ui.add(currentHealthLabel, 0, 1);
 
         ui.setHalignment(healthLabel, HPos.CENTER);
-        healthLabel.setPadding(new Insets(0,55, 0, 55));
+        healthLabel.setPadding(new Insets(0, 55, 0, 55));
 
-        healthbar = new Rectangle(100,100,200,20);
-        Rectangle background = new Rectangle(100,100,200,20);
+        healthbar = new Rectangle(100, 100, 200, 20);
+        Rectangle background = new Rectangle(100, 100, 200, 20);
 
         ui.add(background, 0, 11);
-        ui.add(healthbar,0,11);
+        ui.add(healthbar, 0, 11);
         background.setFill(Color.GREY);
 
         healthbar.setFill(Color.GREEN);
@@ -87,18 +88,18 @@ public class Main extends Application {
         mapLevelCounter = 1;
 
         powerLabel.setText("Power: ");
-        powerLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
+        powerLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
         powerLabel.setTextFill(Color.BROWN);
         currentPowerLabel.setText(playerPower);
         ui.add(powerLabel, 0, 12);
         ui.add(currentPowerLabel, 0, 14);
         ui.setHalignment(powerLabel, HPos.CENTER);
 
-        powerbar = new Rectangle(100,100,200,20);
-        Rectangle powBackground = new Rectangle(100,100,200,20);
+        powerbar = new Rectangle(100, 100, 200, 20);
+        Rectangle powBackground = new Rectangle(100, 100, 200, 20);
 
         ui.add(powBackground, 0, 15);
-        ui.add(powerbar,0,15);
+        ui.add(powerbar, 0, 15);
         powBackground.setFill(Color.GREY);
 
         powerbar.setFill(Color.RED);
@@ -110,10 +111,10 @@ public class Main extends Application {
             pickUp();
         });
 
-        pickUpButton.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent-> {
-            if(keyEvent.getCode() == KeyCode.ENTER){
-               pickUp();
-           }
+        pickUpButton.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                pickUp();
+            }
         });
 
         primaryStage.show();
@@ -125,17 +126,17 @@ public class Main extends Application {
         canvas.setHeight(1000);
         borderPane.setRight(ui);
 
-        ui.add(pickUpButton,0,17);
+        ui.add(pickUpButton, 0, 17);
         ui.setHalignment(pickUpButton, HPos.CENTER);
 
         inventoryLabel.setText("Inventory:");
-        ui.add(inventoryLabel,0,19);
+        ui.add(inventoryLabel, 0, 19);
         ui.add(inventory, 0, 21);
-        inventoryLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 22));
+        inventoryLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 22));
         inventoryLabel.setTextFill(Color.BROWN);
         ui.setHalignment(inventoryLabel, HPos.CENTER);
         ui.setHalignment(inventory, HPos.CENTER);
-        inventory.setFont(Font.font ("Verdana", 16));
+        inventory.setFont(Font.font("Verdana", 16));
 
 
         Scene scene = new Scene(borderPane);
@@ -150,208 +151,183 @@ public class Main extends Application {
         Player player = map.getPlayer();
         switch (keyEvent.getCode()) {
             case UP:
-                if(player.cellCheck(0, -1).getType() != CellType.WALL &&
-                        !player.cellCheck(0, -1).isMonster()){
+                if (player.cellCheck(0, -1).getType() != CellType.WALL &&
+                        !player.cellCheck(0, -1).isMonster()) {
 
-                    if(player.cellCheck(0, -1).isItem()) {
+                    if (player.cellCheck(0, -1).isItem()) {
 
                         pickUpButton.setVisible(true);
                         player.move(0, -1);
                         refresh();
                         break;
-                    }
-                    else if (player.cellCheck(0, -1).getType() == CellType.CLOSED_DOOR &&
+                    } else if (player.cellCheck(0, -1).getType() == CellType.CLOSED_DOOR &&
                             !player.getInventory().contains(CellType.KEY)) {
 
                         refresh();
                         break;
-                    }
-                    else if (player.cellCheck(0, -1).getType() == CellType.CLOSED_DOOR &&
+                    } else if (player.cellCheck(0, -1).getType() == CellType.CLOSED_DOOR &&
                             player.getInventory().contains(CellType.KEY)) {
 
-                        player.move(0,-1);
+                        player.move(0, -1);
                         mapLevel(this.mapLevelCounter);
                         refresh();
                         break;
-                    }
-                    else{
+                    } else {
                         player.move(0, -1);
                         refresh();
                         break;
                     }
 
-                }
-                else if(player.cellCheck(0,-1).isMonster()){
-                    Monster monster = player.cellCheck(0,-1).getMonster();
+                } else if (player.cellCheck(0, -1).isMonster()) {
+                    Monster monster = player.cellCheck(0, -1).getMonster();
                     player.fight(monster);
                     refresh();
-                    if ((monster.getName().equals("Boss") && monster.getHealth() <= 0) || (player.getHealth()<=0)){
-                        map = MapLoader.loadMap(gameOver);
+                    if ((monster.getName().equals("Boss") && monster.getHealth() <= 0) || (player.getHealth() <= 0)) {
+                        map = MapLoader.loadMap(gameOver, this.currentHealth, this.currentPower);
                         refresh();
                         break;
-                    }
-                    else if(player.cellCheck(0,-1).getMonster().getHealth()<=0){
-                        player.cellCheck(0,-1).setType(CellType.FLOOR);
+                    } else if (player.cellCheck(0, -1).getMonster().getHealth() <= 0) {
+                        player.cellCheck(0, -1).setType(CellType.FLOOR);
                         updateHealth();
                         break;
                     }
-                }
-                else{
+                } else {
                     refresh();
                     break;
                 }
             case DOWN:
 
-                if(player.cellCheck(0, 1).getType() != CellType.WALL &&
-                        !player.cellCheck(0, 1).isMonster()){
+                if (player.cellCheck(0, 1).getType() != CellType.WALL &&
+                        !player.cellCheck(0, 1).isMonster()) {
 
-                    if(player.cellCheck(0, 1).isItem()) {
+                    if (player.cellCheck(0, 1).isItem()) {
 
                         pickUpButton.setVisible(true);
                         player.move(0, 1);
                         refresh();
                         break;
-                    }
-                    else if (player.cellCheck(0, 1).getType() == CellType.CLOSED_DOOR &&
+                    } else if (player.cellCheck(0, 1).getType() == CellType.CLOSED_DOOR &&
                             !player.getInventory().contains(CellType.KEY)) {
 
                         refresh();
                         break;
-                    }
-                    else if (player.cellCheck(0, 1).getType() == CellType.CLOSED_DOOR &&
+                    } else if (player.cellCheck(0, 1).getType() == CellType.CLOSED_DOOR &&
                             player.getInventory().contains(CellType.KEY)) {
 
-                        player.move(0,1);
+                        player.move(0, 1);
                         mapLevel(this.mapLevelCounter);
 
 
                         refresh();
                         break;
-                    }
-                    else{
+                    } else {
                         player.move(0, 1);
                         refresh();
                         break;
                     }
 
-                }
-                else if(player.cellCheck(0, 1).isMonster()){
+                } else if (player.cellCheck(0, 1).isMonster()) {
                     player.fight(player.cellCheck(0, 1).getMonster());
                     refresh();
-                    if (player.getHealth()<=0){
-                        map =MapLoader.loadMap(gameOver);
+                    if (player.getHealth() <= 0) {
+                        map = MapLoader.loadMap(gameOver, this.currentHealth, this.currentPower);
                         refresh();
                         break;
-                    }
-                    else if(player.cellCheck(0, 1).getMonster().getHealth()<=0){
+                    } else if (player.cellCheck(0, 1).getMonster().getHealth() <= 0) {
                         player.cellCheck(0, 1).setType(CellType.FLOOR);
                         break;
                     }
-                }
-                else {
+                } else {
                     refresh();
                     break;
 
                 }
             case LEFT:
 
-                if(player.cellCheck(-1, 0).getType() != CellType.WALL &&
-                        !player.cellCheck(-1, 0).isMonster()){
+                if (player.cellCheck(-1, 0).getType() != CellType.WALL &&
+                        !player.cellCheck(-1, 0).isMonster()) {
 
 
-
-                    if(player.cellCheck(-1, 0).isItem()) {
+                    if (player.cellCheck(-1, 0).isItem()) {
 
                         pickUpButton.setVisible(true);
                         player.move(-1, 0);
                         refresh();
                         break;
-                    }
-                    else if (player.cellCheck(-1, 0).getType() == CellType.CLOSED_DOOR &&
+                    } else if (player.cellCheck(-1, 0).getType() == CellType.CLOSED_DOOR &&
                             !player.getInventory().contains(CellType.KEY)) {
 
                         refresh();
                         break;
-                    }
-                    else if (player.cellCheck(-1, 0).getType() == CellType.CLOSED_DOOR &&
+                    } else if (player.cellCheck(-1, 0).getType() == CellType.CLOSED_DOOR &&
                             player.getInventory().contains(CellType.KEY)) {
 
-                        player.move(-1,0);
+                        player.move(-1, 0);
                         mapLevel(this.mapLevelCounter);
                         refresh();
                         break;
-                    }
-                    else{
+                    } else {
                         player.move(-1, 0);
                         refresh();
                         break;
                     }
-                }
-                else if(player.cellCheck(-1, 0).isMonster()){
+                } else if (player.cellCheck(-1, 0).isMonster()) {
                     player.fight(player.cellCheck(-1, 0).getMonster());
                     refresh();
-                    if (player.getHealth()<=0){
-                        map =MapLoader.loadMap(gameOver);
+                    if (player.getHealth() <= 0) {
+                        map = MapLoader.loadMap(gameOver, this.currentHealth, this.currentPower);
                         refresh();
                         break;
-                    }
-                    else if(player.cellCheck(-1, 0).getMonster().getHealth()<=0){
+                    } else if (player.cellCheck(-1, 0).getMonster().getHealth() <= 0) {
                         player.cellCheck(-1, 0).setType(CellType.FLOOR);
                         break;
                     }
-                }
-                else {
+                } else {
                     refresh();
                     break;
 
                 }
             case RIGHT:
 
-                if(player.cellCheck(1,0).getType() != CellType.WALL &&
-                        !player.cellCheck(1,0).isMonster()){
+                if (player.cellCheck(1, 0).getType() != CellType.WALL &&
+                        !player.cellCheck(1, 0).isMonster()) {
 
-                    if(player.cellCheck(1,0).isItem()) {
+                    if (player.cellCheck(1, 0).isItem()) {
 
                         pickUpButton.setVisible(true);
-                        player.move(1,0);
+                        player.move(1, 0);
                         refresh();
                         break;
-                    }
-                    else if (player.cellCheck(1, 0).getType() == CellType.CLOSED_DOOR &&
+                    } else if (player.cellCheck(1, 0).getType() == CellType.CLOSED_DOOR &&
                             !player.getInventory().contains(CellType.KEY)) {
 
                         refresh();
                         break;
-                    }
-                    else if (player.cellCheck(1, 0).getType() == CellType.CLOSED_DOOR &&
+                    } else if (player.cellCheck(1, 0).getType() == CellType.CLOSED_DOOR &&
                             player.getInventory().contains(CellType.KEY)) {
 
-                        player.move(1,0);
+                        player.move(1, 0);
                         mapLevel(this.mapLevelCounter);
 
                         refresh();
                         break;
-                    }
-                    else{
-                        player.move(1,0);
+                    } else {
+                        player.move(1, 0);
                         refresh();
                         break;
                     }
-                }
-                else if(player.cellCheck(1,0).isMonster()){
-                    player.fight(player.cellCheck(1,0).getMonster());
+                } else if (player.cellCheck(1, 0).isMonster()) {
+                    player.fight(player.cellCheck(1, 0).getMonster());
                     refresh();
-                    if (player.getHealth()<=0){
-                        map =MapLoader.loadMap(gameOver);
+                    if (player.getHealth() <= 0) {
+                        map = MapLoader.loadMap(gameOver, this.currentHealth, this.currentPower);
                         refresh();
                         break;
-                    }
-                    else if(player.cellCheck(1,0).getMonster().getHealth()<=0){
-                        player.cellCheck(1,0).setType(CellType.FLOOR);
+                    } else if (player.cellCheck(1, 0).getMonster().getHealth() <= 0) {
+                        player.cellCheck(1, 0).setType(CellType.FLOOR);
                         break;
                     }
-                }
-                else {
+                } else {
                     refresh();
                     break;
                 }
@@ -387,27 +363,27 @@ public class Main extends Application {
         updatePower();
     }
 
-    public void pickUp(){
+    public void pickUp() {
         CellType itemToPick = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getType();
         map.getPlayer().pickUpItem(itemToPick);
         pickUpButton.setVisible(false);
         refresh();
     }
 
-    public void updateInventory(){
+    public void updateInventory() {
         StringBuilder stringBuilder = new StringBuilder();
-        for(CellType item: map.getPlayer().getInventory()){
+        for (CellType item : map.getPlayer().getInventory()) {
             stringBuilder.append(item).append("\n");
             System.out.println(stringBuilder);
             inventory.setText(String.valueOf(stringBuilder));
         }
     }
 
-    public void updateHealth(){
+    public void updateHealth() {
         currentHealth = map.getPlayer().getHealth();
     }
 
-    public void updatePower(){
+    public void updatePower() {
         if (map.getPlayer().getAttack() <= 20) {
             currentPower = map.getPlayer().getAttack();
         } else {
@@ -415,27 +391,26 @@ public class Main extends Application {
         }
     }
 
-    public void mapLevel(int mapLevelCounter){
-        switch (mapLevelCounter){
+    public void mapLevel(int mapLevelCounter) {
+        switch (mapLevelCounter) {
             case 1:
-                map = MapLoader.loadMap(map2);
+                map = MapLoader.loadMap(map2, this.currentHealth, this.currentPower);
                 this.mapLevelCounter = 2;
                 break;
 
             case 2:
-                if(map.getPlayer().cellCheck(0, 0).getType() == CellType.CLOSED_DOOR){
-                    map = MapLoader.loadMap(map3);
+                if (map.getPlayer().cellCheck(0, 0).getType() == CellType.CLOSED_DOOR) {
+                    map = MapLoader.loadMap(map3, this.currentHealth, this.currentPower);
                     this.mapLevelCounter = 3;
                     break;
-                }
-                else if(map.getPlayer().cellCheck(0, 0).getType() == CellType.OPENED_DOOR){
-                    map = MapLoader.loadMap(map1);
+                } else if (map.getPlayer().cellCheck(0, 0).getType() == CellType.OPENED_DOOR) {
+                    map = MapLoader.loadMap(map1, this.currentHealth, this.currentPower);
                     this.mapLevelCounter = 1;
-                     break;
+                    break;
                 }
             case 3:
-                if(map.getPlayer().cellCheck(0, 0).getType() == CellType.OPENED_DOOR){
-                    map = MapLoader.loadMap(map2);
+                if (map.getPlayer().cellCheck(0, 0).getType() == CellType.OPENED_DOOR) {
+                    map = MapLoader.loadMap(map2, this.currentHealth, this.currentPower);
                     this.mapLevelCounter = 2;
                     break;
                 }
