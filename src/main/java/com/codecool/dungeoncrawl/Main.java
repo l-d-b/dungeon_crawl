@@ -30,13 +30,14 @@ public class Main extends Application {
     String map1 = "/map.txt";
     String map2 = "/map_2.txt";
     String map3 = "/map_3.txt";
-    private int mapLevelCounter;
     GameMap map = MapLoader.loadMap(map1, 100, 5);
     Player player = map.getPlayer();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
+
+    private int mapLevelCounter;
     int maxPower = 20;
     int currentHealth = player.getHealth();
     int currentPower = player.getAttack();
@@ -44,13 +45,13 @@ public class Main extends Application {
     Label currentHealthLabel = new Label();
     Label currentPowerLabel = new Label();
     Label inventoryLabel = new Label();
-    Rectangle healthbar = new Rectangle();
-    Rectangle powerbar = new Rectangle();
-    Button pickUpButton;
-
     Label inventory = new Label();
     Label powerLabel = new Label();
 
+
+    Rectangle healthbar = new Rectangle();
+    Rectangle powerbar = new Rectangle();
+    Button pickUpButton;
 
     public static void main(String[] args) {
         launch(args);
@@ -156,13 +157,15 @@ public class Main extends Application {
         inventory.setFont(Font.font("Verdana", 16));
     }
 
+    public Cell playerCellCheck(int x, int y){
+        return player.cellCheck(x, y);
+    }
 
     private void onKeyPressed(KeyEvent keyEvent) {
         Player player = map.getPlayer();
         switch (keyEvent.getCode()) {
             case UP:
-                if (player.cellCheck(0, -1).getType() != CellType.WALL &&
-                        !player.cellCheck(0, -1).isMonster()) {
+                if (playerCellCheck(0,-1).isWall() && !playerCellCheck(0,-1).isMonster()) {
 
                     if (player.cellCheck(0, -1).isItem()) {
 
@@ -207,8 +210,7 @@ public class Main extends Application {
                 }
             case DOWN:
 
-                if (player.cellCheck(0, 1).getType() != CellType.WALL &&
-                        !player.cellCheck(0, 1).isMonster()) {
+                if (playerCellCheck(0,1).isWall() && !playerCellCheck(0,1).isMonster()) {
 
                     if (player.cellCheck(0, 1).isItem()) {
 
@@ -254,8 +256,7 @@ public class Main extends Application {
                 }
             case LEFT:
 
-                if (player.cellCheck(-1, 0).getType() != CellType.WALL &&
-                        !player.cellCheck(-1, 0).isMonster()) {
+                if (playerCellCheck(-1,0).isWall() && !playerCellCheck(-1,0).isMonster()) {
 
 
                     if (player.cellCheck(-1, 0).isItem()) {
@@ -299,8 +300,7 @@ public class Main extends Application {
                 }
             case RIGHT:
 
-                if (player.cellCheck(1, 0).getType() != CellType.WALL &&
-                        !player.cellCheck(1, 0).isMonster()) {
+                if (playerCellCheck(1,0).isWall() && !playerCellCheck(1,0).isMonster()) {
 
                     if (player.cellCheck(1, 0).isItem()) {
 

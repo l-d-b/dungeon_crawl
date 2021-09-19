@@ -74,4 +74,8 @@ public class Cell implements Drawable {
         return this.type.equals(CellType.GOLEM) || this.type.equals(CellType.GHOST)
                 || this.type.equals(CellType.SKELETON) || this.type.equals(CellType.SPIDER) || this.type.equals(CellType.BOSS);
     }
+
+    public boolean isWall(){
+        return !this.type.equals(CellType.WALL);
+    }
 }
