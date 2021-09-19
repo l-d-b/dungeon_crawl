@@ -73,23 +73,7 @@ public class Main extends Application {
 
         background.setFill(Color.GREY);
         mapLevelCounter = 1;
-
-        pickUpButton = new Button("Pick up");
-        pickUpButton.setVisible(false);
-
-        pickUpButton.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-            pickUp();
-        });
-
-        pickUpButton.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ENTER) {
-                pickUp();
-            }
-        });
-        ui.add(pickUpButton, 0, 17);
-        ui.setHalignment(pickUpButton, HPos.CENTER);
-
-        //primaryStage.show();
+        setPickUpButton(ui);
 
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(canvas);
@@ -152,6 +136,24 @@ public class Main extends Application {
         powBackground.setFill(Color.GREY);
 
         powerbar.setFill(Color.RED);
+
+    }
+
+    private void setPickUpButton(GridPane ui){
+        pickUpButton = new Button("Pick up");
+        pickUpButton.setVisible(false);
+
+        pickUpButton.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            pickUp();
+        });
+
+        pickUpButton.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                pickUp();
+            }
+        });
+        ui.add(pickUpButton, 0, 17);
+        ui.setHalignment(pickUpButton, HPos.CENTER);
 
     }
 
