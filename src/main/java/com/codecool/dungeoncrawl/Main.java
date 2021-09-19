@@ -4,7 +4,6 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
 import javafx.application.Application;
 import javafx.geometry.HPos;
@@ -37,10 +36,8 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     int maxPower = 20;
-    int maxHealth = 100;
     int currentHealth = map.getPlayer().getHealth();
     int currentPower = map.getPlayer().getAttack();
-   // int healthbarWidth = currentHealth*20;
     Label healthLabel = new Label();
     Label currentHealthLabel = new Label();
     Label currentPowerLabel = new Label();
@@ -48,9 +45,6 @@ public class Main extends Application {
     Rectangle healthbar = new Rectangle();
     Rectangle powerbar = new Rectangle();
     Button pickUpButton;
-    Player player;
-    Monster monster;
-    Cell cell;
 
     Label inventory = new Label();
     Label powerLabel = new Label();
@@ -88,9 +82,6 @@ public class Main extends Application {
         healthbar.setFill(Color.GREEN);
 
         mapLevelCounter = 1;
-
-     //   ui.add(new Label("Power: "), 0,12);
-      //  ui.add(powerLabel,1,12);
 
         powerLabel.setText("Power: ");
         powerLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
@@ -189,7 +180,6 @@ public class Main extends Application {
                 else if(map.getPlayer().cellCheck(0,-1).isMonster()){
                     Monster monster = map.getPlayer().cellCheck(0,-1).getMonster();
                     map.getPlayer().fight(monster);
-                    //map.getPlayer().fight(map.getPlayer().cellCheck(0,-1).getMonster());
                     refresh();
                     if ((monster.getName().equals("Boss") && monster.getHealth() <= 0) || (map.getPlayer().getHealth()<=0)){
                         map = MapLoader.loadMap(gameOver);
@@ -410,12 +400,10 @@ public class Main extends Application {
     }
 
     public void updateHealth(){
-       // healthLabel.setText(String.valueOf(map.getPlayer().getHealth()));
         currentHealth = map.getPlayer().getHealth();
     }
 
     public void updatePower(){
-   //     currentPowerLabel.setText(String.valueOf(map.getPlayer().getAttack()));
         if (map.getPlayer().getAttack() <= 20) {
             currentPower = map.getPlayer().getAttack();
         } else {
@@ -423,8 +411,7 @@ public class Main extends Application {
         }
     }
 
-    public int mapLevel(int mapLevelCounter){
-
+    public void mapLevel(int mapLevelCounter){
         switch (mapLevelCounter){
             case 1:
                 map = MapLoader.loadMap(map2);
@@ -449,6 +436,5 @@ public class Main extends Application {
                     break;
                 }
         }
-        return 0;
     }
 }
