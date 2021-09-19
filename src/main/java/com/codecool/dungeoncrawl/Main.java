@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
 import javafx.application.Application;
 import javafx.geometry.HPos;
@@ -31,13 +32,14 @@ public class Main extends Application {
     String map3 = "/map_3.txt";
     private int mapLevelCounter;
     GameMap map = MapLoader.loadMap(map1);
+    Player player = map.getPlayer();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     int maxPower = 20;
-    int currentHealth = map.getPlayer().getHealth();
-    int currentPower = map.getPlayer().getAttack();
+    int currentHealth = player.getHealth();
+    int currentPower = player.getAttack();
     Label healthLabel = new Label();
     Label currentHealthLabel = new Label();
     Label currentPowerLabel = new Label();
@@ -60,8 +62,9 @@ public class Main extends Application {
         ui.setMinWidth(300);
         ui.setVgap(1);
         ui.setPadding(new Insets(50));
-        String playerHealth = String.valueOf(map.getPlayer().getHealth());
-        String playerPower = String.valueOf(map.getPlayer().getAttack());
+        Player player = map.getPlayer();
+        String playerHealth = String.valueOf(player.getHealth());
+        String playerPower = String.valueOf(player.getAttack());
         healthLabel.setText("Health: ");
         healthLabel.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
         healthLabel.setTextFill(Color.BROWN);
@@ -144,50 +147,51 @@ public class Main extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
+        Player player = map.getPlayer();
         switch (keyEvent.getCode()) {
             case UP:
-                if(map.getPlayer().cellCheck(0, -1).getType() != CellType.WALL &&
-                        !map.getPlayer().cellCheck(0, -1).isMonster()){
+                if(player.cellCheck(0, -1).getType() != CellType.WALL &&
+                        !player.cellCheck(0, -1).isMonster()){
 
-                    if(map.getPlayer().cellCheck(0, -1).isItem()) {
+                    if(player.cellCheck(0, -1).isItem()) {
 
                         pickUpButton.setVisible(true);
-                        map.getPlayer().move(0, -1);
+                        player.move(0, -1);
                         refresh();
                         break;
                     }
-                    else if (map.getPlayer().cellCheck(0, -1).getType() == CellType.CLOSED_DOOR &&
-                            !map.getPlayer().getInventory().contains(CellType.KEY)) {
+                    else if (player.cellCheck(0, -1).getType() == CellType.CLOSED_DOOR &&
+                            !player.getInventory().contains(CellType.KEY)) {
 
                         refresh();
                         break;
                     }
-                    else if (map.getPlayer().cellCheck(0, -1).getType() == CellType.CLOSED_DOOR &&
-                            map.getPlayer().getInventory().contains(CellType.KEY)) {
+                    else if (player.cellCheck(0, -1).getType() == CellType.CLOSED_DOOR &&
+                            player.getInventory().contains(CellType.KEY)) {
 
-                        map.getPlayer().move(0,-1);
+                        player.move(0,-1);
                         mapLevel(this.mapLevelCounter);
                         refresh();
                         break;
                     }
                     else{
-                        map.getPlayer().move(0, -1);
+                        player.move(0, -1);
                         refresh();
                         break;
                     }
 
                 }
-                else if(map.getPlayer().cellCheck(0,-1).isMonster()){
-                    Monster monster = map.getPlayer().cellCheck(0,-1).getMonster();
-                    map.getPlayer().fight(monster);
+                else if(player.cellCheck(0,-1).isMonster()){
+                    Monster monster = player.cellCheck(0,-1).getMonster();
+                    player.fight(monster);
                     refresh();
-                    if ((monster.getName().equals("Boss") && monster.getHealth() <= 0) || (map.getPlayer().getHealth()<=0)){
+                    if ((monster.getName().equals("Boss") && monster.getHealth() <= 0) || (player.getHealth()<=0)){
                         map = MapLoader.loadMap(gameOver);
                         refresh();
                         break;
                     }
-                    else if(map.getPlayer().cellCheck(0,-1).getMonster().getHealth()<=0){
-                        map.getPlayer().cellCheck(0,-1).setType(CellType.FLOOR);
+                    else if(player.cellCheck(0,-1).getMonster().getHealth()<=0){
+                        player.cellCheck(0,-1).setType(CellType.FLOOR);
                         updateHealth();
                         break;
                     }
@@ -198,26 +202,26 @@ public class Main extends Application {
                 }
             case DOWN:
 
-                if(map.getPlayer().cellCheck(0, 1).getType() != CellType.WALL &&
-                        !map.getPlayer().cellCheck(0, 1).isMonster()){
+                if(player.cellCheck(0, 1).getType() != CellType.WALL &&
+                        !player.cellCheck(0, 1).isMonster()){
 
-                    if(map.getPlayer().cellCheck(0, 1).isItem()) {
+                    if(player.cellCheck(0, 1).isItem()) {
 
                         pickUpButton.setVisible(true);
-                        map.getPlayer().move(0, 1);
+                        player.move(0, 1);
                         refresh();
                         break;
                     }
-                    else if (map.getPlayer().cellCheck(0, 1).getType() == CellType.CLOSED_DOOR &&
-                            !map.getPlayer().getInventory().contains(CellType.KEY)) {
+                    else if (player.cellCheck(0, 1).getType() == CellType.CLOSED_DOOR &&
+                            !player.getInventory().contains(CellType.KEY)) {
 
                         refresh();
                         break;
                     }
-                    else if (map.getPlayer().cellCheck(0, 1).getType() == CellType.CLOSED_DOOR &&
-                            map.getPlayer().getInventory().contains(CellType.KEY)) {
+                    else if (player.cellCheck(0, 1).getType() == CellType.CLOSED_DOOR &&
+                            player.getInventory().contains(CellType.KEY)) {
 
-                        map.getPlayer().move(0,1);
+                        player.move(0,1);
                         mapLevel(this.mapLevelCounter);
 
 
@@ -225,22 +229,22 @@ public class Main extends Application {
                         break;
                     }
                     else{
-                        map.getPlayer().move(0, 1);
+                        player.move(0, 1);
                         refresh();
                         break;
                     }
 
                 }
-                else if(map.getPlayer().cellCheck(0, 1).isMonster()){
-                    map.getPlayer().fight(map.getPlayer().cellCheck(0, 1).getMonster());
+                else if(player.cellCheck(0, 1).isMonster()){
+                    player.fight(player.cellCheck(0, 1).getMonster());
                     refresh();
-                    if (map.getPlayer().getHealth()<=0){
+                    if (player.getHealth()<=0){
                         map =MapLoader.loadMap(gameOver);
                         refresh();
                         break;
                     }
-                    else if(map.getPlayer().cellCheck(0, 1).getMonster().getHealth()<=0){
-                        map.getPlayer().cellCheck(0, 1).setType(CellType.FLOOR);
+                    else if(player.cellCheck(0, 1).getMonster().getHealth()<=0){
+                        player.cellCheck(0, 1).setType(CellType.FLOOR);
                         break;
                     }
                 }
@@ -251,48 +255,48 @@ public class Main extends Application {
                 }
             case LEFT:
 
-                if(map.getPlayer().cellCheck(-1, 0).getType() != CellType.WALL &&
-                        !map.getPlayer().cellCheck(-1, 0).isMonster()){
+                if(player.cellCheck(-1, 0).getType() != CellType.WALL &&
+                        !player.cellCheck(-1, 0).isMonster()){
 
 
 
-                    if(map.getPlayer().cellCheck(-1, 0).isItem()) {
+                    if(player.cellCheck(-1, 0).isItem()) {
 
                         pickUpButton.setVisible(true);
-                        map.getPlayer().move(-1, 0);
+                        player.move(-1, 0);
                         refresh();
                         break;
                     }
-                    else if (map.getPlayer().cellCheck(-1, 0).getType() == CellType.CLOSED_DOOR &&
-                            !map.getPlayer().getInventory().contains(CellType.KEY)) {
+                    else if (player.cellCheck(-1, 0).getType() == CellType.CLOSED_DOOR &&
+                            !player.getInventory().contains(CellType.KEY)) {
 
                         refresh();
                         break;
                     }
-                    else if (map.getPlayer().cellCheck(-1, 0).getType() == CellType.CLOSED_DOOR &&
-                            map.getPlayer().getInventory().contains(CellType.KEY)) {
+                    else if (player.cellCheck(-1, 0).getType() == CellType.CLOSED_DOOR &&
+                            player.getInventory().contains(CellType.KEY)) {
 
-                        map.getPlayer().move(-1,0);
+                        player.move(-1,0);
                         mapLevel(this.mapLevelCounter);
                         refresh();
                         break;
                     }
                     else{
-                        map.getPlayer().move(-1, 0);
+                        player.move(-1, 0);
                         refresh();
                         break;
                     }
                 }
-                else if(map.getPlayer().cellCheck(-1, 0).isMonster()){
-                    map.getPlayer().fight(map.getPlayer().cellCheck(-1, 0).getMonster());
+                else if(player.cellCheck(-1, 0).isMonster()){
+                    player.fight(player.cellCheck(-1, 0).getMonster());
                     refresh();
-                    if (map.getPlayer().getHealth()<=0){
+                    if (player.getHealth()<=0){
                         map =MapLoader.loadMap(gameOver);
                         refresh();
                         break;
                     }
-                    else if(map.getPlayer().cellCheck(-1, 0).getMonster().getHealth()<=0){
-                        map.getPlayer().cellCheck(-1, 0).setType(CellType.FLOOR);
+                    else if(player.cellCheck(-1, 0).getMonster().getHealth()<=0){
+                        player.cellCheck(-1, 0).setType(CellType.FLOOR);
                         break;
                     }
                 }
@@ -303,47 +307,47 @@ public class Main extends Application {
                 }
             case RIGHT:
 
-                if(map.getPlayer().cellCheck(1,0).getType() != CellType.WALL &&
-                        !map.getPlayer().cellCheck(1,0).isMonster()){
+                if(player.cellCheck(1,0).getType() != CellType.WALL &&
+                        !player.cellCheck(1,0).isMonster()){
 
-                    if(map.getPlayer().cellCheck(1,0).isItem()) {
+                    if(player.cellCheck(1,0).isItem()) {
 
                         pickUpButton.setVisible(true);
-                        map.getPlayer().move(1,0);
+                        player.move(1,0);
                         refresh();
                         break;
                     }
-                    else if (map.getPlayer().cellCheck(1, 0).getType() == CellType.CLOSED_DOOR &&
-                            !map.getPlayer().getInventory().contains(CellType.KEY)) {
+                    else if (player.cellCheck(1, 0).getType() == CellType.CLOSED_DOOR &&
+                            !player.getInventory().contains(CellType.KEY)) {
 
                         refresh();
                         break;
                     }
-                    else if (map.getPlayer().cellCheck(1, 0).getType() == CellType.CLOSED_DOOR &&
-                            map.getPlayer().getInventory().contains(CellType.KEY)) {
+                    else if (player.cellCheck(1, 0).getType() == CellType.CLOSED_DOOR &&
+                            player.getInventory().contains(CellType.KEY)) {
 
-                        map.getPlayer().move(1,0);
+                        player.move(1,0);
                         mapLevel(this.mapLevelCounter);
 
                         refresh();
                         break;
                     }
                     else{
-                        map.getPlayer().move(1,0);
+                        player.move(1,0);
                         refresh();
                         break;
                     }
                 }
-                else if(map.getPlayer().cellCheck(1,0).isMonster()){
-                    map.getPlayer().fight(map.getPlayer().cellCheck(1,0).getMonster());
+                else if(player.cellCheck(1,0).isMonster()){
+                    player.fight(player.cellCheck(1,0).getMonster());
                     refresh();
-                    if (map.getPlayer().getHealth()<=0){
+                    if (player.getHealth()<=0){
                         map =MapLoader.loadMap(gameOver);
                         refresh();
                         break;
                     }
-                    else if(map.getPlayer().cellCheck(1,0).getMonster().getHealth()<=0){
-                        map.getPlayer().cellCheck(1,0).setType(CellType.FLOOR);
+                    else if(player.cellCheck(1,0).getMonster().getHealth()<=0){
+                        player.cellCheck(1,0).setType(CellType.FLOOR);
                         break;
                     }
                 }
