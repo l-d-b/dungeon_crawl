@@ -63,35 +63,16 @@ public class Main extends Application {
         ui.setMinWidth(300);
         ui.setVgap(1);
         ui.setPadding(new Insets(50));
-        healthBarSetUp(ui);
-        String playerPower = String.valueOf(player.getAttack());
+
 
         Rectangle background = new Rectangle(100, 100, 200, 20);
 
         ui.add(background, 0, 11);
-        ui.add(healthbar, 0, 11);
+        healthBarSetUp(ui);
+        powerBarSetUOp(ui);
+
         background.setFill(Color.GREY);
-
-        healthbar.setFill(Color.GREEN);
-
         mapLevelCounter = 1;
-
-        powerLabel.setText("Power: ");
-        powerLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-        powerLabel.setTextFill(Color.BROWN);
-        currentPowerLabel.setText(playerPower);
-        ui.add(powerLabel, 0, 12);
-        ui.add(currentPowerLabel, 0, 14);
-        ui.setHalignment(powerLabel, HPos.CENTER);
-
-        powerbar = new Rectangle(100, 100, 200, 20);
-        Rectangle powBackground = new Rectangle(100, 100, 200, 20);
-
-        ui.add(powBackground, 0, 15);
-        ui.add(powerbar, 0, 15);
-        powBackground.setFill(Color.GREY);
-
-        powerbar.setFill(Color.RED);
 
         pickUpButton = new Button("Pick up");
         pickUpButton.setVisible(false);
@@ -149,6 +130,28 @@ public class Main extends Application {
         healthLabel.setPadding(new Insets(0, 55, 0, 55));
 
         healthbar = new Rectangle(100, 100, 200, 20);
+        ui.add(healthbar, 0, 11);
+        healthbar.setFill(Color.GREEN);
+    }
+
+    private void powerBarSetUOp(GridPane ui){
+        String playerPower = String.valueOf(player.getAttack());
+        powerLabel.setText("Power: ");
+        powerLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+        powerLabel.setTextFill(Color.BROWN);
+        currentPowerLabel.setText(playerPower);
+        ui.add(powerLabel, 0, 12);
+        ui.add(currentPowerLabel, 0, 14);
+        ui.setHalignment(powerLabel, HPos.CENTER);
+
+        powerbar = new Rectangle(100, 100, 200, 20);
+        Rectangle powBackground = new Rectangle(100, 100, 200, 20);
+
+        ui.add(powBackground, 0, 15);
+        ui.add(powerbar, 0, 15);
+        powBackground.setFill(Color.GREY);
+
+        powerbar.setFill(Color.RED);
 
     }
 
