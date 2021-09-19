@@ -25,6 +25,8 @@ import javafx.stage.Stage;
 import javafx.scene.text.Font;
 import javafx.scene.shape.Rectangle;
 
+import java.util.ArrayList;
+
 public class Main extends Application {
     String gameOver = "/gameover.txt";
     String map1 = "/map.txt";
@@ -41,6 +43,8 @@ public class Main extends Application {
     int maxPower = 20;
     int currentHealth = player.getHealth();
     int currentPower = player.getAttack();
+    ArrayList<CellType> playerInvetory = player.getInventory();
+
     Label healthLabel = new Label();
     Label currentHealthLabel = new Label();
     Label currentPowerLabel = new Label();
@@ -161,25 +165,23 @@ public class Main extends Application {
         return player.cellCheck(x, y);
     }
 
+    private void setPickUpButtonVisibleTrue(){
+        pickUpButton.setVisible(true);
+    }
+
     private void onKeyPressed(KeyEvent keyEvent) {
-        Player player = map.getPlayer();
         switch (keyEvent.getCode()) {
             case UP:
                 if (playerCellCheck(0,-1).isWall() && !playerCellCheck(0,-1).isMonster()) {
-
-                    if (player.cellCheck(0, -1).isItem()) {
-
-                        pickUpButton.setVisible(true);
+                    if (playerCellCheck(0, -1).isItem()) {
+                        setPickUpButtonVisibleTrue();
                         player.move(0, -1);
                         refresh();
                         break;
-                    } else if (player.cellCheck(0, -1).getType() == CellType.CLOSED_DOOR &&
-                            !player.getInventory().contains(CellType.KEY)) {
-
+                    } else if (playerCellCheck(0, -1).isDoorClose() && !playerInvetory.contains(CellType.KEY)) {
                         refresh();
                         break;
-                    } else if (player.cellCheck(0, -1).getType() == CellType.CLOSED_DOOR &&
-                            player.getInventory().contains(CellType.KEY)) {
+                    } else if (playerCellCheck(0, -1).isDoorClose() && playerInvetory.contains(CellType.KEY)) {
 
                         player.move(0, -1);
                         mapLevel(this.mapLevelCounter);
@@ -211,20 +213,16 @@ public class Main extends Application {
             case DOWN:
 
                 if (playerCellCheck(0,1).isWall() && !playerCellCheck(0,1).isMonster()) {
-
-                    if (player.cellCheck(0, 1).isItem()) {
-
-                        pickUpButton.setVisible(true);
+                    if (playerCellCheck(0, 1).isItem()) {
+                        setPickUpButtonVisibleTrue();
                         player.move(0, 1);
                         refresh();
                         break;
-                    } else if (player.cellCheck(0, 1).getType() == CellType.CLOSED_DOOR &&
-                            !player.getInventory().contains(CellType.KEY)) {
+                    } else if (playerCellCheck(0, 1).isDoorClose() && !playerInvetory.contains(CellType.KEY)) {
 
                         refresh();
                         break;
-                    } else if (player.cellCheck(0, 1).getType() == CellType.CLOSED_DOOR &&
-                            player.getInventory().contains(CellType.KEY)) {
+                    } else if (playerCellCheck(0, 1).isDoorClose() && playerInvetory.contains(CellType.KEY)) {
 
                         player.move(0, 1);
                         mapLevel(this.mapLevelCounter);
@@ -259,19 +257,17 @@ public class Main extends Application {
                 if (playerCellCheck(-1,0).isWall() && !playerCellCheck(-1,0).isMonster()) {
 
 
-                    if (player.cellCheck(-1, 0).isItem()) {
+                    if (playerCellCheck(-1, 0).isItem()) {
 
-                        pickUpButton.setVisible(true);
+                        setPickUpButtonVisibleTrue();
                         player.move(-1, 0);
                         refresh();
                         break;
-                    } else if (player.cellCheck(-1, 0).getType() == CellType.CLOSED_DOOR &&
-                            !player.getInventory().contains(CellType.KEY)) {
+                    } else if (playerCellCheck(-1, 0).isDoorClose() && !playerInvetory.contains(CellType.KEY)) {
 
                         refresh();
                         break;
-                    } else if (player.cellCheck(-1, 0).getType() == CellType.CLOSED_DOOR &&
-                            player.getInventory().contains(CellType.KEY)) {
+                    } else if (playerCellCheck(-1, 0).isDoorClose() && playerInvetory.contains(CellType.KEY)) {
 
                         player.move(-1, 0);
                         mapLevel(this.mapLevelCounter);
@@ -302,14 +298,13 @@ public class Main extends Application {
 
                 if (playerCellCheck(1,0).isWall() && !playerCellCheck(1,0).isMonster()) {
 
-                    if (player.cellCheck(1, 0).isItem()) {
+                    if (playerCellCheck(1, 0).isItem()) {
 
-                        pickUpButton.setVisible(true);
+                        setPickUpButtonVisibleTrue();
                         player.move(1, 0);
                         refresh();
                         break;
-                    } else if (player.cellCheck(1, 0).getType() == CellType.CLOSED_DOOR &&
-                            !player.getInventory().contains(CellType.KEY)) {
+                    } else if (playerCellCheck(1, 0).isDoorClose() && !playerInvetory.contains(CellType.KEY)) {
 
                         refresh();
                         break;
