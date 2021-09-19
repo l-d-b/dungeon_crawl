@@ -76,7 +76,7 @@ public class Cell implements Drawable {
     }
 
     public boolean isWall(){
-        return !this.type.equals(CellType.WALL);
+        return this.type.equals(CellType.WALL);
     }
 
     public boolean isDoorClose(){

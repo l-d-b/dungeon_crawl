@@ -41,8 +41,8 @@ public class Main extends Application {
 
     private int mapLevelCounter;
     int maxPower = 20;
-    int currentHealth = player.getHealth();
-    int currentPower = player.getAttack();
+    int currentPlayerHealth = player.getHealth();
+    int currentPlayerPower = player.getAttack();
     ArrayList<CellType> playerInvetory = player.getInventory();
 
     Label healthLabel = new Label();
@@ -56,6 +56,7 @@ public class Main extends Application {
     Rectangle healthbar = new Rectangle();
     Rectangle powerbar = new Rectangle();
     Button pickUpButton;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -94,7 +95,8 @@ public class Main extends Application {
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
-    private void setHealthbar(GridPane ui){
+
+    private void setHealthbar(GridPane ui) {
         String playerHealth = String.valueOf(player.getHealth());
         healthLabel.setText("Health: ");
         healthLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
@@ -111,7 +113,7 @@ public class Main extends Application {
         healthbar.setFill(Color.GREEN);
     }
 
-    private void setPowerbar(GridPane ui){
+    private void setPowerbar(GridPane ui) {
         String playerPower = String.valueOf(player.getAttack());
         powerLabel.setText("Power: ");
         powerLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
@@ -132,7 +134,7 @@ public class Main extends Application {
 
     }
 
-    private void setPickUpButton(GridPane ui){
+    private void setPickUpButton(GridPane ui) {
         pickUpButton = new Button("Pick up");
         pickUpButton.setVisible(false);
 
@@ -150,7 +152,7 @@ public class Main extends Application {
 
     }
 
-    private void setInventoryLabel(GridPane ui){
+    private void setInventoryLabel(GridPane ui) {
         ui.add(inventoryLabel, 0, 19);
         ui.add(inventory, 0, 21);
         inventoryLabel.setText("Inventory:");
@@ -161,187 +163,87 @@ public class Main extends Application {
         inventory.setFont(Font.font("Verdana", 16));
     }
 
-    public Cell playerCellCheck(int x, int y){
+    public Cell playerCellCheck(int x, int y) {
         return player.cellCheck(x, y);
     }
 
-    private void setPickUpButtonVisibleTrue(){
+    private void setPickUpButtonVisibleTrue() {
         pickUpButton.setVisible(true);
     }
+
+    private Monster getCurrentMonster(int x, int y) {
+        return playerCellCheck(x, y).getMonster();
+    }
+
+    private int getCurrentMonsterHealth(int x, int y) {
+        return getCurrentMonster(x, y).getHealth();
+    }
+
+    private void roundByKeyPressed(int x, int y) {
+            if (!playerCellCheck(x, y).isWall() && !playerCellCheck(x, y).isMonster()) {
+                if (playerCellCheck(x, y).isItem()) {
+                    setPickUpButtonVisibleTrue();
+                    player.move(x, y);
+                    refresh();
+
+
+                } else if (playerCellCheck(x, y).isDoorClose() && !playerInvetory.contains(CellType.KEY)) {
+                    refresh();
+
+
+                } else if (playerCellCheck(x, y).isDoorClose() && playerInvetory.contains(CellType.KEY)) {
+                    player.move(x, y);
+                    mapLevel(this.mapLevelCounter);
+                    refresh();
+
+                } else {
+                    player.move(x, y);
+                    refresh();
+
+                }
+            } else if (playerCellCheck(x, y).isMonster()) {
+                player.fight(getCurrentMonster(x, y));
+                refresh();
+
+                if ((getCurrentMonster(x, y).getName().equals("Boss") && getCurrentMonsterHealth(x, y) <= 0) || (currentPlayerHealth <= 0)) {
+                    map = MapLoader.loadMap(gameOver, this.currentPlayerHealth, this.currentPlayerPower);
+
+                } else if (getCurrentMonsterHealth(x, y) <= 0) {
+                    playerCellCheck(x, y).setType(CellType.FLOOR);
+                    refresh();
+                    updateHealth();
+
+                }
+            } else {
+                refresh();
+            }
+        }
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                if (playerCellCheck(0,-1).isWall() && !playerCellCheck(0,-1).isMonster()) {
-                    if (playerCellCheck(0, -1).isItem()) {
-                        setPickUpButtonVisibleTrue();
-                        player.move(0, -1);
-                        refresh();
-                        break;
-                    } else if (playerCellCheck(0, -1).isDoorClose() && !playerInvetory.contains(CellType.KEY)) {
-                        refresh();
-                        break;
-                    } else if (playerCellCheck(0, -1).isDoorClose() && playerInvetory.contains(CellType.KEY)) {
-
-                        player.move(0, -1);
-                        mapLevel(this.mapLevelCounter);
-                        refresh();
-                        break;
-                    } else {
-                        player.move(0, -1);
-                        refresh();
-                        break;
-                    }
-
-                } else if (player.cellCheck(0, -1).isMonster()) {
-                    Monster monster = player.cellCheck(0, -1).getMonster();
-                    player.fight(monster);
-                    refresh();
-                    if ((monster.getName().equals("Boss") && monster.getHealth() <= 0) || (player.getHealth() <= 0)) {
-                        map = MapLoader.loadMap(gameOver, this.currentHealth, this.currentPower);
-                        refresh();
-                        break;
-                    } else if (player.cellCheck(0, -1).getMonster().getHealth() <= 0) {
-                        player.cellCheck(0, -1).setType(CellType.FLOOR);
-                        updateHealth();
-                        break;
-                    }
-                } else {
-                    refresh();
-                    break;
-                }
+                roundByKeyPressed(0, -1);
+                refresh();
+                break;
             case DOWN:
-
-                if (playerCellCheck(0,1).isWall() && !playerCellCheck(0,1).isMonster()) {
-                    if (playerCellCheck(0, 1).isItem()) {
-                        setPickUpButtonVisibleTrue();
-                        player.move(0, 1);
-                        refresh();
-                        break;
-                    } else if (playerCellCheck(0, 1).isDoorClose() && !playerInvetory.contains(CellType.KEY)) {
-
-                        refresh();
-                        break;
-                    } else if (playerCellCheck(0, 1).isDoorClose() && playerInvetory.contains(CellType.KEY)) {
-
-                        player.move(0, 1);
-                        mapLevel(this.mapLevelCounter);
-
-
-                        refresh();
-                        break;
-                    } else {
-                        player.move(0, 1);
-                        refresh();
-                        break;
-                    }
-
-                } else if (player.cellCheck(0, 1).isMonster()) {
-                    player.fight(player.cellCheck(0, 1).getMonster());
-                    refresh();
-                    if (player.getHealth() <= 0) {
-                        map = MapLoader.loadMap(gameOver, this.currentHealth, this.currentPower);
-                        refresh();
-                        break;
-                    } else if (player.cellCheck(0, 1).getMonster().getHealth() <= 0) {
-                        player.cellCheck(0, 1).setType(CellType.FLOOR);
-                        break;
-                    }
-                } else {
-                    refresh();
-                    break;
-
-                }
+                roundByKeyPressed(0,1);
+                refresh();
+                break;
             case LEFT:
-
-                if (playerCellCheck(-1,0).isWall() && !playerCellCheck(-1,0).isMonster()) {
-
-
-                    if (playerCellCheck(-1, 0).isItem()) {
-
-                        setPickUpButtonVisibleTrue();
-                        player.move(-1, 0);
-                        refresh();
-                        break;
-                    } else if (playerCellCheck(-1, 0).isDoorClose() && !playerInvetory.contains(CellType.KEY)) {
-
-                        refresh();
-                        break;
-                    } else if (playerCellCheck(-1, 0).isDoorClose() && playerInvetory.contains(CellType.KEY)) {
-
-                        player.move(-1, 0);
-                        mapLevel(this.mapLevelCounter);
-                        refresh();
-                        break;
-                    } else {
-                        player.move(-1, 0);
-                        refresh();
-                        break;
-                    }
-                } else if (player.cellCheck(-1, 0).isMonster()) {
-                    player.fight(player.cellCheck(-1, 0).getMonster());
-                    refresh();
-                    if (player.getHealth() <= 0) {
-                        map = MapLoader.loadMap(gameOver, this.currentHealth, this.currentPower);
-                        refresh();
-                        break;
-                    } else if (player.cellCheck(-1, 0).getMonster().getHealth() <= 0) {
-                        player.cellCheck(-1, 0).setType(CellType.FLOOR);
-                        break;
-                    }
-                } else {
-                    refresh();
-                    break;
-
-                }
+                roundByKeyPressed(-1,0);
+                refresh();
+                break;
             case RIGHT:
-
-                if (playerCellCheck(1,0).isWall() && !playerCellCheck(1,0).isMonster()) {
-
-                    if (playerCellCheck(1, 0).isItem()) {
-
-                        setPickUpButtonVisibleTrue();
-                        player.move(1, 0);
-                        refresh();
-                        break;
-                    } else if (playerCellCheck(1, 0).isDoorClose() && !playerInvetory.contains(CellType.KEY)) {
-
-                        refresh();
-                        break;
-                    } else if (player.cellCheck(1, 0).getType() == CellType.CLOSED_DOOR &&
-                            player.getInventory().contains(CellType.KEY)) {
-
-                        player.move(1, 0);
-                        mapLevel(this.mapLevelCounter);
-
-                        refresh();
-                        break;
-                    } else {
-                        player.move(1, 0);
-                        refresh();
-                        break;
-                    }
-                } else if (player.cellCheck(1, 0).isMonster()) {
-                    player.fight(player.cellCheck(1, 0).getMonster());
-                    refresh();
-                    if (player.getHealth() <= 0) {
-                        map = MapLoader.loadMap(gameOver, this.currentHealth, this.currentPower);
-                        refresh();
-                        break;
-                    } else if (player.cellCheck(1, 0).getMonster().getHealth() <= 0) {
-                        player.cellCheck(1, 0).setType(CellType.FLOOR);
-                        break;
-                    }
-                } else {
-                    refresh();
-                    break;
-                }
+                roundByKeyPressed(1,0);
+                refresh();
+                break;
             case E:
                 pickUp();
                 refresh();
                 break;
         }
     }
+
 
     private void refresh() {
         context.setFill(Color.BLACK);
@@ -357,11 +259,11 @@ public class Main extends Application {
             }
         }
         currentHealthLabel.setText(String.valueOf(map.getPlayer().getHealth()));
-        currentHealth = map.getPlayer().getHealth();
+        currentPlayerHealth = map.getPlayer().getHealth();
         System.out.println(map.getPlayer().getHealth());
         healthbar.setWidth(map.getPlayer().getHealth() * 2);
-        currentPowerLabel.setText(String.valueOf(currentPower));
-        powerbar.setWidth(currentPower * 10);
+        currentPowerLabel.setText(String.valueOf(currentPlayerPower));
+        powerbar.setWidth(currentPlayerPower * 10);
 
         updateHealth();
         updateInventory();
@@ -385,37 +287,40 @@ public class Main extends Application {
     }
 
     public void updateHealth() {
-        currentHealth = map.getPlayer().getHealth();
+        currentPlayerHealth = map.getPlayer().getHealth();
     }
 
     public void updatePower() {
         if (map.getPlayer().getAttack() <= 20) {
-            currentPower = map.getPlayer().getAttack();
+            currentPlayerPower = map.getPlayer().getAttack();
         } else {
-            currentPower = maxPower;
+            currentPlayerPower = maxPower;
         }
     }
 
     public void mapLevel(int mapLevelCounter) {
         switch (mapLevelCounter) {
             case 1:
-                map = MapLoader.loadMap(map2, this.currentHealth, this.currentPower);
+                map = MapLoader.loadMap(map2, this.currentPlayerHealth, this.currentPlayerPower);
                 this.mapLevelCounter = 2;
+                this.player = map.getPlayer();
                 break;
 
             case 2:
                 if (map.getPlayer().cellCheck(0, 0).getType() == CellType.CLOSED_DOOR) {
-                    map = MapLoader.loadMap(map3, this.currentHealth, this.currentPower);
+                    map = MapLoader.loadMap(map3, this.currentPlayerHealth, this.currentPlayerPower);
                     this.mapLevelCounter = 3;
+                    this.player = map.getPlayer();
                     break;
                 } else if (map.getPlayer().cellCheck(0, 0).getType() == CellType.OPENED_DOOR) {
-                    map = MapLoader.loadMap(map1, this.currentHealth, this.currentPower);
+                    map = MapLoader.loadMap(map1, this.currentPlayerHealth, this.currentPlayerPower);
                     this.mapLevelCounter = 1;
+                    this.player = map.getPlayer();
                     break;
                 }
             case 3:
                 if (map.getPlayer().cellCheck(0, 0).getType() == CellType.OPENED_DOOR) {
-                    map = MapLoader.loadMap(map2, this.currentHealth, this.currentPower);
+                    map = MapLoader.loadMap(map2, this.currentPlayerHealth, this.currentPlayerPower);
                     this.mapLevelCounter = 2;
                     break;
                 }
