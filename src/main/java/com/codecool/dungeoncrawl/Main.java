@@ -101,7 +101,7 @@ public class Main extends Application {
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
-    private void healthBarSetUp(GridPane ui){
+    private void setHealthbar(GridPane ui){
         String playerHealth = String.valueOf(player.getHealth());
         healthLabel.setText("Health: ");
         healthLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
@@ -118,7 +118,7 @@ public class Main extends Application {
         healthbar.setFill(Color.GREEN);
     }
 
-    private void powerBarSetUOp(GridPane ui){
+    private void setPowerbar(GridPane ui){
         String playerPower = String.valueOf(player.getAttack());
         powerLabel.setText("Power: ");
         powerLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
