@@ -63,20 +63,9 @@ public class Main extends Application {
         ui.setMinWidth(300);
         ui.setVgap(1);
         ui.setPadding(new Insets(50));
-        Player player = map.getPlayer();
-        String playerHealth = String.valueOf(player.getHealth());
+        healthBarSetUp(ui);
         String playerPower = String.valueOf(player.getAttack());
-        healthLabel.setText("Health: ");
-        healthLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-        healthLabel.setTextFill(Color.BROWN);
-        currentHealthLabel.setText(playerHealth);
-        ui.add(healthLabel, 0, 0);
-        ui.add(currentHealthLabel, 0, 1);
 
-        ui.setHalignment(healthLabel, HPos.CENTER);
-        healthLabel.setPadding(new Insets(0, 55, 0, 55));
-
-        healthbar = new Rectangle(100, 100, 200, 20);
         Rectangle background = new Rectangle(100, 100, 200, 20);
 
         ui.add(background, 0, 11);
@@ -116,22 +105,23 @@ public class Main extends Application {
                 pickUp();
             }
         });
-
-        primaryStage.show();
-
-        BorderPane borderPane = new BorderPane();
-
-        borderPane.setCenter(canvas);
-        canvas.setWidth(1600);
-        canvas.setHeight(1000);
-        borderPane.setRight(ui);
-
         ui.add(pickUpButton, 0, 17);
         ui.setHalignment(pickUpButton, HPos.CENTER);
 
-        inventoryLabel.setText("Inventory:");
+        //primaryStage.show();
+
+        BorderPane borderPane = new BorderPane();
+        borderPane.setCenter(canvas);
+        borderPane.setRight(ui);
+
+        canvas.setWidth(1600);
+        canvas.setHeight(1000);
+
+
+
         ui.add(inventoryLabel, 0, 19);
         ui.add(inventory, 0, 21);
+        inventoryLabel.setText("Inventory:");
         inventoryLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 22));
         inventoryLabel.setTextFill(Color.BROWN);
         ui.setHalignment(inventoryLabel, HPos.CENTER);
@@ -146,6 +136,22 @@ public class Main extends Application {
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
+    private void healthBarSetUp(GridPane ui){
+        String playerHealth = String.valueOf(player.getHealth());
+        healthLabel.setText("Health: ");
+        healthLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+        healthLabel.setTextFill(Color.BROWN);
+        currentHealthLabel.setText(playerHealth);
+        ui.add(healthLabel, 0, 0);
+        ui.add(currentHealthLabel, 0, 1);
+        ui.setHalignment(healthLabel, HPos.CENTER);
+
+        healthLabel.setPadding(new Insets(0, 55, 0, 55));
+
+        healthbar = new Rectangle(100, 100, 200, 20);
+
+    }
+
 
     private void onKeyPressed(KeyEvent keyEvent) {
         Player player = map.getPlayer();
