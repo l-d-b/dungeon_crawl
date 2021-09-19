@@ -64,12 +64,11 @@ public class Main extends Application {
         ui.setVgap(1);
         ui.setPadding(new Insets(50));
 
-
         Rectangle background = new Rectangle(100, 100, 200, 20);
 
         ui.add(background, 0, 11);
-        healthBarSetUp(ui);
-        powerBarSetUOp(ui);
+        setHealthbar(ui);
+        setPowerbar(ui);
 
         background.setFill(Color.GREY);
         mapLevelCounter = 1;
@@ -81,18 +80,7 @@ public class Main extends Application {
 
         canvas.setWidth(1600);
         canvas.setHeight(1000);
-
-
-
-        ui.add(inventoryLabel, 0, 19);
-        ui.add(inventory, 0, 21);
-        inventoryLabel.setText("Inventory:");
-        inventoryLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 22));
-        inventoryLabel.setTextFill(Color.BROWN);
-        ui.setHalignment(inventoryLabel, HPos.CENTER);
-        ui.setHalignment(inventory, HPos.CENTER);
-        inventory.setFont(Font.font("Verdana", 16));
-
+        setInventoryLabel(ui);
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
@@ -155,6 +143,17 @@ public class Main extends Application {
         ui.add(pickUpButton, 0, 17);
         ui.setHalignment(pickUpButton, HPos.CENTER);
 
+    }
+
+    private void setInventoryLabel(GridPane ui){
+        ui.add(inventoryLabel, 0, 19);
+        ui.add(inventory, 0, 21);
+        inventoryLabel.setText("Inventory:");
+        inventoryLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 22));
+        inventoryLabel.setTextFill(Color.BROWN);
+        ui.setHalignment(inventoryLabel, HPos.CENTER);
+        ui.setHalignment(inventory, HPos.CENTER);
+        inventory.setFont(Font.font("Verdana", 16));
     }
 
 
