@@ -10,8 +10,8 @@ public class Cell implements Drawable {
     private Actor actor;
     private Item item;
     private Monster monster;
-    private GameMap gameMap;
-    private int x, y;
+    private final GameMap gameMap;
+    private final int x, y;
 
     Cell(GameMap gameMap, int x, int y, CellType type) {
         this.gameMap = gameMap;
@@ -48,10 +48,6 @@ public class Cell implements Drawable {
         return monster;
     }
 
-    public Item getItem() {
-        return item;
-    }
-
     public Cell getNeighbor(int dx, int dy) {
         return gameMap.getCell(x + dx, y + dy);
     }
@@ -62,11 +58,11 @@ public class Cell implements Drawable {
     }
 
     public int getX() {
-        return x;
+        return this.x;
     }
 
     public int getY() {
-        return y;
+        return this.y;
     }
 
     public boolean isItem() {
@@ -79,13 +75,11 @@ public class Cell implements Drawable {
                 || this.type.equals(CellType.SKELETON) || this.type.equals(CellType.SPIDER) || this.type.equals(CellType.BOSS);
     }
 
+    public boolean isWall(){
+        return this.type.equals(CellType.WALL);
+    }
 
-    public boolean isClosedDoor() {
+    public boolean isDoorClose(){
         return this.type.equals(CellType.CLOSED_DOOR);
     }
-
-    public boolean isOpenDoor() {
-        return this.type.equals(CellType.OPENED_DOOR);
-    }
-
 }

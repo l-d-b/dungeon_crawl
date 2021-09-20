@@ -1,7 +1,6 @@
 package com.codecool.dungeoncrawl.logic.monsters;
 
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 
 public abstract class Monster extends Actor {

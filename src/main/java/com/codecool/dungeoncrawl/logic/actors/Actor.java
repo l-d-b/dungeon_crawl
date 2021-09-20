@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
-import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
 
 import javax.swing.JFrame;
@@ -12,8 +11,7 @@ public abstract class Actor implements Drawable {
     protected Cell cell;
     private int health;
     private int attack;
-    private String name;
-    private int power;
+    private final String name;
 
     public Actor(Cell cell, int health, int attack, String name) {
         this.name = name;
@@ -35,13 +33,14 @@ public abstract class Actor implements Drawable {
 
         int monsterHealth = monster.getHealth();
         int monsterAttack = monster.getAttack();
+        String monsterName = monster.getName();
         int playerAttack = this.attack;
         int playerHealth = this.health;
 
         int actualMonsterHealth = monsterHealth - playerAttack;
         monster.setHealth(actualMonsterHealth);
 
-        if (monster.getName().equals("Boss") && monster.getHealth() <= 0) {
+        if (monsterName.equals("Boss") && monsterHealth <= 0) {
             endGame(this);
         }
 
@@ -54,8 +53,7 @@ public abstract class Actor implements Drawable {
     }
 
     public Cell cellCheck(int dx, int dy) {
-        Cell nextCell = cell.getNeighbor(dx, dy);
-        return nextCell;
+        return cell.getNeighbor(dx, dy);
     }
 
     public void endGame(Actor actor) {
@@ -82,15 +80,6 @@ public abstract class Actor implements Drawable {
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setGyozo(String name) {
-        this.name = name;
-    }
-
 
     public int getHealth() {
         return health;
