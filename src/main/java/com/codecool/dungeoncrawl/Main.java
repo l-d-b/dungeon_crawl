@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
+import com.codecool.dungeoncrawl.dao.PlayerDaoJdbc;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
@@ -62,7 +63,8 @@ public class Main extends Application {
 
     Rectangle healthbar = new Rectangle();
     Rectangle powerbar = new Rectangle();
-    Button pickUpButton;;
+    Button pickUpButton;
+    Button saveSqlButton;
 
 
     public static void main(String[] args) {
@@ -88,7 +90,7 @@ public class Main extends Application {
         background.setFill(Color.GREY);
         mapLevelCounter = 1;
         setPickUpButton(ui);
-
+        setSaveSql(ui);
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
@@ -125,7 +127,7 @@ public class Main extends Application {
         currentHealthLabel.setText(playerHealth);
         ui.add(healthLabel, 0, 0);
         ui.add(currentHealthLabel, 0, 1);
-        ui.setHalignment(healthLabel, HPos.CENTER);
+        GridPane.setHalignment(healthLabel, HPos.CENTER);
 
         healthLabel.setPadding(new Insets(0, 55, 0, 55));
 
@@ -142,7 +144,7 @@ public class Main extends Application {
         currentPowerLabel.setText(playerPower);
         ui.add(powerLabel, 0, 12);
         ui.add(currentPowerLabel, 0, 14);
-        ui.setHalignment(powerLabel, HPos.CENTER);
+        GridPane.setHalignment(powerLabel, HPos.CENTER);
 
         powerbar = new Rectangle(100, 100, 200, 20);
         Rectangle powBackground = new Rectangle(100, 100, 200, 20);
@@ -169,7 +171,7 @@ public class Main extends Application {
             }
         });
         ui.add(pickUpButton, 0, 17);
-        ui.setHalignment(pickUpButton, HPos.CENTER);
+        GridPane.setHalignment(pickUpButton, HPos.CENTER);
 
     }
 
@@ -179,9 +181,27 @@ public class Main extends Application {
         inventoryLabel.setText("Inventory:");
         inventoryLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 22));
         inventoryLabel.setTextFill(Color.BROWN);
-        ui.setHalignment(inventoryLabel, HPos.CENTER);
-        ui.setHalignment(inventory, HPos.CENTER);
+        GridPane.setHalignment(inventoryLabel, HPos.CENTER);
+        GridPane.setHalignment(inventory, HPos.CENTER);
         inventory.setFont(Font.font("Verdana", 16));
+    }
+
+    private void setSaveSql(GridPane ui) {
+        saveSqlButton = new Button("Save Sql");
+        saveSqlButton.setVisible(true);
+
+        saveSqlButton.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            dbManager.savePlayer(map.getPlayer());
+        });
+
+        saveSqlButton.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                dbManager.savePlayer(map.getPlayer());
+            }
+        });
+        ui.add(saveSqlButton, 0, 25);
+        GridPane.setHalignment(saveSqlButton, HPos.CENTER);
+
     }
 
     public Cell playerCellCheck(int x, int y) {
