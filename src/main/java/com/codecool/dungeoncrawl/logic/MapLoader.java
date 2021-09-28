@@ -7,14 +7,11 @@ import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.items.Shield;
 import com.codecool.dungeoncrawl.logic.items.Sword;
 import com.codecool.dungeoncrawl.logic.monsters.*;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 
 import java.io.InputStream;
 import java.util.Scanner;
 
 public class MapLoader {
-    public static GameMap loadMap() {
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
 
     public static GameMap loadMap(String currentMap, int playerHealth, int playerPower) {
         InputStream is = MapLoader.class.getResourceAsStream(currentMap);
@@ -42,12 +39,10 @@ public class MapLoader {
                             break;
                         case 's':
                             cell.setType(CellType.FLOOR);
-                            cell.setType(CellType.SKELETON);
                             new Skeleton(cell);
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell, "Player"));
                             map.setPlayer(new Player(cell, playerHealth, playerPower));
                             break;
                         case 'ß':

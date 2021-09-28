@@ -2,8 +2,6 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
-import com.codecool.dungeoncrawl.logic.GameMap;
-
 import java.util.ArrayList;
 
 public class Player extends Actor {
@@ -46,28 +44,5 @@ public class Player extends Actor {
 
         }
         getCell().setType(CellType.FLOOR);
-
-public class Player extends Actor {
-    private String name;
-
-    public Player(Cell cell) {
-        super(cell);
-    }
-
-    public Player(Cell cell, String name) {
-        super(cell);
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTileName() {
-        return "player";
     }
 }

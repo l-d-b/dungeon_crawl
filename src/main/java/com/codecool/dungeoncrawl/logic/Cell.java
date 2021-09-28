@@ -1,14 +1,9 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
-
-public class Cell implements Drawable {
-    private CellType type;
-    private Actor actor;
-    private GameMap gameMap;
-    private int x, y;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
+
 
 public class Cell implements Drawable {
     public Cell cell;
@@ -46,7 +41,7 @@ public class Cell implements Drawable {
         this.item = item;
     }
 
-    public void setMonster(Monster monster){
+    public void setMonster(Monster monster) {
         this.monster = monster;
     }
 
@@ -68,11 +63,6 @@ public class Cell implements Drawable {
     }
 
     public int getY() {
-        return y;
-        return this.x;
-    }
-
-    public int getY() {
         return this.y;
     }
 
@@ -86,11 +76,11 @@ public class Cell implements Drawable {
                 || this.type.equals(CellType.SKELETON) || this.type.equals(CellType.SPIDER) || this.type.equals(CellType.BOSS);
     }
 
-    public boolean isWall(){
+    public boolean isWall() {
         return this.type.equals(CellType.WALL);
     }
 
-    public boolean isDoorClose(){
+    public boolean isDoorClose() {
         return this.type.equals(CellType.CLOSED_DOOR);
     }
 }

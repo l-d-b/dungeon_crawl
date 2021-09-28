@@ -6,13 +6,8 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
-import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
-import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -26,28 +21,20 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-
-import java.sql.SQLException;
-
-public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.scene.text.Font;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
-
 import java.util.ArrayList;
 
+
 public class Main extends Application {
+    GameDatabaseManager dbManager;
+
     String gameOver = "/gameover.txt";
     String map1 = "/map.txt";
     String map2 = "/map_2.txt";
@@ -58,8 +45,6 @@ public class Main extends Application {
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
-    Label healthLabel = new Label();
-    GameDatabaseManager dbManager;
 
     private int mapLevelCounter;
     int maxPower = 20;
@@ -77,7 +62,7 @@ public class Main extends Application {
 
     Rectangle healthbar = new Rectangle();
     Rectangle powerbar = new Rectangle();
-    Button pickUpButton;
+    Button pickUpButton;;
 
 
     public static void main(String[] args) {
@@ -87,17 +72,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         setupDbManager();
-        GridPane ui = new GridPane();
-        ui.setPrefWidth(200);
-        ui.setPadding(new Insets(10));
-
-        ui.add(new Label("Health: "), 0, 0);
-        ui.add(healthLabel, 1, 0);
-
-        BorderPane borderPane = new BorderPane();
-
-        borderPane.setCenter(canvas);
-        borderPane.setRight(ui);
 
 
         GridPane ui = new GridPane();
@@ -143,27 +117,6 @@ public class Main extends Application {
         }
     }
 
-    private void onKeyPressed(KeyEvent keyEvent) {
-        switch (keyEvent.getCode()) {
-            case UP:
-                map.getPlayer().move(0, -1);
-                refresh();
-                break;
-            case DOWN:
-                map.getPlayer().move(0, 1);
-                refresh();
-                break;
-            case LEFT:
-                map.getPlayer().move(-1, 0);
-                refresh();
-                break;
-            case RIGHT:
-                map.getPlayer().move(1, 0);
-                refresh();
-                break;
-            case S:
-                Player player = map.getPlayer();
-                dbManager.savePlayer(player);
     private void setHealthbar(GridPane ui) {
         String playerHealth = String.valueOf(player.getHealth());
         healthLabel.setText("Health: ");
@@ -252,44 +205,44 @@ public class Main extends Application {
     }
 
     private void roundByKeyPressed(int x, int y) {
-            if (!playerCellCheck(x, y).isWall() && !playerCellCheck(x, y).isMonster()) {
-                if (playerCellCheck(x, y).isItem()) {
-                    setPickUpButtonVisibleTrue();
-                    player.move(x, y);
-                    refresh();
-
-
-                } else if (playerCellCheck(x, y).isDoorClose() && !playerInvetory.contains(CellType.KEY)) {
-                    refresh();
-
-
-                } else if (playerCellCheck(x, y).isDoorClose() && playerInvetory.contains(CellType.KEY)) {
-                    player.move(x, y);
-                    mapLevel(this.mapLevelCounter);
-                    refresh();
-
-                } else {
-                    player.move(x, y);
-                    refresh();
-
-                }
-            } else if (playerCellCheck(x, y).isMonster()) {
-                player.fight(getCurrentMonster(x, y));
+        if (!playerCellCheck(x, y).isWall() && !playerCellCheck(x, y).isMonster()) {
+            if (playerCellCheck(x, y).isItem()) {
+                setPickUpButtonVisibleTrue();
+                player.move(x, y);
                 refresh();
 
-                if ((getCurrentMonster(x, y).getName().equals("Boss") && getCurrentMonsterHealth(x, y) <= 0) || (currentPlayerHealth <= 0)) {
-                    map = MapLoader.loadMap(gameOver, this.currentPlayerHealth, this.currentPlayerPower);
 
-                } else if (getCurrentMonsterHealth(x, y) <= 0) {
-                    playerCellCheck(x, y).setType(CellType.FLOOR);
-                    refresh();
-                    updateHealth();
+            } else if (playerCellCheck(x, y).isDoorClose() && !playerInvetory.contains(CellType.KEY)) {
+                refresh();
 
-                }
+
+            } else if (playerCellCheck(x, y).isDoorClose() && playerInvetory.contains(CellType.KEY)) {
+                player.move(x, y);
+                mapLevel(this.mapLevelCounter);
+                refresh();
+
             } else {
+                player.move(x, y);
                 refresh();
+
             }
+        } else if (playerCellCheck(x, y).isMonster()) {
+            player.fight(getCurrentMonster(x, y));
+            refresh();
+
+            if ((getCurrentMonster(x, y).getName().equals("Boss") && getCurrentMonsterHealth(x, y) <= 0) || (currentPlayerHealth <= 0)) {
+                map = MapLoader.loadMap(gameOver, this.currentPlayerHealth, this.currentPlayerPower);
+
+            } else if (getCurrentMonsterHealth(x, y) <= 0) {
+                playerCellCheck(x, y).setType(CellType.FLOOR);
+                refresh();
+                updateHealth();
+
+            }
+        } else {
+            refresh();
         }
+    }
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
@@ -298,15 +251,15 @@ public class Main extends Application {
                 refresh();
                 break;
             case DOWN:
-                roundByKeyPressed(0,1);
+                roundByKeyPressed(0, 1);
                 refresh();
                 break;
             case LEFT:
-                roundByKeyPressed(-1,0);
+                roundByKeyPressed(-1, 0);
                 refresh();
                 break;
             case RIGHT:
-                roundByKeyPressed(1,0);
+                roundByKeyPressed(1, 0);
                 refresh();
                 break;
             case E:
@@ -314,14 +267,10 @@ public class Main extends Application {
                 refresh();
                 break;
         }
+        Player player = map.getPlayer();
+        dbManager.savePlayer(player);
     }
 
-    private void refresh() {
-        context.setFill(Color.BLACK);
-        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
 
     private void refresh() {
         updateHealth();
@@ -340,7 +289,10 @@ public class Main extends Application {
                 }
             }
         }
-        healthLabel.setText("" + map.getPlayer().getHealth());
+        currentHealthLabel.setText(String.valueOf(currentPlayerHealth));
+        healthbar.setWidth(currentPlayerHealth * 2);
+        currentPowerLabel.setText(String.valueOf(currentPlayerPower));
+        powerbar.setWidth(currentPlayerPower * 10);
     }
 
     private void setupDbManager() {

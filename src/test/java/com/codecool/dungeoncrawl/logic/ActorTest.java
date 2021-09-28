@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.monsters.Skeleton;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +12,6 @@ class ActorTest {
     @Test
     void moveUpdatesCells() {
         Player player = new Player(gameMap.getCell(1, 1), 100, 5);
-        Player player = new Player(gameMap.getCell(1, 1));
         player.move(1, 0);
 
         assertEquals(2, player.getX());
@@ -26,7 +24,6 @@ class ActorTest {
     void cannotMoveIntoWall() {
         gameMap.getCell(2, 1).setType(CellType.WALL);
         Player player = new Player(gameMap.getCell(1, 1), 100, 5);
-        Player player = new Player(gameMap.getCell(1, 1));
         player.move(1, 0);
 
         assertEquals(1, player.getX());
@@ -36,7 +33,6 @@ class ActorTest {
     @Test
     void cannotMoveOutOfMap() {
         Player player = new Player(gameMap.getCell(2, 1), 100, 5);
-        Player player = new Player(gameMap.getCell(2, 1));
         player.move(1, 0);
 
         assertEquals(2, player.getX());
@@ -46,7 +42,6 @@ class ActorTest {
     @Test
     void cannotMoveIntoAnotherActor() {
         Player player = new Player(gameMap.getCell(1, 1), 100, 5);
-        Player player = new Player(gameMap.getCell(1, 1));
         Skeleton skeleton = new Skeleton(gameMap.getCell(2, 1));
         player.move(1, 0);
 
