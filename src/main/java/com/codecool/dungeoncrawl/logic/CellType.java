@@ -8,20 +8,18 @@ public enum CellType {
     SHIELD("shield"),
     KEY("key"),
     HEAL("heal"),
-
     CLOSED_DOOR("closedDoor"),
     OPENED_DOOR("openedDoor"),
     PLAYER_SWORD("player-sword"),
     PLAYER_SWORD_SHEILD("player-sword-shield"),
-
     SKELETON("skeleton"),
     GHOST("ghost"),
     GOLEM("golem"),
     SPIDER("spider"),
     BOSS("boss"),
-
     OVER("gameover"),
     TREE("tree");
+
     private final String tileName;
 
     CellType(String tileName) {
