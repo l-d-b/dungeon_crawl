@@ -2,7 +2,13 @@ package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
 
-public class GameMap {
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+public class GameMap implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final int width;
     private final int height;
     private final Cell[][] cells;
@@ -48,5 +54,20 @@ public class GameMap {
     public int getHeight() {
         return height;
     }
+
+//    public void writeObject(ObjectOutputStream oos)
+//            throws IOException {
+//        oos.defaultWriteObject();
+//        oos.writeObject(player.getAttack());
+//    }
+
+//    public void readObject(ObjectInputStream ois)
+//            throws ClassNotFoundException, IOException {
+//        ois.defaultReadObject();
+//        Integer attack = (Integer)ois.readObject();
+//        Player testPlayer  = new Player();
+//        testPlayer.setAttack(attack);
+//        this.setPlayer(testPlayer);
+//    }
 
 }
