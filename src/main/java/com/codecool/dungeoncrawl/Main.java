@@ -23,14 +23,17 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -112,7 +115,7 @@ public class Main extends Application {
         Menu menu = new Menu("Menu");
 //creating menu items
         MenuItem export = new MenuItem("Export game");
-        MenuItem importGame = new MenuItem("Import");
+        MenuItem importGame = new MenuItem("Import game");
 
 //adding menu items to the menu
         menu.getItems().add(export);
@@ -124,14 +127,7 @@ public class Main extends Application {
         borderPane.setTop(menuBar);
 
         export.setOnAction(t -> {
-            Stage stage = new Stage();
-            Scene scene = new Scene(new VBox());
-            stage.setTitle("Export game");
-            stage.setScene(scene);
-//            stage.centerOnScreen();
-            stage.setX(primaryStage.getWidth()/2);
-            stage.setY(primaryStage.getHeight()/2);
-            stage.show();
+            addFileName();
         });
 
         Scene scene = new Scene(borderPane);
@@ -154,6 +150,27 @@ public class Main extends Application {
                 || keyEvent.getCode() == KeyCode.ESCAPE) {
             exit();
         }
+    }
+
+
+    private String addFileName(){
+        TextInputDialog textInputDialog = new TextInputDialog();
+        ((Button) textInputDialog.getDialogPane().lookupButton(ButtonType.OK)).setText("Export");
+        textInputDialog.setTitle("Export");
+        textInputDialog.setContentText("Filename");
+        textInputDialog.showAndWait();
+
+        return textInputDialog.getResult();
+    }
+
+    private String selectDirectory(){
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        Stage stage = new Stage();
+        File directory= directoryChooser.showDialog(stage);
+        directoryChooser.setInitialDirectory(directory);
+
+        String finalDirectory = directoryChooser.getInitialDirectory().toString();
+        return finalDirectory;
     }
 
     private void setHealthbar(GridPane ui) {
