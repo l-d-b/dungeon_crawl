@@ -2,6 +2,8 @@ package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
 
+import java.util.Date;
+
 public class GameMap {
     private final int width;
     private final int height;
@@ -48,5 +50,14 @@ public class GameMap {
     public int getHeight() {
         return height;
     }
+
+    public Date getDate(){return new Date();}
+
+//    public String mapConvertToString(GameMap map){
+//        String gameMapStr = "";
+//        for(Cell cell, cell < map){
+//
+//        }
+//    }
 
 }

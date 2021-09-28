@@ -1,11 +1,11 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.dao.PlayerDaoJdbc;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.model.BaseModel;
 import javafx.application.Application;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
@@ -30,12 +30,11 @@ import java.util.ArrayList;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
-import java.util.ArrayList;
 
 
 public class Main extends Application {
     GameDatabaseManager dbManager;
-
+    BaseModel dbmodel;
     String gameOver = "/gameover.txt";
     String map1 = "/map.txt";
     String map2 = "/map_2.txt";
@@ -64,7 +63,6 @@ public class Main extends Application {
     Rectangle healthbar = new Rectangle();
     Rectangle powerbar = new Rectangle();
     Button pickUpButton;
-    Button saveSqlButton;
 
 
     public static void main(String[] args) {
@@ -90,7 +88,6 @@ public class Main extends Application {
         background.setFill(Color.GREY);
         mapLevelCounter = 1;
         setPickUpButton(ui);
-        setSaveSql(ui);
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
@@ -186,23 +183,6 @@ public class Main extends Application {
         inventory.setFont(Font.font("Verdana", 16));
     }
 
-    private void setSaveSql(GridPane ui) {
-        saveSqlButton = new Button("Save Sql");
-        saveSqlButton.setVisible(true);
-
-        saveSqlButton.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-            dbManager.savePlayer(map.getPlayer());
-        });
-
-        saveSqlButton.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ENTER) {
-                dbManager.savePlayer(map.getPlayer());
-            }
-        });
-        ui.add(saveSqlButton, 0, 25);
-        GridPane.setHalignment(saveSqlButton, HPos.CENTER);
-
-    }
 
     public Cell playerCellCheck(int x, int y) {
         return player.cellCheck(x, y);
@@ -286,9 +266,13 @@ public class Main extends Application {
                 pickUp();
                 refresh();
                 break;
+            case S:
+                if(keyEvent.isControlDown()){
+                    saveSql();
+                }
         }
-        Player player = map.getPlayer();
-        dbManager.savePlayer(player);
+//        Player player = map.getPlayer();
+//        dbManager.savePlayer(player);
     }
 
 
@@ -396,4 +380,12 @@ public class Main extends Application {
                 }
         }
     }
+
+    public void saveSql() {
+        dbManager.savePlayer(map.getPlayer());
+        String gameField = map.toString();
+        dbManager.saveGameStatus(map);
+//        dbManager.saveGameStatus(map);
+    }
+
 }

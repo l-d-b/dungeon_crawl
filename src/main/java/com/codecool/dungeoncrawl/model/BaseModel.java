@@ -1,5 +1,7 @@
 package com.codecool.dungeoncrawl.model;
 
+import com.codecool.dungeoncrawl.logic.GameMap;
+
 import java.lang.reflect.Field;
 
 public class BaseModel {
