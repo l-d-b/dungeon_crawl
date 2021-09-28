@@ -7,6 +7,17 @@ public class Cell implements Drawable {
     private Actor actor;
     private GameMap gameMap;
     private int x, y;
+import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.monsters.Monster;
+
+public class Cell implements Drawable {
+    public Cell cell;
+    private CellType type;
+    private Actor actor;
+    private Item item;
+    private Monster monster;
+    private final GameMap gameMap;
+    private final int x, y;
 
     Cell(GameMap gameMap, int x, int y, CellType type) {
         this.gameMap = gameMap;
@@ -31,6 +42,18 @@ public class Cell implements Drawable {
         return actor;
     }
 
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+    public void setMonster(Monster monster){
+        this.monster = monster;
+    }
+
+    public Monster getMonster() {
+        return monster;
+    }
+
     public Cell getNeighbor(int dx, int dy) {
         return gameMap.getCell(x + dx, y + dy);
     }
@@ -46,5 +69,28 @@ public class Cell implements Drawable {
 
     public int getY() {
         return y;
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public boolean isItem() {
+        return this.type.equals(CellType.SWORD) || this.type.equals(CellType.SHIELD)
+                || this.type.equals(CellType.KEY) || this.type.equals(CellType.HEAL);
+    }
+
+    public boolean isMonster() {
+        return this.type.equals(CellType.GOLEM) || this.type.equals(CellType.GHOST)
+                || this.type.equals(CellType.SKELETON) || this.type.equals(CellType.SPIDER) || this.type.equals(CellType.BOSS);
+    }
+
+    public boolean isWall(){
+        return this.type.equals(CellType.WALL);
+    }
+
+    public boolean isDoorClose(){
+        return this.type.equals(CellType.CLOSED_DOOR);
     }
 }

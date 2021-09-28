@@ -1,6 +1,12 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
+
+import com.codecool.dungeoncrawl.logic.items.Heal;
+import com.codecool.dungeoncrawl.logic.items.Key;
+import com.codecool.dungeoncrawl.logic.items.Shield;
+import com.codecool.dungeoncrawl.logic.items.Sword;
+import com.codecool.dungeoncrawl.logic.monsters.*;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 
 import java.io.InputStream;
@@ -9,6 +15,9 @@ import java.util.Scanner;
 public class MapLoader {
     public static GameMap loadMap() {
         InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
+
+    public static GameMap loadMap(String currentMap, int playerHealth, int playerPower) {
+        InputStream is = MapLoader.class.getResourceAsStream(currentMap);
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
         int height = scanner.nextInt();
@@ -33,11 +42,57 @@ public class MapLoader {
                             break;
                         case 's':
                             cell.setType(CellType.FLOOR);
+                            cell.setType(CellType.SKELETON);
                             new Skeleton(cell);
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
                             map.setPlayer(new Player(cell, "Player"));
+                            map.setPlayer(new Player(cell, playerHealth, playerPower));
+                            break;
+                        case 'ß':
+                            cell.setType(CellType.SWORD);
+                            new Sword(cell);
+                            break;
+                        case '$':
+                            cell.setType(CellType.SHIELD);
+                            new Shield(cell);
+                            break;
+                        case '*':
+                            cell.setType(CellType.KEY);
+                            new Key(cell);
+                            break;
+                        case '|':
+                            cell.setType(CellType.OPENED_DOOR);
+                            break;
+                        case '_':
+                            cell.setType(CellType.CLOSED_DOOR);
+                            break;
+                        case 'p':
+                            cell.setType(CellType.SPIDER);
+                            new Spider(cell);
+                            break;
+                        case 'g':
+                            cell.setType(CellType.GOLEM);
+                            new Golem(cell);
+                            break;
+                        case '¤':
+                            cell.setType(CellType.GHOST);
+                            new Ghost(cell);
+                            break;
+                        case 'h':
+                            cell.setType(CellType.HEAL);
+                            new Heal(cell);
+                            break;
+                        case 't':
+                            cell.setType(CellType.TREE);
+                            break;
+                        case 'b':
+                            cell.setType(CellType.BOSS);
+                            new Boss(cell);
+                            break;
+                        case 'o':
+                            cell.setType(CellType.OVER);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

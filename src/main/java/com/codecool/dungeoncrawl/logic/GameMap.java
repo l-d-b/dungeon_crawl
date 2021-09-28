@@ -8,6 +8,15 @@ public class GameMap {
     private Cell[][] cells;
 
     private Player player;
+import com.codecool.dungeoncrawl.logic.monsters.Monster;
+
+public class GameMap {
+    private final int width;
+    private final int height;
+    private final Cell[][] cells;
+
+    private Player player;
+    private Monster monster;
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -32,6 +41,14 @@ public class GameMap {
         return player;
     }
 
+    public Monster getMonster() {
+        return this.monster;
+    }
+
+    public void setMonster(Monster monster) {
+        this.monster = monster;
+    }
+
     public int getWidth() {
         return width;
     }
@@ -39,4 +56,5 @@ public class GameMap {
     public int getHeight() {
         return height;
     }
+
 }
