@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.model;
 
 import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 
 import com.codecool.dungeoncrawl.logic.GameMap;
 
@@ -19,10 +20,10 @@ public class GameState extends BaseModel implements Serializable {
         this.currentMap = currentMap;
     }
 
-    public GameState(GameMap gameState) {
+    public GameState(GameMap gameState, PlayerModel playerModel) {
         this.savedAt = (Date) gameState.getDate();
         this.currentMap = gameState.toString();
-        this.player = new PlayerModel(gameState.getPlayer());
+        this.player = playerModel;
     }
 
 

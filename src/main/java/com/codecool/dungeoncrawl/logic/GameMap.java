@@ -2,7 +2,7 @@ package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
 import java.util.Date;
-import com.google.gson.annotations.Expose;
+//import com.google.gson.annotations.Expose;
 
 
 import java.io.IOException;
@@ -20,6 +20,7 @@ public class GameMap implements Serializable {
 
     private Player player;
     private Monster monster;
+    private Integer id;
 
 
     public GameMap(int width, int height, CellType defaultCellType) {
@@ -66,7 +67,13 @@ public class GameMap implements Serializable {
         return new java.sql.Date(date.getTime());
     }
 
-
+//    public void setId(Integer id) {
+//        this.id = id;
+//    }
+//
+//    public Integer getId() {
+//        return id;
+//    }
     @Override
     public String toString() {
         return "GameMap{" +

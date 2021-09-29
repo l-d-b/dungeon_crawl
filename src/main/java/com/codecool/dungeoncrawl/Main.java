@@ -7,10 +7,11 @@ import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.PlayerModel;
-import com.codecool.dungeoncrawl.model.generated.Response;
-import com.google.gson.*;
+//import com.codecool.dungeoncrawl.model.generated.Response;
+//import com.google.gson.*;
 import com.codecool.dungeoncrawl.model.BaseModel;
 import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
@@ -98,7 +99,7 @@ public class Main extends Application {
     Rectangle healthbar = new Rectangle();
     Rectangle powerbar = new Rectangle();
     Button pickUpButton;
-    Button pickUpButton;
+//    Button pickUpButton;
 
 
     public static void main(String[] args) {
@@ -520,8 +521,9 @@ public class Main extends Application {
     }
 
     public void saveSql() {
-        dbManager.savePlayer(map.getPlayer());
-        dbManager.saveGameStatus(map);
+
+        PlayerModel playerModel = dbManager.savePlayer(map.getPlayer());
+        dbManager.saveGameStatus(map, playerModel);
         System.out.println(gameState.getCurrentMap());
     }
 

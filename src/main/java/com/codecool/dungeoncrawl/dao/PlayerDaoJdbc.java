@@ -23,10 +23,10 @@ public class PlayerDaoJdbc implements PlayerDao {
             statement.setInt(3, player.getX());
             statement.setInt(4, player.getY());
             statement.executeUpdate();
-
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
             player.setId(resultSet.getInt(1));
+//            System.out.println(player.getId());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
