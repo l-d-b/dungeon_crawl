@@ -8,14 +8,24 @@ import com.codecool.dungeoncrawl.logic.items.Shield;
 import com.codecool.dungeoncrawl.logic.items.Sword;
 import com.codecool.dungeoncrawl.logic.monsters.*;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class MapLoader {
 
-    public static GameMap loadMap(String currentMap, int playerHealth, int playerPower) {
+    @Override
+    public String toString() {
+        return "MapLoader{}";
+    }
+
+    public static GameMap loadMap(String currentMap, int playerHealth, int playerPower){
         InputStream is = MapLoader.class.getResourceAsStream(currentMap);
         Scanner scanner = new Scanner(is);
+        //String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
+        //System.out.println(result);
         int width = scanner.nextInt();
         int height = scanner.nextInt();
 
