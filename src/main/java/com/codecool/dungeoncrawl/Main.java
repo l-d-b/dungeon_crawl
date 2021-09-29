@@ -127,6 +127,7 @@ public class Main extends Application {
         borderPane.setTop(menuBar);
 
         export.setOnAction(t -> {
+            selectDirectory();
             addFileName();
         });
 
@@ -151,7 +152,6 @@ public class Main extends Application {
             exit();
         }
     }
-
 
     private String addFileName(){
         TextInputDialog textInputDialog = new TextInputDialog();
