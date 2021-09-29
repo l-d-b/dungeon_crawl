@@ -5,7 +5,7 @@ import com.codecool.dungeoncrawl.logic.monsters.Monster;
 
 
 public class Cell implements Drawable {
-    public Cell cell;
+    public transient Cell cell;
     private CellType type;
     private Actor actor;
     private Item item;
