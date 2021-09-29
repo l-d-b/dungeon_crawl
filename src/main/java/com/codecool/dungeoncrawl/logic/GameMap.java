@@ -1,7 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
-
 import java.util.Date;
 
 public class GameMap {
@@ -11,6 +10,7 @@ public class GameMap {
 
     private Player player;
     private Monster monster;
+
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -51,13 +51,10 @@ public class GameMap {
         return height;
     }
 
-    public Date getDate(){return new Date();}
+    public Date getDate(){
+        java.util.Date date = new java.util.Date();
+        return new java.sql.Date(date.getTime());
+    }
 
-//    public String mapConvertToString(GameMap map){
-//        String gameMapStr = "";
-//        for(Cell cell, cell < map){
-//
-//        }
-//    }
 
 }

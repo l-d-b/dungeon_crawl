@@ -6,6 +6,7 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.BaseModel;
+import com.codecool.dungeoncrawl.model.GameState;
 import javafx.application.Application;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
@@ -35,6 +36,7 @@ import javafx.scene.shape.Rectangle;
 public class Main extends Application {
     GameDatabaseManager dbManager;
     BaseModel dbmodel;
+    GameState gameState;
     String gameOver = "/gameover.txt";
     String map1 = "/map.txt";
     String map2 = "/map_2.txt";
@@ -383,9 +385,8 @@ public class Main extends Application {
 
     public void saveSql() {
         dbManager.savePlayer(map.getPlayer());
-        String gameField = map.toString();
         dbManager.saveGameStatus(map);
-//        dbManager.saveGameStatus(map);
+        System.out.println(gameState.getCurrentMap());
     }
 
 }

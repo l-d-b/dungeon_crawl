@@ -8,12 +8,12 @@ public class InventoryModel extends BaseModel{
     private int sword;
     private int shield;
 
-    public InventoryModel(Player player) {
-        this.sword = for(CellType item: player.getInventory()){
-
-        };
-        this.shield = shield;
-    }
+//    public InventoryModel(Player player) {
+//        this.sword = for(CellType item: player.getInventory()){
+//
+//        };
+//        this.shield = shield;
+//    }
 
     public void setSword(int sword) {
         this.sword = sword;
