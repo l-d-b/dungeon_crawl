@@ -10,7 +10,7 @@ public class Cell implements Drawable {
     private Actor actor;
     private Item item;
     private Monster monster;
-    private final GameMap gameMap;
+    private final transient GameMap gameMap;
     private final int x, y;
 
     Cell(GameMap gameMap, int x, int y, CellType type) {
