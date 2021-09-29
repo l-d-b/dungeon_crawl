@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
+import com.google.gson.annotations.Expose;
 
 
 import java.io.IOException;
@@ -9,11 +10,12 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 
+
 public class GameMap implements Serializable {
     private static final long serialVersionUID = 1L;
     private final int width;
     private final int height;
-    private final transient Cell[][] cells;
+    private final Cell[][] cells;
 
     private Player player;
     private Monster monster;

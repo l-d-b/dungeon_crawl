@@ -4,9 +4,10 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player extends Actor {
+public class Player extends Actor  {
     private final ArrayList<CellType> inventory = new ArrayList<>();
 
     public Player(Cell cell) {

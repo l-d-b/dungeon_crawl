@@ -3,8 +3,10 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
 
+import java.io.Serializable;
 
-public class Cell implements Drawable {
+
+public class Cell implements Drawable, Serializable {
     public transient Cell cell;
     private CellType type;
     private Actor actor;

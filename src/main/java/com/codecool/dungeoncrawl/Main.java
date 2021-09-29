@@ -6,13 +6,17 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.GameState;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
+import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.codecool.dungeoncrawl.model.generated.Response;
+import com.google.gson.*;
 import javafx.application.Application;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -26,6 +30,8 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -34,11 +40,24 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Window;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 
 public class Main extends Application {
@@ -51,6 +70,7 @@ public class Main extends Application {
     GameMap map = MapLoader.loadMap(map1);
     ObjectInputStream currentMap;
     Player player = map.getPlayer();
+
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -218,7 +238,6 @@ public class Main extends Application {
         Stage stage = new Stage();
         File selectedFile = fileChooser.showOpenDialog(stage);
         fileChooser.setInitialDirectory(selectedFile);
-        //fileChooser.setInitialFileName(selectedFile);
         return fileChooser.getInitialDirectory().getName();
     }
 
@@ -230,42 +249,20 @@ public class Main extends Application {
 
             try {
                 importGame(filename);
-            } catch (FileNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });
     }
 
-    public  void importGame(String filename) throws FileNotFoundException {
-
-        FileInputStream fileInputStream
-                = new FileInputStream(filename);
-        ObjectInputStream objectInputStream
-                = null;
-        try {
-            objectInputStream = new ObjectInputStream(fileInputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            System.out.println("251" + objectInputStream.readObject());
-            currentMap = objectInputStream;
-            MapLoader.importMap(fileInputStream);
-        
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            objectInputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+    public  void importGame(String filename) throws IOException, ClassNotFoundException {
+        FileInputStream fileInputStream = new FileInputStream(filename);
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        GameState gameState = (GameState) objectInputStream.readObject();
+        System.out.println(gameState.getCurrentMap());
+        map = gameState.getCurrentMap();
+        refresh();
+        objectInputStream.close();
     }
 
     private String selectDirectory() {
@@ -297,13 +294,13 @@ public class Main extends Application {
 
     private void exportGame(String directory, String filename) throws IOException {
         GameState gameState = new GameState(map);
-        String json = new Gson().toJson(gameState);
+        //String json = new Gson().toJson(gameState);
 
         FileOutputStream fileOutputStream
                 = new FileOutputStream(directory + "/" + filename + ".json");
         ObjectOutputStream objectOutputStream
                 = new ObjectOutputStream(fileOutputStream);
-        objectOutputStream.writeObject(json);
+        objectOutputStream.writeObject(gameState);
         objectOutputStream.flush();
         objectOutputStream.close();
     }

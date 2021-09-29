@@ -6,10 +6,11 @@ import com.codecool.dungeoncrawl.logic.monsters.Monster;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import java.io.Serializable;
 
 
-public abstract class Actor implements Drawable {
-    protected transient Cell cell;
+public abstract class Actor implements Drawable, Serializable {
+    protected  Cell cell;
     private int health;
     private int attack;
     private final String name;
