@@ -3,14 +3,16 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
 
+import java.io.Serializable;
 
-public class Cell implements Drawable {
-    public Cell cell;
+
+public class Cell implements Drawable, Serializable {
+    public transient Cell cell;
     private CellType type;
     private Actor actor;
     private Item item;
     private Monster monster;
-    private final GameMap gameMap;
+    private final transient GameMap gameMap;
     private final int x, y;
 
     Cell(GameMap gameMap, int x, int y, CellType type) {

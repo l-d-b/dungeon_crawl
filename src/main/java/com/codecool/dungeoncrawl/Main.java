@@ -5,32 +5,61 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.codecool.dungeoncrawl.model.generated.Response;
+import com.google.gson.*;
 import com.codecool.dungeoncrawl.model.BaseModel;
 import com.codecool.dungeoncrawl.model.GameState;
 import javafx.application.Application;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.*;
+import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javafx.scene.control.Button;
+
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Window;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 
 public class Main extends Application {
@@ -41,8 +70,10 @@ public class Main extends Application {
     String map1 = "/map.txt";
     String map2 = "/map_2.txt";
     String map3 = "/map_3.txt";
-    GameMap map = MapLoader.loadMap(map1, 100, 5);
+    GameMap map = MapLoader.loadMap(map1);
+    ObjectInputStream currentMap;
     Player player = map.getPlayer();
+
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -60,10 +91,13 @@ public class Main extends Application {
     Label inventoryLabel = new Label();
     Label inventory = new Label();
     Label powerLabel = new Label();
+    MenuItem exportMenu;
+    MenuItem importMenu;
 
 
     Rectangle healthbar = new Rectangle();
     Rectangle powerbar = new Rectangle();
+    Button pickUpButton;
     Button pickUpButton;
 
 
@@ -74,7 +108,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         setupDbManager();
-
+        player.setHealth(100);
+        player.setAttack(5);
 
         GridPane ui = new GridPane();
         ui.setMinWidth(300);
@@ -98,6 +133,23 @@ public class Main extends Application {
         canvas.setHeight(1000);
         setInventoryLabel(ui);
 
+        MenuBar menuBar = new MenuBar();
+        Menu menu = new Menu("Menu");
+//creating menu items
+        exportMenu = new MenuItem("Export game");
+        importMenu = new MenuItem("Import game");
+
+//adding menu items to the menu
+        menu.getItems().add(exportMenu);
+        menu.getItems().add(importMenu);
+
+//adding menu to the menu bar
+        menuBar.getMenus().add(menu);
+
+        borderPane.setTop(menuBar);
+        setExportMenu();
+        setImportMenu();
+
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         refresh();
@@ -105,7 +157,9 @@ public class Main extends Application {
         scene.setOnKeyReleased(this::onKeyReleased);
 
         primaryStage.setTitle("Dungeon Crawl");
+
         primaryStage.show();
+
     }
 
     private void onKeyReleased(KeyEvent keyEvent) {
@@ -116,6 +170,16 @@ public class Main extends Application {
                 || keyEvent.getCode() == KeyCode.ESCAPE) {
             exit();
         }
+    }
+
+    private String addFileName(){
+        TextInputDialog textInputDialog = new TextInputDialog();
+        ((Button) textInputDialog.getDialogPane().lookupButton(ButtonType.OK)).setText("Export");
+        textInputDialog.setTitle("Export");
+        textInputDialog.setContentText("Filename");
+        textInputDialog.showAndWait();
+
+        return textInputDialog.getResult();
     }
 
     private void setHealthbar(GridPane ui) {
@@ -171,7 +235,79 @@ public class Main extends Application {
         });
         ui.add(pickUpButton, 0, 17);
         GridPane.setHalignment(pickUpButton, HPos.CENTER);
+        ui.setHalignment(pickUpButton, HPos.CENTER);
+    }
 
+    private String selectFile() {
+        FileChooser fileChooser = new FileChooser();
+        Stage stage = new Stage();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        fileChooser.setInitialDirectory(selectedFile);
+        return fileChooser.getInitialDirectory().getName();
+    }
+
+    private void setImportMenu() {
+
+        importMenu.setOnAction((event) -> {
+            String filename = selectFile();
+            System.out.println(filename);
+
+            try {
+                importGame(filename);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public  void importGame(String filename) throws IOException, ClassNotFoundException {
+        FileInputStream fileInputStream = new FileInputStream(filename);
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        GameState gameState = (GameState) objectInputStream.readObject();
+        System.out.println(gameState.getCurrentMap());
+        map = gameState.getCurrentMap();
+        refresh();
+        objectInputStream.close();
+    }
+
+    private String selectDirectory() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        Stage stage = new Stage();
+        File directory= directoryChooser.showDialog(stage);
+        directoryChooser.setInitialDirectory(directory);
+
+        String finalDirectory = directoryChooser.getInitialDirectory().toString();
+        return finalDirectory;
+    }
+
+    private void setExportMenu() {
+
+        exportMenu.setOnAction((event) -> {
+                String directory= selectDirectory();
+                String filename= "";
+                if(filename.equals("")){
+                    filename = addFileName();
+                }
+
+            try {
+                exportGame(directory, filename);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void exportGame(String directory, String filename) throws IOException {
+        GameState gameState = new GameState(map);
+        //String json = new Gson().toJson(gameState);
+
+        FileOutputStream fileOutputStream
+                = new FileOutputStream(directory + "/" + filename + ".json");
+        ObjectOutputStream objectOutputStream
+                = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(gameState);
+        objectOutputStream.flush();
+        objectOutputStream.close();
     }
 
     private void setInventoryLabel(GridPane ui) {
@@ -213,10 +349,8 @@ public class Main extends Application {
                 player.move(x, y);
                 refresh();
 
-
             } else if (playerCellCheck(x, y).isDoorClose() && !playerInvetory.contains(CellType.KEY)) {
                 refresh();
-
 
             } else if (playerCellCheck(x, y).isDoorClose() && playerInvetory.contains(CellType.KEY)) {
                 player.move(x, y);
@@ -233,7 +367,7 @@ public class Main extends Application {
             refresh();
 
             if ((getCurrentMonster(x, y).getName().equals("Boss") && getCurrentMonsterHealth(x, y) <= 0) || (currentPlayerHealth <= 0)) {
-                map = MapLoader.loadMap(gameOver, this.currentPlayerHealth, this.currentPlayerPower);
+                map = MapLoader.loadMap(gameOver);
 
             } else if (getCurrentMonsterHealth(x, y) <= 0) {
                 playerCellCheck(x, y).setType(CellType.FLOOR);
@@ -251,10 +385,12 @@ public class Main extends Application {
             case UP:
                 roundByKeyPressed(0, -1);
                 refresh();
+
                 break;
             case DOWN:
                 roundByKeyPressed(0, 1);
                 refresh();
+
                 break;
             case LEFT:
                 roundByKeyPressed(-1, 0);
@@ -277,7 +413,6 @@ public class Main extends Application {
 //        dbManager.savePlayer(player);
     }
 
-
     private void refresh() {
         updateHealth();
         updateInventory();
@@ -299,10 +434,11 @@ public class Main extends Application {
         healthbar.setWidth(currentPlayerHealth * 2);
         currentPowerLabel.setText(String.valueOf(currentPlayerPower));
         powerbar.setWidth(currentPlayerPower * 10);
+
     }
 
     private void setupDbManager() {
-        dbManager = new GameDatabaseManager();
+        dbManager = new GameDatabaseManager();map.toString();
         try {
             dbManager.setup();
         } catch (SQLException ex) {
@@ -356,26 +492,26 @@ public class Main extends Application {
     public void mapLevel(int mapLevelCounter) {
         switch (mapLevelCounter) {
             case 1:
-                map = MapLoader.loadMap(map2, this.currentPlayerHealth, this.currentPlayerPower);
+                map = MapLoader.loadMap(map2);
                 this.player = map.getPlayer();
                 this.mapLevelCounter = 2;
                 break;
 
             case 2:
                 if (playerCellCheck(0, 0).isDoorClose()) {
-                    map = MapLoader.loadMap(map3, this.currentPlayerHealth, this.currentPlayerPower);
+                    map = MapLoader.loadMap(map3);
                     this.player = map.getPlayer();
                     this.mapLevelCounter = 3;
                     break;
                 } else if (!playerCellCheck(0, 0).isDoorClose()) {
-                    map = MapLoader.loadMap(map1, this.currentPlayerHealth, this.currentPlayerPower);
+                    map = MapLoader.loadMap(map1);
                     this.player = map.getPlayer();
                     this.mapLevelCounter = 1;
                     break;
                 }
             case 3:
                 if (!playerCellCheck(0, 0).isDoorClose()) {
-                    map = MapLoader.loadMap(map2, this.currentPlayerHealth, this.currentPlayerPower);
+                    map = MapLoader.loadMap(map2);
                     this.player = map.getPlayer();
                     this.mapLevelCounter = 2;
                     break;

@@ -4,13 +4,15 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player extends Actor {
+public class Player extends Actor  {
     private final ArrayList<CellType> inventory = new ArrayList<>();
 
-    public Player(Cell cell, int health, int attack) {
-        super(cell, health, attack, "Player");
+    public Player(Cell cell) {
+
+        super(cell, 100, 5, "Player");
     }
 
     public String getTileName() {
@@ -46,5 +48,13 @@ public class Player extends Actor {
 
         }
         getCell().setType(CellType.FLOOR);
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "cell=" + cell +
+                ", inventory=" + inventory +
+                "} " + super.toString();
     }
 }

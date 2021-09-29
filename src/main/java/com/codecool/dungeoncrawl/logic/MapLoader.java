@@ -8,14 +8,17 @@ import com.codecool.dungeoncrawl.logic.items.Shield;
 import com.codecool.dungeoncrawl.logic.items.Sword;
 import com.codecool.dungeoncrawl.logic.monsters.*;
 
-import java.io.InputStream;
+import java.io.*;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class MapLoader {
 
-    public static GameMap loadMap(String currentMap, int playerHealth, int playerPower) {
+    public static GameMap loadMap(String currentMap){
         InputStream is = MapLoader.class.getResourceAsStream(currentMap);
         Scanner scanner = new Scanner(is);
+        //String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
+        //System.out.println(result);
         int width = scanner.nextInt();
         int height = scanner.nextInt();
 
@@ -43,7 +46,95 @@ public class MapLoader {
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell, playerHealth, playerPower));
+                            map.setPlayer(new Player(cell));
+                            break;
+                        case 'ß':
+                            cell.setType(CellType.SWORD);
+                            new Sword(cell);
+                            break;
+                        case '$':
+                            cell.setType(CellType.SHIELD);
+                            new Shield(cell);
+                            break;
+                        case '*':
+                            cell.setType(CellType.KEY);
+                            new Key(cell);
+                            break;
+                        case '|':
+                            cell.setType(CellType.OPENED_DOOR);
+                            break;
+                        case '_':
+                            cell.setType(CellType.CLOSED_DOOR);
+                            break;
+                        case 'p':
+                            cell.setType(CellType.SPIDER);
+                            new Spider(cell);
+                            break;
+                        case 'g':
+                            cell.setType(CellType.GOLEM);
+                            new Golem(cell);
+                            break;
+                        case '¤':
+                            cell.setType(CellType.GHOST);
+                            new Ghost(cell);
+                            break;
+                        case 'h':
+                            cell.setType(CellType.HEAL);
+                            new Heal(cell);
+                            break;
+                        case 't':
+                            cell.setType(CellType.TREE);
+                            break;
+                        case 'b':
+                            cell.setType(CellType.BOSS);
+                            new Boss(cell);
+                            break;
+                        case 'o':
+                            cell.setType(CellType.OVER);
+                            break;
+                        default:
+                            throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
+                    }
+                }
+            }
+        }
+        return map;
+    }
+
+
+    public static GameMap importMap(InputStream gameMap) throws IOException {
+        InputStream is = gameMap;
+       Scanner scanner = new Scanner(is);
+       // String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
+
+        int width = scanner.nextInt();
+        int height = scanner.nextInt();
+
+        scanner.nextLine(); // empty line
+
+        GameMap map = new GameMap(width, height, CellType.EMPTY);
+        for (int y = 0; y < height; y++) {
+            String line = scanner.nextLine();
+            for (int x = 0; x < width; x++) {
+                if (x < line.length()) {
+                    Cell cell = map.getCell(x, y);
+                    switch (line.charAt(x)) {
+                        case ' ':
+                            cell.setType(CellType.EMPTY);
+                            break;
+                        case '#':
+                            cell.setType(CellType.WALL);
+                            break;
+                        case '.':
+                            cell.setType(CellType.FLOOR);
+                            break;
+                        case 's':
+                            cell.setType(CellType.FLOOR);
+                            new Skeleton(cell);
+                            break;
+                        case '@':
+                            cell.setType(CellType.FLOOR);
+                            map.setPlayer(new Player(cell));
                             break;
                         case 'ß':
                             cell.setType(CellType.SWORD);
