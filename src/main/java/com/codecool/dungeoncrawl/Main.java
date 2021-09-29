@@ -6,16 +6,12 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.GameState;
-import com.codecool.dungeoncrawl.model.PlayerModel;
 import com.google.gson.Gson;
 import javafx.application.Application;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -29,18 +25,10 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
-
-import java.io.*;
-import javafx.scene.text.Text;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -52,10 +40,6 @@ import java.util.ArrayList;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Window;
-
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 
 public class Main extends Application {
@@ -85,14 +69,11 @@ public class Main extends Application {
     Label inventoryLabel = new Label();
     Label inventory = new Label();
     Label powerLabel = new Label();
-    Label menuLabel = new Label();
-
+    MenuItem exportMenu;
 
     Rectangle healthbar = new Rectangle();
     Rectangle powerbar = new Rectangle();
     Button pickUpButton;
-    Button exportButton;
-
 
     public static void main(String[] args) {
         launch(args);
@@ -116,7 +97,6 @@ public class Main extends Application {
         background.setFill(Color.GREY);
         mapLevelCounter = 1;
         setPickUpButton(ui);
-        setExportButton(ui);
 
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(canvas);
@@ -129,22 +109,18 @@ public class Main extends Application {
         MenuBar menuBar = new MenuBar();
         Menu menu = new Menu("Menu");
 //creating menu items
-        MenuItem export = new MenuItem("Export game");
+        exportMenu = new MenuItem("Export game");
         MenuItem importGame = new MenuItem("Import game");
 
 //adding menu items to the menu
-        menu.getItems().add(export);
+        menu.getItems().add(exportMenu);
         menu.getItems().add(importGame);
 
 //adding menu to the menu bar
         menuBar.getMenus().add(menu);
 
         borderPane.setTop(menuBar);
-
-        export.setOnAction(t -> {
-            selectDirectory();
-            addFileName();
-        });
+        setExportMenu();
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
@@ -241,32 +217,11 @@ public class Main extends Application {
         });
         ui.add(pickUpButton, 0, 17);
         ui.setHalignment(pickUpButton, HPos.CENTER);
-
-    }
-    private String selectDirectory(){
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        Stage stage = new Stage();
-        File directory= directoryChooser.showDialog(stage);
-        directoryChooser.setInitialDirectory(directory);
-
-        String finalDirectory = directoryChooser.getInitialDirectory().toString();
-        return finalDirectory;
     }
 
-    private String addFileName(){
-        TextInputDialog textInputDialog = new TextInputDialog();
-        ((Button) textInputDialog.getDialogPane().lookupButton(ButtonType.OK)).setText("Kecske");
-        textInputDialog.setContentText("Filename");
-        textInputDialog.showAndWait();
+    private void setExportMenu() {
 
-        return textInputDialog.getResult();
-    }
-    private void setExportButton(GridPane ui) {
-        exportButton = new Button("Export");
-        exportButton.setVisible(true);
-        exportButton.setFocusTraversable(false);
-
-        exportButton.setOnAction((event) -> {
+        exportMenu.setOnAction((event) -> {
                 String directory= selectDirectory();
                 String filename= "";
                 if(filename.equals("")){
@@ -278,11 +233,7 @@ public class Main extends Application {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         });
-        ui.add(exportButton, 0, 18);
-        ui.setHalignment(exportButton, HPos.CENTER);
-
     }
 
     private void exportGame(String directory, String filename) throws IOException {

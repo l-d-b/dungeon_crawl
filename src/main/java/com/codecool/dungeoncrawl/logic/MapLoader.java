@@ -16,11 +16,6 @@ import java.util.stream.Collectors;
 
 public class MapLoader {
 
-    @Override
-    public String toString() {
-        return "MapLoader{}";
-    }
-
     public static GameMap loadMap(String currentMap, int playerHealth, int playerPower){
         InputStream is = MapLoader.class.getResourceAsStream(currentMap);
         Scanner scanner = new Scanner(is);
