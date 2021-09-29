@@ -2,7 +2,7 @@ package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
 
-public class GameMap{
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,7 +13,7 @@ public class GameMap implements Serializable {
     private static final long serialVersionUID = 1L;
     private final int width;
     private final int height;
-    private final Cell[][] cells;
+    private final transient Cell[][] cells;
 
     private Player player;
     private Monster monster;

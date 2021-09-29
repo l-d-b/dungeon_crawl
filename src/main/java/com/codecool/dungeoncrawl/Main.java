@@ -6,16 +6,13 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.GameState;
-import com.codecool.dungeoncrawl.model.PlayerModel;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import javafx.application.Application;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -29,33 +26,19 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
-import javafx.scene.text.Text;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Window;
-
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 
 public class Main extends Application {
@@ -65,8 +48,8 @@ public class Main extends Application {
     String map1 = "/map.txt";
     String map2 = "/map_2.txt";
     String map3 = "/map_3.txt";
-    GameMap map = MapLoader.loadMap(map1, 100, 5);
-    GameMap gameMap;
+    GameMap map = MapLoader.loadMap(map1);
+    ObjectInputStream currentMap;
     Player player = map.getPlayer();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
@@ -85,14 +68,13 @@ public class Main extends Application {
     Label inventoryLabel = new Label();
     Label inventory = new Label();
     Label powerLabel = new Label();
-    Label menuLabel = new Label();
+    MenuItem exportMenu;
+    MenuItem importMenu;
 
 
     Rectangle healthbar = new Rectangle();
     Rectangle powerbar = new Rectangle();
     Button pickUpButton;
-    Button exportButton;
-
 
     public static void main(String[] args) {
         launch(args);
@@ -101,6 +83,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         setupDbManager();
+        player.setHealth(100);
+        player.setAttack(5);
 
         GridPane ui = new GridPane();
         ui.setMinWidth(300);
@@ -116,7 +100,6 @@ public class Main extends Application {
         background.setFill(Color.GREY);
         mapLevelCounter = 1;
         setPickUpButton(ui);
-        setExportButton(ui);
 
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(canvas);
@@ -129,22 +112,19 @@ public class Main extends Application {
         MenuBar menuBar = new MenuBar();
         Menu menu = new Menu("Menu");
 //creating menu items
-        MenuItem export = new MenuItem("Export game");
-        MenuItem importGame = new MenuItem("Import game");
+        exportMenu = new MenuItem("Export game");
+        importMenu = new MenuItem("Import game");
 
 //adding menu items to the menu
-        menu.getItems().add(export);
-        menu.getItems().add(importGame);
+        menu.getItems().add(exportMenu);
+        menu.getItems().add(importMenu);
 
 //adding menu to the menu bar
         menuBar.getMenus().add(menu);
 
         borderPane.setTop(menuBar);
-
-        export.setOnAction(t -> {
-            selectDirectory();
-            addFileName();
-        });
+        setExportMenu();
+        setImportMenu();
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
@@ -176,16 +156,6 @@ public class Main extends Application {
         textInputDialog.showAndWait();
 
         return textInputDialog.getResult();
-    }
-
-    private String selectDirectory(){
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        Stage stage = new Stage();
-        File directory= directoryChooser.showDialog(stage);
-        directoryChooser.setInitialDirectory(directory);
-
-        String finalDirectory = directoryChooser.getInitialDirectory().toString();
-        return finalDirectory;
     }
 
     private void setHealthbar(GridPane ui) {
@@ -241,9 +211,64 @@ public class Main extends Application {
         });
         ui.add(pickUpButton, 0, 17);
         ui.setHalignment(pickUpButton, HPos.CENTER);
+    }
+
+    private String selectFile() {
+        FileChooser fileChooser = new FileChooser();
+        Stage stage = new Stage();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        fileChooser.setInitialDirectory(selectedFile);
+        //fileChooser.setInitialFileName(selectedFile);
+        return fileChooser.getInitialDirectory().getName();
+    }
+
+    private void setImportMenu() {
+
+        importMenu.setOnAction((event) -> {
+            String filename = selectFile();
+            System.out.println(filename);
+
+            try {
+                importGame(filename);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public  void importGame(String filename) throws FileNotFoundException {
+
+        FileInputStream fileInputStream
+                = new FileInputStream(filename);
+        ObjectInputStream objectInputStream
+                = null;
+        try {
+            objectInputStream = new ObjectInputStream(fileInputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            System.out.println("251" + objectInputStream.readObject());
+            currentMap = objectInputStream;
+            MapLoader.importMap(fileInputStream);
+        
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            objectInputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
-    private String selectDirectory(){
+
+    private String selectDirectory() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         Stage stage = new Stage();
         File directory= directoryChooser.showDialog(stage);
@@ -253,20 +278,9 @@ public class Main extends Application {
         return finalDirectory;
     }
 
-    private String addFileName(){
-        TextInputDialog textInputDialog = new TextInputDialog();
-        ((Button) textInputDialog.getDialogPane().lookupButton(ButtonType.OK)).setText("Kecske");
-        textInputDialog.setContentText("Filename");
-        textInputDialog.showAndWait();
+    private void setExportMenu() {
 
-        return textInputDialog.getResult();
-    }
-    private void setExportButton(GridPane ui) {
-        exportButton = new Button("Export");
-        exportButton.setVisible(true);
-        exportButton.setFocusTraversable(false);
-
-        exportButton.setOnAction((event) -> {
+        exportMenu.setOnAction((event) -> {
                 String directory= selectDirectory();
                 String filename= "";
                 if(filename.equals("")){
@@ -278,11 +292,7 @@ public class Main extends Application {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         });
-        ui.add(exportButton, 0, 18);
-        ui.setHalignment(exportButton, HPos.CENTER);
-
     }
 
     private void exportGame(String directory, String filename) throws IOException {
@@ -354,7 +364,7 @@ public class Main extends Application {
             refresh();
 
             if ((getCurrentMonster(x, y).getName().equals("Boss") && getCurrentMonsterHealth(x, y) <= 0) || (currentPlayerHealth <= 0)) {
-                map = MapLoader.loadMap(gameOver, this.currentPlayerHealth, this.currentPlayerPower);
+                map = MapLoader.loadMap(gameOver);
 
             } else if (getCurrentMonsterHealth(x, y) <= 0) {
                 playerCellCheck(x, y).setType(CellType.FLOOR);
@@ -417,7 +427,7 @@ public class Main extends Application {
         healthbar.setWidth(currentPlayerHealth * 2);
         currentPowerLabel.setText(String.valueOf(currentPlayerPower));
         powerbar.setWidth(currentPlayerPower * 10);
-        System.out.println(map);
+
     }
 
     private void setupDbManager() {
@@ -475,26 +485,26 @@ public class Main extends Application {
     public void mapLevel(int mapLevelCounter) {
         switch (mapLevelCounter) {
             case 1:
-                map = MapLoader.loadMap(map2, this.currentPlayerHealth, this.currentPlayerPower);
+                map = MapLoader.loadMap(map2);
                 this.player = map.getPlayer();
                 this.mapLevelCounter = 2;
                 break;
 
             case 2:
                 if (playerCellCheck(0, 0).isDoorClose()) {
-                    map = MapLoader.loadMap(map3, this.currentPlayerHealth, this.currentPlayerPower);
+                    map = MapLoader.loadMap(map3);
                     this.player = map.getPlayer();
                     this.mapLevelCounter = 3;
                     break;
                 } else if (!playerCellCheck(0, 0).isDoorClose()) {
-                    map = MapLoader.loadMap(map1, this.currentPlayerHealth, this.currentPlayerPower);
+                    map = MapLoader.loadMap(map1);
                     this.player = map.getPlayer();
                     this.mapLevelCounter = 1;
                     break;
                 }
             case 3:
                 if (!playerCellCheck(0, 0).isDoorClose()) {
-                    map = MapLoader.loadMap(map2, this.currentPlayerHealth, this.currentPlayerPower);
+                    map = MapLoader.loadMap(map2);
                     this.player = map.getPlayer();
                     this.mapLevelCounter = 2;
                     break;
