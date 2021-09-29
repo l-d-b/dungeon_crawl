@@ -5,6 +5,9 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.google.gson.Gson;
 import javafx.application.Application;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
@@ -13,7 +16,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -23,13 +28,19 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+
+import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Window;
+
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 
 public class Main extends Application {
@@ -62,7 +73,8 @@ public class Main extends Application {
 
     Rectangle healthbar = new Rectangle();
     Rectangle powerbar = new Rectangle();
-    Button pickUpButton;;
+    Button pickUpButton;
+    Button exportButton;
 
 
     public static void main(String[] args) {
@@ -88,6 +100,7 @@ public class Main extends Application {
         background.setFill(Color.GREY);
         mapLevelCounter = 1;
         setPickUpButton(ui);
+        setExportButton(ui);
 
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(canvas);
@@ -171,6 +184,60 @@ public class Main extends Application {
         ui.add(pickUpButton, 0, 17);
         ui.setHalignment(pickUpButton, HPos.CENTER);
 
+    }
+    private String selectDirectory(){
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        Stage stage = new Stage();
+        File directory= directoryChooser.showDialog(stage);
+        directoryChooser.setInitialDirectory(directory);
+
+        String finalDirectory = directoryChooser.getInitialDirectory().toString();
+        return finalDirectory;
+    }
+
+    private String addFileName(){
+        TextInputDialog textInputDialog = new TextInputDialog();
+        ((Button) textInputDialog.getDialogPane().lookupButton(ButtonType.OK)).setText("Kecske");
+        textInputDialog.setContentText("Filename");
+        textInputDialog.showAndWait();
+
+        return textInputDialog.getResult();
+    }
+    private void setExportButton(GridPane ui) {
+        exportButton = new Button("Export");
+        exportButton.setVisible(true);
+        exportButton.setFocusTraversable(false);
+
+        exportButton.setOnAction((event) -> {
+                String directory= selectDirectory();
+                String filename= "";
+                if(filename.equals("")){
+                    filename = addFileName();
+                }
+
+            try {
+                exportGame(directory, filename);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        });
+        ui.add(exportButton, 0, 18);
+        ui.setHalignment(exportButton, HPos.CENTER);
+
+    }
+
+    private void exportGame(String directory, String filename) throws IOException {
+        GameState gameState = new GameState(map);
+        String json = new Gson().toJson(gameState);
+
+        FileOutputStream fileOutputStream
+                = new FileOutputStream(directory + "/" + filename + ".json");
+        ObjectOutputStream objectOutputStream
+                = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(json);
+        objectOutputStream.flush();
+        objectOutputStream.close();
     }
 
     private void setInventoryLabel(GridPane ui) {
@@ -296,7 +363,7 @@ public class Main extends Application {
     }
 
     private void setupDbManager() {
-        dbManager = new GameDatabaseManager();
+        dbManager = new GameDatabaseManager();map.toString();
         try {
             dbManager.setup();
         } catch (SQLException ex) {

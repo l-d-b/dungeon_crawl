@@ -2,7 +2,7 @@ package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
 
-public class GameMap {
+public class GameMap{
     private final int width;
     private final int height;
     private final Cell[][] cells;
