@@ -3,6 +3,14 @@ import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
 
 public class GameMap{
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Arrays;
+
+public class GameMap implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final int width;
     private final int height;
     private final Cell[][] cells;
@@ -47,6 +55,14 @@ public class GameMap{
 
     public int getHeight() {
         return height;
+    }
+
+    @Override
+    public String toString() {
+        return "GameMap{" +
+                ", player=" + player +
+                ", monster=" + monster +
+                '}';
     }
 
 }

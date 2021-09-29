@@ -11,20 +11,26 @@ import com.google.gson.Gson;
 import javafx.application.Application;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -32,9 +38,18 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javafx.scene.control.Button;
+
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Window;
@@ -51,6 +66,7 @@ public class Main extends Application {
     String map2 = "/map_2.txt";
     String map3 = "/map_3.txt";
     GameMap map = MapLoader.loadMap(map1, 100, 5);
+    GameMap gameMap;
     Player player = map.getPlayer();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
@@ -69,6 +85,7 @@ public class Main extends Application {
     Label inventoryLabel = new Label();
     Label inventory = new Label();
     Label powerLabel = new Label();
+    Label menuLabel = new Label();
 
 
     Rectangle healthbar = new Rectangle();
@@ -84,7 +101,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         setupDbManager();
-
 
         GridPane ui = new GridPane();
         ui.setMinWidth(300);
@@ -110,6 +126,26 @@ public class Main extends Application {
         canvas.setHeight(1000);
         setInventoryLabel(ui);
 
+        MenuBar menuBar = new MenuBar();
+        Menu menu = new Menu("Menu");
+//creating menu items
+        MenuItem export = new MenuItem("Export game");
+        MenuItem importGame = new MenuItem("Import game");
+
+//adding menu items to the menu
+        menu.getItems().add(export);
+        menu.getItems().add(importGame);
+
+//adding menu to the menu bar
+        menuBar.getMenus().add(menu);
+
+        borderPane.setTop(menuBar);
+
+        export.setOnAction(t -> {
+            selectDirectory();
+            addFileName();
+        });
+
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         refresh();
@@ -117,7 +153,9 @@ public class Main extends Application {
         scene.setOnKeyReleased(this::onKeyReleased);
 
         primaryStage.setTitle("Dungeon Crawl");
+
         primaryStage.show();
+
     }
 
     private void onKeyReleased(KeyEvent keyEvent) {
@@ -128,6 +166,26 @@ public class Main extends Application {
                 || keyEvent.getCode() == KeyCode.ESCAPE) {
             exit();
         }
+    }
+
+    private String addFileName(){
+        TextInputDialog textInputDialog = new TextInputDialog();
+        ((Button) textInputDialog.getDialogPane().lookupButton(ButtonType.OK)).setText("Export");
+        textInputDialog.setTitle("Export");
+        textInputDialog.setContentText("Filename");
+        textInputDialog.showAndWait();
+
+        return textInputDialog.getResult();
+    }
+
+    private String selectDirectory(){
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        Stage stage = new Stage();
+        File directory= directoryChooser.showDialog(stage);
+        directoryChooser.setInitialDirectory(directory);
+
+        String finalDirectory = directoryChooser.getInitialDirectory().toString();
+        return finalDirectory;
     }
 
     private void setHealthbar(GridPane ui) {
@@ -278,10 +336,8 @@ public class Main extends Application {
                 player.move(x, y);
                 refresh();
 
-
             } else if (playerCellCheck(x, y).isDoorClose() && !playerInvetory.contains(CellType.KEY)) {
                 refresh();
-
 
             } else if (playerCellCheck(x, y).isDoorClose() && playerInvetory.contains(CellType.KEY)) {
                 player.move(x, y);
@@ -316,10 +372,12 @@ public class Main extends Application {
             case UP:
                 roundByKeyPressed(0, -1);
                 refresh();
+
                 break;
             case DOWN:
                 roundByKeyPressed(0, 1);
                 refresh();
+
                 break;
             case LEFT:
                 roundByKeyPressed(-1, 0);
@@ -337,7 +395,6 @@ public class Main extends Application {
         Player player = map.getPlayer();
         dbManager.savePlayer(player);
     }
-
 
     private void refresh() {
         updateHealth();
@@ -360,6 +417,7 @@ public class Main extends Application {
         healthbar.setWidth(currentPlayerHealth * 2);
         currentPowerLabel.setText(String.valueOf(currentPlayerPower));
         powerbar.setWidth(currentPlayerPower * 10);
+        System.out.println(map);
     }
 
     private void setupDbManager() {
