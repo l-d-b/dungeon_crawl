@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class GameMap implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -55,19 +56,12 @@ public class GameMap implements Serializable {
         return height;
     }
 
-//    public void writeObject(ObjectOutputStream oos)
-//            throws IOException {
-//        oos.defaultWriteObject();
-//        oos.writeObject(player.getAttack());
-//    }
-
-//    public void readObject(ObjectInputStream ois)
-//            throws ClassNotFoundException, IOException {
-//        ois.defaultReadObject();
-//        Integer attack = (Integer)ois.readObject();
-//        Player testPlayer  = new Player();
-//        testPlayer.setAttack(attack);
-//        this.setPlayer(testPlayer);
-//    }
+    @Override
+    public String toString() {
+        return "GameMap{" +
+                ", player=" + player +
+                ", monster=" + monster +
+                '}';
+    }
 
 }

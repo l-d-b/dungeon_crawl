@@ -47,4 +47,12 @@ public class Player extends Actor {
         }
         getCell().setType(CellType.FLOOR);
     }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "cell=" + cell +
+                ", inventory=" + inventory +
+                "} " + super.toString();
+    }
 }

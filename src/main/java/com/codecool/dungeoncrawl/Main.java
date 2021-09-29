@@ -267,10 +267,8 @@ public class Main extends Application {
                 player.move(x, y);
                 refresh();
 
-
             } else if (playerCellCheck(x, y).isDoorClose() && !playerInvetory.contains(CellType.KEY)) {
                 refresh();
-
 
             } else if (playerCellCheck(x, y).isDoorClose() && playerInvetory.contains(CellType.KEY)) {
                 player.move(x, y);
@@ -305,15 +303,12 @@ public class Main extends Application {
             case UP:
                 roundByKeyPressed(0, -1);
                 refresh();
-//                FileOutputStream fileOutputStream
-//                        = new FileOutputStream("yourfile2.txt");
-//                ObjectOutputStream objectOutputStream
-//                        = new ObjectOutputStream(fileOutputStream);
-//                gameMap.writeObject(objectOutputStream);
+
                 break;
             case DOWN:
                 roundByKeyPressed(0, 1);
                 refresh();
+
                 break;
             case LEFT:
                 roundByKeyPressed(-1, 0);
@@ -331,7 +326,6 @@ public class Main extends Application {
         Player player = map.getPlayer();
         dbManager.savePlayer(player);
     }
-
 
     private void refresh() {
         updateHealth();
@@ -354,6 +348,7 @@ public class Main extends Application {
         healthbar.setWidth(currentPlayerHealth * 2);
         currentPowerLabel.setText(String.valueOf(currentPlayerPower));
         powerbar.setWidth(currentPlayerPower * 10);
+        System.out.println(map);
     }
 
     private void setupDbManager() {
