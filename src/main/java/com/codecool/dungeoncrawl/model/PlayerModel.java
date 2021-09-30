@@ -2,7 +2,9 @@ package com.codecool.dungeoncrawl.model;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
 
-public class PlayerModel extends BaseModel {
+import java.io.Serializable;
+
+public class PlayerModel extends BaseModel implements Serializable {
     private String playerName;
     private int hp;
     private int x;

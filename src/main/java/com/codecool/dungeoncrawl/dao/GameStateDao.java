@@ -8,6 +8,6 @@ import java.util.List;
 public interface GameStateDao {
     void add(GameState state);
     void update(GameState state);
-    String get(int id);
+    GameState get(int id);
     List<GameState> getAll();
 }

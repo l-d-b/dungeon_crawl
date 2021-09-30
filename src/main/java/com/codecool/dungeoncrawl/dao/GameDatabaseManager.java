@@ -31,7 +31,7 @@ public class GameDatabaseManager {
         gameStateDao.add(gameState);
     }
 
-    public String getGameStatus(PlayerModel playerModel){
+    public GameState getGameStatus(PlayerModel playerModel){
 //        GameState gameState = new GameState(playerModel);
         return gameStateDao.get(playerModel.getId());
     }

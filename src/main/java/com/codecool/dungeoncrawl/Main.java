@@ -267,11 +267,7 @@ public class Main extends Application {
     }
 
     private void setLoadMenu() {
-
-        importMenu.setOnAction((event) -> {
-            String filename = selectFile();
-            System.out.println(filename);
-
+        loadMenu.setOnAction((event) -> {
             try {
                 sqlLoad();
 
@@ -556,8 +552,10 @@ public class Main extends Application {
     }
 
     public void sqlLoad() throws IOException, ClassNotFoundException {
-        String mapString = dbManager.getGameStatus(playerModel);
-        importGame(mapString);
+        gameState = dbManager.getGameStatus(playerModel);
+        map = gameState.getCurrentMap();
+        this.player = map.getPlayer();
+        refresh();
 //        System.out.println(map);
 //        refresh();
 
