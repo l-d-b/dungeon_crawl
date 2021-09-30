@@ -8,6 +8,15 @@ class CellTest {
     GameMap map = new GameMap(3, 3, CellType.FLOOR);
 
     @Test
+    void isItemShouldBeTrueForItem () {
+        Cell cell = map.getCell(1,1);
+        cell.setType(CellType.SWORD);
+        assertTrue(cell.isItem());
+        assertFalse(map.getCell(0,0).isItem());
+
+    }
+
+    @Test
     void getNeighbor() {
         Cell cell = map.getCell(1, 1);
         Cell neighbor = cell.getNeighbor(-1, 0);
