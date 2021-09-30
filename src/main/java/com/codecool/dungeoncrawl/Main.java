@@ -7,7 +7,6 @@ import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.PlayerModel;
-import com.codecool.dungeoncrawl.model.generated.Response;
 import com.google.gson.*;
 import javafx.application.Application;
 import com.codecool.dungeoncrawl.logic.CellType;
