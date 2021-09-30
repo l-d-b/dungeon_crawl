@@ -1,13 +1,18 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
+import com.codecool.dungeoncrawl.dao.GameStateDao;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.PlayerModel;
-import com.google.gson.*;
+//import com.codecool.dungeoncrawl.model.generated.Response;
+//import com.google.gson.*;
+import com.codecool.dungeoncrawl.model.BaseModel;
+import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
@@ -62,7 +67,8 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
     GameDatabaseManager dbManager;
-
+    BaseModel dbmodel;
+    GameState gameState;
     String gameOver = "/gameover.txt";
     String map1 = "/map.txt";
     String map2 = "/map_2.txt";
@@ -70,7 +76,7 @@ public class Main extends Application {
     GameMap map = MapLoader.loadMap(map1);
     ObjectInputStream currentMap;
     Player player = map.getPlayer();
-
+    PlayerModel playerModel = new PlayerModel(map.getPlayer());
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -90,11 +96,14 @@ public class Main extends Application {
     Label powerLabel = new Label();
     MenuItem exportMenu;
     MenuItem importMenu;
+    MenuItem loadMenu;
 
 
     Rectangle healthbar = new Rectangle();
     Rectangle powerbar = new Rectangle();
     Button pickUpButton;
+//    Button pickUpButton;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -120,7 +129,6 @@ public class Main extends Application {
         background.setFill(Color.GREY);
         mapLevelCounter = 1;
         setPickUpButton(ui);
-
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
@@ -134,10 +142,12 @@ public class Main extends Application {
 //creating menu items
         exportMenu = new MenuItem("Export game");
         importMenu = new MenuItem("Import game");
+        loadMenu = new MenuItem("Load game");
 
 //adding menu items to the menu
         menu.getItems().add(exportMenu);
         menu.getItems().add(importMenu);
+        menu.getItems().add(loadMenu);
 
 //adding menu to the menu bar
         menuBar.getMenus().add(menu);
@@ -145,7 +155,7 @@ public class Main extends Application {
         borderPane.setTop(menuBar);
         setExportMenu();
         setImportMenu();
-
+        setLoadMenu();
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         refresh();
@@ -186,7 +196,7 @@ public class Main extends Application {
         currentHealthLabel.setText(playerHealth);
         ui.add(healthLabel, 0, 0);
         ui.add(currentHealthLabel, 0, 1);
-        ui.setHalignment(healthLabel, HPos.CENTER);
+        GridPane.setHalignment(healthLabel, HPos.CENTER);
 
         healthLabel.setPadding(new Insets(0, 55, 0, 55));
 
@@ -203,7 +213,7 @@ public class Main extends Application {
         currentPowerLabel.setText(playerPower);
         ui.add(powerLabel, 0, 12);
         ui.add(currentPowerLabel, 0, 14);
-        ui.setHalignment(powerLabel, HPos.CENTER);
+        GridPane.setHalignment(powerLabel, HPos.CENTER);
 
         powerbar = new Rectangle(100, 100, 200, 20);
         Rectangle powBackground = new Rectangle(100, 100, 200, 20);
@@ -230,6 +240,7 @@ public class Main extends Application {
             }
         });
         ui.add(pickUpButton, 0, 17);
+        GridPane.setHalignment(pickUpButton, HPos.CENTER);
         ui.setHalignment(pickUpButton, HPos.CENTER);
     }
 
@@ -249,6 +260,20 @@ public class Main extends Application {
 
             try {
                 importGame(filename);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void setLoadMenu() {
+
+        importMenu.setOnAction((event) -> {
+            String filename = selectFile();
+            System.out.println(filename);
+
+            try {
+                sqlLoad();
 
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -313,10 +338,11 @@ public class Main extends Application {
         inventoryLabel.setText("Inventory:");
         inventoryLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 22));
         inventoryLabel.setTextFill(Color.BROWN);
-        ui.setHalignment(inventoryLabel, HPos.CENTER);
-        ui.setHalignment(inventory, HPos.CENTER);
+        GridPane.setHalignment(inventoryLabel, HPos.CENTER);
+        GridPane.setHalignment(inventory, HPos.CENTER);
         inventory.setFont(Font.font("Verdana", 16));
     }
+
 
     public Cell playerCellCheck(int x, int y) {
         return player.cellCheck(x, y);
@@ -376,7 +402,7 @@ public class Main extends Application {
         }
     }
 
-    private void onKeyPressed(KeyEvent keyEvent) {
+    private void onKeyPressed(KeyEvent keyEvent){
         switch (keyEvent.getCode()) {
             case UP:
                 roundByKeyPressed(0, -1);
@@ -400,9 +426,14 @@ public class Main extends Application {
                 pickUp();
                 refresh();
                 break;
+            case S:
+                if(keyEvent.isControlDown()){
+                    saveSql();
+                    break;
+                }
         }
-        Player player = map.getPlayer();
-        dbManager.savePlayer(player);
+//        Player player = map.getPlayer();
+//        dbManager.savePlayer(player);
     }
 
     private void refresh() {
@@ -518,4 +549,18 @@ public class Main extends Application {
                 }
         }
     }
+
+    public void saveSql() {
+        dbManager.savePlayer(playerModel);
+        dbManager.saveGameStatus(map, playerModel);
+    }
+
+    public void sqlLoad() throws IOException, ClassNotFoundException {
+        String mapString = dbManager.getGameStatus(playerModel);
+        importGame(mapString);
+//        System.out.println(map);
+//        refresh();
+
+    }
+
 }

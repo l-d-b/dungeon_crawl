@@ -1,8 +1,10 @@
 package com.codecool.dungeoncrawl.model;
 
+import com.codecool.dungeoncrawl.logic.GameMap;
+
 import java.lang.reflect.Field;
 
-public  class BaseModel {
+public abstract class BaseModel {
     // null means not saved
     protected Integer id;
 

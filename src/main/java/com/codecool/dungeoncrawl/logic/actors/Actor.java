@@ -14,6 +14,7 @@ public abstract class Actor implements Drawable, Serializable {
     private int health;
     private int attack;
     private final String name;
+    private Integer id;
 
     public Actor(Cell cell, int health, int attack, String name) {
         this.name = name;
@@ -102,4 +103,12 @@ public abstract class Actor implements Drawable, Serializable {
     public int getY() {
         return cell.getY();
     }
+
+//    public void setId(Integer id) {
+//        this.id = id;
+//    }
+//
+//    public Integer getId() {
+//        return id;
+//    }
 }
