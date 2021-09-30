@@ -249,18 +249,22 @@ public class Main extends Application {
 
             try {
                 importGame(filename);
+
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });
     }
 
-    public  void importGame(String filename) throws IOException, ClassNotFoundException {
+    public void importGame(String filename) throws IOException, ClassNotFoundException {
         FileInputStream fileInputStream = new FileInputStream(filename);
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
         GameState gameState = (GameState) objectInputStream.readObject();
         System.out.println(gameState.getCurrentMap());
         map = gameState.getCurrentMap();
+        this.player = map.getPlayer();
+        //scene.setOnKeyPressed(this::onKeyPressed);
+        //scene.setOnKeyReleased(this::onKeyReleased);
         refresh();
         objectInputStream.close();
     }
