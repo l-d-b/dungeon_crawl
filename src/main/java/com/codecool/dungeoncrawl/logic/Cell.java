@@ -7,12 +7,12 @@ import java.io.Serializable;
 
 
 public class Cell implements Drawable, Serializable {
-    public transient Cell cell;
+    public  Cell cell;
     private CellType type;
     private Actor actor;
     private Item item;
     private Monster monster;
-    private final transient GameMap gameMap;
+    private final  GameMap gameMap;
     private final int x, y;
 
     Cell(GameMap gameMap, int x, int y, CellType type) {

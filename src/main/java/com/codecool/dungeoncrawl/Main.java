@@ -52,6 +52,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -255,18 +256,22 @@ public class Main extends Application {
 
             try {
                 importGame(filename);
+
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });
     }
 
-    public  void importGame(String filename) throws IOException, ClassNotFoundException {
+    public void importGame(String filename) throws IOException, ClassNotFoundException {
         FileInputStream fileInputStream = new FileInputStream(filename);
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
         GameState gameState = (GameState) objectInputStream.readObject();
         System.out.println(gameState.getCurrentMap());
         map = gameState.getCurrentMap();
+        this.player = map.getPlayer();
+        //scene.setOnKeyPressed(this::onKeyPressed);
+        //scene.setOnKeyReleased(this::onKeyReleased);
         refresh();
         objectInputStream.close();
     }
@@ -300,8 +305,6 @@ public class Main extends Application {
 
     private void exportGame(String directory, String filename) throws IOException {
         GameState gameState = new GameState(map);
-        //String json = new Gson().toJson(gameState);
-
         FileOutputStream fileOutputStream
                 = new FileOutputStream(directory + "/" + filename + ".json");
         ObjectOutputStream objectOutputStream
@@ -495,6 +498,8 @@ public class Main extends Application {
             case 1:
                 map = MapLoader.loadMap(map2);
                 this.player = map.getPlayer();
+                player.setHealth(currentPlayerHealth);
+                player.setAttack(currentPlayerPower);
                 this.mapLevelCounter = 2;
                 break;
 
@@ -502,11 +507,15 @@ public class Main extends Application {
                 if (playerCellCheck(0, 0).isDoorClose()) {
                     map = MapLoader.loadMap(map3);
                     this.player = map.getPlayer();
+                    player.setHealth(currentPlayerHealth);
+                    player.setAttack(currentPlayerPower);
                     this.mapLevelCounter = 3;
                     break;
                 } else if (!playerCellCheck(0, 0).isDoorClose()) {
                     map = MapLoader.loadMap(map1);
                     this.player = map.getPlayer();
+                    player.setHealth(currentPlayerHealth);
+                    player.setAttack(currentPlayerPower);
                     this.mapLevelCounter = 1;
                     break;
                 }
@@ -514,6 +523,8 @@ public class Main extends Application {
                 if (!playerCellCheck(0, 0).isDoorClose()) {
                     map = MapLoader.loadMap(map2);
                     this.player = map.getPlayer();
+                    player.setHealth(currentPlayerHealth);
+                    player.setAttack(currentPlayerPower);
                     this.mapLevelCounter = 2;
                     break;
                 }
