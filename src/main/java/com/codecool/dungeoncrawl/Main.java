@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
+import com.codecool.dungeoncrawl.dao.GameStateDao;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
@@ -75,7 +76,7 @@ public class Main extends Application {
     GameMap map = MapLoader.loadMap(map1);
     ObjectInputStream currentMap;
     Player player = map.getPlayer();
-
+    PlayerModel playerModel = new PlayerModel(map.getPlayer());
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -95,6 +96,7 @@ public class Main extends Application {
     Label powerLabel = new Label();
     MenuItem exportMenu;
     MenuItem importMenu;
+    MenuItem loadMenu;
 
 
     Rectangle healthbar = new Rectangle();
@@ -140,10 +142,12 @@ public class Main extends Application {
 //creating menu items
         exportMenu = new MenuItem("Export game");
         importMenu = new MenuItem("Import game");
+        loadMenu = new MenuItem("Load game");
 
 //adding menu items to the menu
         menu.getItems().add(exportMenu);
         menu.getItems().add(importMenu);
+        menu.getItems().add(loadMenu);
 
 //adding menu to the menu bar
         menuBar.getMenus().add(menu);
@@ -151,7 +155,7 @@ public class Main extends Application {
         borderPane.setTop(menuBar);
         setExportMenu();
         setImportMenu();
-
+        setLoadMenu();
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         refresh();
@@ -256,6 +260,20 @@ public class Main extends Application {
 
             try {
                 importGame(filename);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void setLoadMenu() {
+
+        importMenu.setOnAction((event) -> {
+            String filename = selectFile();
+            System.out.println(filename);
+
+            try {
+                sqlLoad();
 
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -384,7 +402,7 @@ public class Main extends Application {
         }
     }
 
-    private void onKeyPressed(KeyEvent keyEvent) {
+    private void onKeyPressed(KeyEvent keyEvent){
         switch (keyEvent.getCode()) {
             case UP:
                 roundByKeyPressed(0, -1);
@@ -411,6 +429,7 @@ public class Main extends Application {
             case S:
                 if(keyEvent.isControlDown()){
                     saveSql();
+                    break;
                 }
         }
 //        Player player = map.getPlayer();
@@ -532,10 +551,16 @@ public class Main extends Application {
     }
 
     public void saveSql() {
-
-        PlayerModel playerModel = dbManager.savePlayer(map.getPlayer());
+        dbManager.savePlayer(playerModel);
         dbManager.saveGameStatus(map, playerModel);
-        System.out.println(gameState.getCurrentMap());
+    }
+
+    public void sqlLoad() throws IOException, ClassNotFoundException {
+        String mapString = dbManager.getGameStatus(playerModel);
+        importGame(mapString);
+//        System.out.println(map);
+//        refresh();
+
     }
 
 }

@@ -20,15 +20,20 @@ public class GameDatabaseManager {
         gameStateDao = new GameStateDaoJdbc(dataSource, playerDao);
     }
 
-    public PlayerModel savePlayer(Player player) {
-        PlayerModel model = new PlayerModel(player);
-        playerDao.add(model);
-        return model;
+    public PlayerModel savePlayer(PlayerModel player) {
+//        PlayerModel model = new PlayerModel(player);
+        playerDao.add(player);
+        return player;
     }
 
     public void saveGameStatus(GameMap state, PlayerModel playerModel) {
         GameState gameState = new GameState(state, playerModel);
         gameStateDao.add(gameState);
+    }
+
+    public String getGameStatus(PlayerModel playerModel){
+//        GameState gameState = new GameState(playerModel);
+        return gameStateDao.get(playerModel.getId());
     }
 
     private DataSource connect() throws SQLException {
