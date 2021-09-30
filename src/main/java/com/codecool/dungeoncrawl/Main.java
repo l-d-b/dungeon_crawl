@@ -6,17 +6,11 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.GameState;
-import com.codecool.dungeoncrawl.model.PlayerModel;
-import com.codecool.dungeoncrawl.model.generated.Response;
-import com.google.gson.*;
 import javafx.application.Application;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -30,8 +24,6 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -40,24 +32,17 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
-import javafx.scene.text.Text;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Window;
-
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 
 public class Main extends Application {
@@ -68,7 +53,6 @@ public class Main extends Application {
     String map2 = "/map_2.txt";
     String map3 = "/map_3.txt";
     GameMap map = MapLoader.loadMap(map1);
-    ObjectInputStream currentMap;
     Player player = map.getPlayer();
 
     Canvas canvas = new Canvas(
@@ -263,8 +247,7 @@ public class Main extends Application {
         System.out.println(gameState.getCurrentMap());
         map = gameState.getCurrentMap();
         this.player = map.getPlayer();
-        //scene.setOnKeyPressed(this::onKeyPressed);
-        //scene.setOnKeyReleased(this::onKeyReleased);
+        this.playerInvetory = player.getInventory();
         refresh();
         objectInputStream.close();
     }
@@ -488,6 +471,8 @@ public class Main extends Application {
             case 1:
                 map = MapLoader.loadMap(map2);
                 this.player = map.getPlayer();
+                player.setHealth(currentPlayerHealth);
+                player.setAttack(currentPlayerPower);
                 this.mapLevelCounter = 2;
                 break;
 
@@ -495,11 +480,15 @@ public class Main extends Application {
                 if (playerCellCheck(0, 0).isDoorClose()) {
                     map = MapLoader.loadMap(map3);
                     this.player = map.getPlayer();
+                    player.setHealth(currentPlayerHealth);
+                    player.setAttack(currentPlayerPower);
                     this.mapLevelCounter = 3;
                     break;
                 } else if (!playerCellCheck(0, 0).isDoorClose()) {
                     map = MapLoader.loadMap(map1);
                     this.player = map.getPlayer();
+                    player.setHealth(currentPlayerHealth);
+                    player.setAttack(currentPlayerPower);
                     this.mapLevelCounter = 1;
                     break;
                 }
@@ -507,6 +496,8 @@ public class Main extends Application {
                 if (!playerCellCheck(0, 0).isDoorClose()) {
                     map = MapLoader.loadMap(map2);
                     this.player = map.getPlayer();
+                    player.setHealth(currentPlayerHealth);
+                    player.setAttack(currentPlayerPower);
                     this.mapLevelCounter = 2;
                     break;
                 }
