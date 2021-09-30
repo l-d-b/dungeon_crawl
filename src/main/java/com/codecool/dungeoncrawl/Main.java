@@ -298,8 +298,6 @@ public class Main extends Application {
 
     private void exportGame(String directory, String filename) throws IOException {
         GameState gameState = new GameState(map);
-        //String json = new Gson().toJson(gameState);
-
         FileOutputStream fileOutputStream
                 = new FileOutputStream(directory + "/" + filename + ".json");
         ObjectOutputStream objectOutputStream
