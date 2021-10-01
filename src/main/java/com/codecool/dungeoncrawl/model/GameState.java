@@ -11,7 +11,7 @@ import java.sql.Date;
 import java.util.List;
 
 public class GameState extends BaseModel implements Serializable {
-    private Date savedAt;
+    private String savedAt;
     private GameMap currentMap;
     private List<String> discoveredMaps = new ArrayList<>();
     private PlayerModel player;
@@ -25,17 +25,17 @@ public class GameState extends BaseModel implements Serializable {
     }
 
     public GameState(GameMap gameState, PlayerModel playerModel) {
-        this.savedAt = (Date) gameState.getDate();
+        this.savedAt = gameState.getCurrentDate();
         this.currentMap = gameState;
         this.player = playerModel;
     }
 
 
-    public Date getSavedAt() {
+    public String getSavedAt() {
         return savedAt;
     }
 
-    public void setSavedAt(Date savedAt) {
+    public void setSavedAt(String savedAt) {
         this.savedAt = savedAt;
     }
 

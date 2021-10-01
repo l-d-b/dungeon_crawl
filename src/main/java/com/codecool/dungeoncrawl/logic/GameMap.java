@@ -1,6 +1,10 @@
 package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.monsters.Monster;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 //import com.google.gson.annotations.Expose;
 
@@ -65,6 +69,14 @@ public class GameMap implements Serializable {
     public Date getDate(){
         java.util.Date date = new java.util.Date();
         return new java.sql.Date(date.getTime());
+    }
+
+    public String getCurrentDate(){
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+        String formattedDate = formatter.format(localDateTime);
+        return formattedDate;
     }
 
 //    public void setId(Integer id) {
